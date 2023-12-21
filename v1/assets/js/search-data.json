@@ -1,7 +1,35 @@
 {"0": {
     "doc": "Home",
+    "title": "📜 Introduction",
+    "content": "Ontimize Boot uses Spring Boot technology to further simplify the development of a service or microservice based server, using the API REST communication system. ",
+    "url": "/newdocs/v1/#-introduction",
+    
+    "relUrl": "/#-introduction"
+  },"1": {
+    "doc": "Home",
+    "title": "✍ Use",
+    "content": "To start developing an application with Ontimize Boot is very simple, we have an archetype that generates the skeleton of an application in seconds, from which you can develop the application you want. For more information, consult the desired topics in this documentation, using the search box or the side menu. ",
+    "url": "/newdocs/v1/#-use",
+    
+    "relUrl": "/#-use"
+  },"2": {
+    "doc": "Home",
+    "title": "👁️‍🗨️ Versions and dependencies",
+    "content": "All the versions and dependencies of the artifacts contained in this project can be downloaded from Maven Central, as well as knowing each of its dependencies. ",
+    "url": "/newdocs/v1/#%EF%B8%8F%EF%B8%8F-versions-and-dependencies",
+    
+    "relUrl": "/#️️-versions-and-dependencies"
+  },"3": {
+    "doc": "Home",
+    "title": "📣 Changelog",
+    "content": "You can consult our changelog at the following link . ",
+    "url": "/newdocs/v1/#-changelog",
+    
+    "relUrl": "/#-changelog"
+  },"4": {
+    "doc": "Home",
     "title": "Home",
-    "content": "This is a bare-minimum template to create a Jekyll site that uses the Just the Docs theme. You can easily set the created site to be published on GitHub Pages – the README file explains how to do that, along with other details. If Jekyll is installed on your computer, you can also build and preview the created site locally. This lets you test changes before committing them, and avoids waiting for GitHub Pages.1 And you will be able to deploy your local build to a different platform than GitHub Pages. More specifically, the created site: . | uses a gem-based approach, i.e. uses a Gemfile and loads the just-the-docs gem | uses the GitHub Pages / Actions workflow to build and publish the site on GitHub Pages | . Other than that, you’re free to customize sites that you create with this template, however you like. You can easily change the versions of just-the-docs and Jekyll it uses, as well as adding further plugins. Browse our documentation to learn more about how to use this theme. To get started with creating a site, simply: . | click “use this template” to create a GitHub repository | go to Settings &gt; Pages &gt; Build and deployment &gt; Source, and select GitHub Actions | . If you want to maintain your docs in the docs directory of an existing project repo, see Hosting your docs from an existing project repo in the template README. | It can take up to 10 minutes for changes to your site to publish after you push the changes to GitHub. &#8617; . | . ",
+    "content": " ",
     "url": "/newdocs/v1/",
     
     "relUrl": "/"
