@@ -1,4 +1,4 @@
-# [Ontimize Boot](https://ontimize.github.io/newdocs/)
+# [Ontimize Boot v1.X.X](https://ontimize.github.io/newdocs/)
 
 ## 📜 Introduction
 
