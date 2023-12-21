@@ -10,7 +10,7 @@
 
 - Download this branch: https://github.com/ontimize/newdocs/tree/1.x.x-develop
 
-  > [!IMPORTANT]  
+  > **IMPORTANT**  
   > If this is the first time you are working with this documentation, run this command before continue.
   >
   > ```
