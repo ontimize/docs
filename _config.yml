@@ -13,8 +13,11 @@ versions:
     selected: false
 page_excerpts: true
 github:
-  - name: Onitmize
+  - name: "Ontimize"
     url: https://github.com/Ontimize
+    icon: images/github-front.svg
+  - name: "Ontimize Web"
+    url: https://github.com/OntimizeWeb
     icon: images/github-front.svg
 color_scheme: ontimize-light
 callouts_level: quiet # or loud
