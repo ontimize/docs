@@ -1,21 +1,30 @@
-# [Ontimize Boot v1.X.X](https://ontimize.github.io/newdocs/)
-
-## 📜 Introduction
-
-Ontimize Boot uses Spring Boot technology to further simplify the development of a service or microservice based server, using the API REST communication system.
+# [Ontimize Boot v1.X.X - Documentation](https://ontimize.github.io/newdocs/v1)
 
 ## ✍ Use
 
-To start developing an application with Ontimize Boot is very simple, we have an [archetype](https://ontimize.github.io/ontimize-boot/getting_started/) that generates the skeleton of an application in seconds, from which you can develop the application you want. For more information, see the [documentation](https://ontimize.github.io/newdocs/).
+### v1.X.X documentation:
 
-## 💼 Documentation
+- [Check this link](https://ontimize.github.io/newdocs/v1/index.html)
 
-All documentation related to how to use it in a project, tutorials and details of its systems and usage can be found online by accessing the link about [Ontimize Boot documentation](https://ontimize.github.io/newdocs/).
+### v1.X.X-develop documentation:
 
-## 👁️‍🗨️ Versions and dependencies
+- Download this branch: https://github.com/ontimize/newdocs/tree/1.x.x-develop
 
-All the versions and dependencies of the artifacts contained in this project can be downloaded from [Maven Central](https://central.sonatype.dev/namespace/com.ontimize.boot), as well as knowing each of its dependencies.
+  > **IMPORTANT**  
+  > If this is the first time you are working with this documentation, run this command before continue.
+  >
+  > ```
+  > bundle install
+  > ```
+  >
+  > This will install the necessary Ruby gems. Please, if the installation modifies your **_Gemfile.lock_** file, **DO NOT UPLOAD IT**.
 
-## :gear: Changelog
+- Run the following command to launch a local Jekyll server and check the documentation
 
-You can consult our changelog at the following [link](https://github.com/ontimize/ontimize-boot/blob/develop/CHANGELOG.md)
+  ```
+  bundle exec jekyll serve --config _config.yml,_config.deploy.yml
+  ```
+
+### Deploy v1.X.X documentation:
+
+- Upload all the changes you want to deploy in version 1.x.x to the 1.x.x-develop branch. Make a pull request from version 1.x.x-develop to version 1.x.x and merge it.
