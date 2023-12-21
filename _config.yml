@@ -5,10 +5,10 @@ url: https://ontimize.github.io
 logo: images/logo-ontimize-blanco.png
 search_enabled: true
 versions:
-  - url: /docs/v1
+  - url: /newdocs/v1
     title: 1.x.x
     selected: true
-  - url: /docs/v3
+  - url: /newdocs/v3
     title: 3.x.x
     selected: false
 page_excerpts: true
