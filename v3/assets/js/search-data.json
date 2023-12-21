@@ -1,0 +1,37 @@
+{"0": {
+    "doc": "Home",
+    "title": "📜 Introduction",
+    "content": "Ontimize Boot uses Spring Boot technology to further simplify the development of a service or microservice based server, using the API REST communication system. ",
+    "url": "/newdocs/v3/#-introduction",
+    
+    "relUrl": "/#-introduction"
+  },"1": {
+    "doc": "Home",
+    "title": "✍ Use",
+    "content": "To start developing an application with Ontimize Boot is very simple, we have an archetype that generates the skeleton of an application in seconds, from which you can develop the application you want. For more information, consult the desired topics in this documentation, using the search box or the side menu. ",
+    "url": "/newdocs/v3/#-use",
+    
+    "relUrl": "/#-use"
+  },"2": {
+    "doc": "Home",
+    "title": "👁️‍🗨️ Versions and dependencies",
+    "content": "All the versions and dependencies of the artifacts contained in this project can be downloaded from Maven Central, as well as knowing each of its dependencies. ",
+    "url": "/newdocs/v3/#%EF%B8%8F%EF%B8%8F-versions-and-dependencies",
+    
+    "relUrl": "/#️️-versions-and-dependencies"
+  },"3": {
+    "doc": "Home",
+    "title": "📣 Changelog",
+    "content": "You can consult our changelog at the following link . ",
+    "url": "/newdocs/v3/#-changelog",
+    
+    "relUrl": "/#-changelog"
+  },"4": {
+    "doc": "Home",
+    "title": "Home",
+    "content": " ",
+    "url": "/newdocs/v3/",
+    
+    "relUrl": "/"
+  }
+}
