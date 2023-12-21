@@ -4,10 +4,10 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - 1.x.x
+      - 3.x.x
 
 env:
-  TARGET_PATH: v1
+  TARGET_PATH: v3
 
 jobs:
   build-docs:
@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: 1.x.x
+          ref: 3.x.x
           fetch-depth: 0
 
       - name: Bundler Cache
