@@ -1,5 +1,33 @@
+url: https://ontimize.github.io/newdocs/
 title: Ontimize Boot
 description: Welcome to the Ontimize Boot v1.x.x documentation!
+logo: images/logo-ontimize-blanco.png
 theme: just-the-docs
-
-url: https://just-the-docs.github.io
+search_enabled: true
+versions:
+  - url: /newdocs/v1
+    title: 1.x.x
+    selected: true
+  - url: /newdocs/v3
+    title: 3.x.x
+    selected: false
+page_excerpts: true
+github:
+  - name: Onitmize
+    url: https://github.com/Ontimize
+    icon: images/github-front.svg
+color_scheme: ontimize-light
+callouts_level: quiet # or loud
+callouts:
+  highlight:
+    color: grey-dk
+  important:
+    title: Important
+    color: grey-dk
+  note:
+    title: Note
+    color: blue
+    opacity: 1
+  warning:
+    title: Warning
+    color: red
