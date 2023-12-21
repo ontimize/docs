@@ -1,14 +1,14 @@
-# [Ontimize Boot v1.X.X - Documentation](https://ontimize.github.io/newdocs/v1)
+# [Ontimize Boot v3.X.X - Documentation](https://ontimize.github.io/newdocs/v3)
 
 ## ✍ Use
 
-### v1.X.X documentation:
+### v3.X.X documentation:
 
-- [Check this link](https://ontimize.github.io/newdocs/v1/index.html)
+- [Check this link](https://ontimize.github.io/newdocs/v3/index.html)
 
-### v1.X.X-develop documentation:
+### v3.X.X-develop documentation:
 
-- Download this branch: https://github.com/ontimize/newdocs/tree/1.x.x-develop
+- Download this branch: https://github.com/ontimize/newdocs/tree/3.x.x-develop
 
   > **IMPORTANT**  
   > If this is the first time you are working with this documentation, run this command before continue.
@@ -25,6 +25,6 @@
   bundle exec jekyll serve --config _config.yml,_config.deploy.yml
   ```
 
-### Deploy v1.X.X documentation:
+### Deploy v3.X.X documentation:
 
-- Upload all the changes you want to deploy in version 1.x.x to the 1.x.x-develop branch. Make a pull request from version 1.x.x-develop to version 1.x.x and merge it.
+- Upload all the changes you want to deploy in version 3.x.x to the 3.x.x-develop branch. Make a pull request from version 3.x.x-develop to version 3.x.x and merge it.
