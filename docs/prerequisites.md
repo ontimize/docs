@@ -25,7 +25,7 @@ Following installation, make sure you have correctly installed Java JDK 8 by inv
 The result should look similar to
 
 ```console
-C:\>java -version
+$java -version
 openjdk version "1.8.0_XXX"
 OpenJDK Runtime Enviroment (Temurin)(build 1.8.0_XXX-XXX)
 OpenJDK 64-Bit Server VM (Temurin)(build 1.8.0_XXX-XXX, mixed mode)
@@ -40,7 +40,7 @@ Follow the installation steps indicated in the [official web site](https://maven
 To check the installation, run the following command at a command prompt `mvn -v`. The result should look similar to:
 
 ```console
-C:\>mvn -v
+$mvn -v
 Apache Maven 3.9.6 (bc0240f3c744dd6b6ec2920b3cd08dcc295161ae)
 Maven home: C:\apache-maven-3.9.6
 Java version: 1.8.0_392, vendor: Temurin, runtime: C:\Program Files\Eclipse Adoptium\jdk-8-0-392.8-hotspot\jre

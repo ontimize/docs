@@ -1,3 +1,50 @@
+//Size and margins
+
+table {
+  table-layout: auto;
+  width: 120px;
+}
+
+td {
+  // overflow: hidden;
+  // white-space: nowrap;
+  // text-overflow: ellipsis;
+}
+
+body>div.side-bar{
+  width:auto
+}
+
+#top.main{
+  max-width: none;
+  margin-left: calc(16.5rem + 1px);
+}
+
+//jstree start
+.multiColumnRow {
+  display: flex;
+}
+
+.multiColumnRowJustify {
+  justify-content: center;
+}
+
+.multiColumnGrow {
+  flex-grow: 1;
+}
+
+.multiColumn {
+  padding: 10px;
+}
+
+.verticalDivider {
+  border-left: 1px solid #F2F3F3;
+}
+
+.jstreeloader ul>li::before {
+  content: "";
+}
+
 // Custom text colors
 .text-primary-900 {
   color: $primary-900
@@ -189,7 +236,7 @@ a:not([class]) {
   @include mq(lg) {
     position: fixed;
     top: 64px;
-    right: 48px;
+    right: 0px;
     max-height: calc(100% - 112px);
     min-height: fit-content;
     width: 360px;
@@ -197,11 +244,12 @@ a:not([class]) {
     border: 1px solid $border-color;
     border-radius: 4px;
     overflow: auto;
+    background-color: $body-background-color;
+    z-index: 999;
   }
 }
 
 .toc {
-  background-color: $body-background-color;
   letter-spacing: 1px;
 
   .nav__title {
