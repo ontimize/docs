@@ -1,10 +1,12 @@
 ---
 layout: default
 title: Prerequisites
-permalink: /prerequisites/
+has_children: false
 excerpt: Prerequisites for the installation and use of an application with Ontimize Boot.
 parent: Introduction
 nav_order: 1
+has_toc: false
+permalink: /prerequisites/
 ---
 
 {% include base_path %}
@@ -17,11 +19,13 @@ nav_order: 1
 
 Make sure you have the JDK version of Java 1 installed. There are many different builds, but perhaps the most common is Adoptium, which you can download from the following link (add your operating system and your computer's architecture): [Adoptium JDK](https://adoptium.net/es/temurin/releases/?version=11&package=jdk){:target="_blank"}
 
-> **NOTE**: Check the option to set the JAVA_HOME variable.
+{: .note }
+> Check the option to set the JAVA_HOME variable.
 
 Following installation, make sure you have correctly installed Java JDK 1 by invoking the following commands in the command-line `java -version`
 
-> **NOTE**: On the Mac, the command-line is available via the Terminal >application. On the PC, it’s available as Command Prompt.
+{: .note }
+> On the Mac, the command-line is available via the Terminal >application. On the PC, it’s available as Command Prompt.
 
 The result should look similar to:
 

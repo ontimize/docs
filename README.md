@@ -1,4 +1,4 @@
-# [Ontimize Boot v3.X.X - Documentation](https://ontimize.github.io/newdocs/v3)
+# [Ontimize Boot v3.X.X - Documentation](https://ontimize.github.io/newdocs/v3/index.html)
 
 ## ✍ Use
 
