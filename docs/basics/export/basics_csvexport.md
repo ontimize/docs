@@ -706,11 +706,11 @@ After click in *Send* button, click in *Save Response ^* and save it to a file. 
 
 **Postman**
 
-![postman](/../../assets/images/export_postman_query_csv.png)
+![postman](/..{{ base_path }}/assets/images/export_postman_query_csv.png)
 
 **CSV**
 
-![export](/../../assets/images/csvexport.png)
+![export](/..{{ base_path }}/assets/images/csvexport.png)
 
 # Creating the JSON for exporting data
 

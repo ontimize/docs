@@ -727,11 +727,11 @@ After click in *Send* button, click in *Save Response ^* and save it to a file. 
 
 **Postman**
 
-![postman](/../../assets/images/export_postman_query.png)
+![postman](/..{{ base_path }}/assets/images/export_postman_query.png)
 
 **Excel**
 
-![export](/../../assets/images/excelexport.png)
+![export](/..{{ base_path }}/assets/images/excelexport.png)
 
 # Creating the JSON for exporting data
 
