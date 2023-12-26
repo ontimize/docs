@@ -4,7 +4,7 @@ layout: default
 permalink: /basics/complexqueries/
 breadcrumbs: true
 ---
-
+{% include base_path %}
 {% include toc %}
 
 ## Introduction
