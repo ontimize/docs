@@ -5,7 +5,7 @@ nav_order: 1
 ---
 {% include base_path %}
 
-# 📜 Introduction
+# 📜 Ontimize Boot
 
 Ontimize Boot uses Spring Boot technology to further simplify the development of a service or microservice based server, using the API REST communication system.
 
