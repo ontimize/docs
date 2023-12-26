@@ -6,6 +6,6 @@ permalink: /basics/
 
 This section pretends to show the basic elements for the development of an application using Ontimize Boot
 
-- [Autoconfigurators](/ontimize-boot/v1/basics/autoconfigurators)
-- [Understanding application.yml file](/ontimize-boot/v1/basics/applicationyml)
-- [Complex Queries](/ontimize-boot/v1/basics/complexqueries)
+- [Autoconfigurators]({{base_path}}/basics/autoconfigurators)
+- [Understanding application.yml file]({{base_path}}/basics/applicationyml)
+- [Complex Queries]({{base_path}}/basics/complexqueries)
