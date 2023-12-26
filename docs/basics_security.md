@@ -40,8 +40,8 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 </div>
 </div>
 
-**Note:** To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
-{: .notice--info}
+{: .note}
+> To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
 
 # Steps
 
@@ -50,17 +50,17 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 We will add the following elements to the database:
 
 - New user
-  {% highlight sql linenos %}
+  {% highlight sql %}
   INSERT INTO TUSER VALUES('candidate','candidate','candidate','candidate',NULL,'99999999R',NULL,'2020-07-03 11:50:40.665000',NULL)
   {% endhighlight %}
 
 - New user role
-  {% highlight sql linenos %}
+  {% highlight sql %}
   INSERT INTO TROLE VALUES(1,'candidate','<?xml version="1.0" encoding="UTF-8"?><security></security>')
   {% endhighlight %}
 
 - Relationship between the new user and the new role
-  {% highlight sql linenos %}
+  {% highlight sql %}
   INSERT INTO TUSER_ROLE VALUES(1,1,'candidate')
   {% endhighlight %}
 
