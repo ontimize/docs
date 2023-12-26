@@ -5,6 +5,7 @@ permalink: /basics/applicationyml/
 breadcrumbs: true
 ---
 
+{% include base_path %}
 {% include toc %}
 
 ## Introduction

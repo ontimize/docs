@@ -6,6 +6,7 @@ permalink: /getting_started/
 nav_order: 3
 ---
 
+{% include base_path %}
 {% include toc %}
 
 # Getting started

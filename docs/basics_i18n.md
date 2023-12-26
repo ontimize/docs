@@ -5,6 +5,7 @@ permalink: /basics/i18n/
 breadcrumbs: true
 ---
 
+{% include base_path %}
 {% include toc %}
 
 ## Introduction
