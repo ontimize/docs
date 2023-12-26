@@ -511,11 +511,11 @@
     "relUrl": "/getting_started/"
   },"73": {
     "doc": "Home",
-    "title": "📜 Introduction",
+    "title": "📜 Ontimize Boot",
     "content": "Ontimize Boot uses Spring Boot technology to further simplify the development of a service or microservice based server, using the API REST communication system. ",
-    "url": "/docs/v3/#-introduction",
+    "url": "/docs/v3/#-ontimize-boot",
     
-    "relUrl": "/#-introduction"
+    "relUrl": "/#-ontimize-boot"
   },"74": {
     "doc": "Home",
     "title": "✍ Use",
