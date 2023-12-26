@@ -1,14 +1,14 @@
-# [Ontimize Boot v3.X.X - Documentation](https://ontimize.github.io/newdocs/v3/index.html)
+# [Ontimize Boot v3.X.X - Documentation](https://ontimize.github.io/docs/v3/index.html)
 
 ## ✍ Use
 
 ### v3.X.X documentation:
 
-- [Check this link](https://ontimize.github.io/newdocs/v3/index.html)
+- [Check this link](https://ontimize.github.io/docs/v3/index.html)
 
 ### v3.X.X-develop documentation:
 
-- Download this branch: https://github.com/ontimize/newdocs/tree/3.x.x-develop
+- Download this branch: https://github.com/ontimize/docs/tree/3.x.x-develop
 
   > **IMPORTANT**  
   > If this is the first time you are working with this documentation, run this command before continue.
