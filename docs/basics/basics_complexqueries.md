@@ -19,7 +19,7 @@ In this example the DAO *.xml files will be modified to make complex queries aga
 
 We will update the OfferCandidatesDao DAO to add new information in the *.xml. In this case, you will try to add a new query that reflects the other tables that are used from this DAO to relate the offers, candidates, and status. As this table only contains identifiers, our new query will allow us to know all the data and not only its identifiers. 
 
-![database](/../assets/images/databasecmplx.png)
+![database]({{ base_path }}/assets/images/databasecmplx.png)
 
 ## Modify the DAO to add a complex query
 
