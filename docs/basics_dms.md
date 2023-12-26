@@ -47,8 +47,9 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 </div>
 </div>
 
-**Note:** To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
-{: .notice--info}
+{: .note }
+
+> To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
 
 # Steps
 
@@ -58,18 +59,18 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
 With the database started, we create the new tables that will store the DMS information.
 
-{% highlight sql linenos %}
+```sql
 CREATE TABLE TDMS_DOC(ID_DMS_DOC INTEGER IDENTITY NOT NULL PRIMARY KEY,UPDATE_DATE TIMESTAMP,UPDATE_BY_ID INTEGER,DOC_NAME VARCHAR(255) NOT NULL,OWNER_ID INTEGER NOT NULL,DOC_DESCRIPTION CLOB(1G),DOC_KEYWORDS VARCHAR(255));
 CREATE TABLE TDMS_DOC_FILE(ID_DMS_DOC_FILE INTEGER IDENTITY NOT NULL PRIMARY KEY,FILE_NAME VARCHAR(255) NOT NULL,ID_DMS_DOC INTEGER NOT NULL,FILE_TYPE VARCHAR(255),ID_DMS_DOC_CATEGORY INTEGER);
 CREATE TABLE TDMS_DOC_FILE_VERSION(ID_DMS_DOC_FILE_VERSION INTEGER IDENTITY NOT NULL PRIMARY KEY,FILE_PATH VARCHAR(500),VERSION INTEGER NOT NULL,FILE_DESCRIPTION CLOB(1G),IS_ACTIVE CHARACTER(1) NOT NULL,FILE_ADDED_DATE TIMESTAMP NOT NULL,FILE_ADDED_USER_ID INTEGER NOT NULL,ID_DMS_DOC_FILE INTEGER NOT NULL,THUMBNAIL BLOB(1G),FILE_SIZE INTEGER);
 CREATE TABLE TDMS_DOC_PROPERTY(ID_DMS_DOC_PROPERTY INTEGER IDENTITY NOT NULL PRIMARY KEY,DOC_PROPERTY_KEY VARCHAR(255) NOT NULL,DOC_PROPERTY_VALUE VARCHAR(255),ID_DMS_DOC INTEGER NOT NULL);
 CREATE TABLE TDMS_RELATED_DOC(ID_DMS_RELATED_PROPERTY INTEGER IDENTITY NOT NULL PRIMARY KEY,ID_DMS_DOC_MASTER INTEGER NOT NULL,ID_DMS_DOC_CHILD INTEGER NOT NULL);
 CREATE TABLE TDMS_DOC_CATEGORY(ID_DMS_DOC_CATEGORY INTEGER IDENTITY NOT NULL PRIMARY KEY,ID_DMS_DOC INTEGER NOT NULL,ID_DMS_DOC_CATEGORY_PARENT INTEGER,CATEGORY_NAME VARCHAR(255) NOT NULL);
-{% endhighlight %}
+```
 
 Once the tables have been created, we add the foreign keys
 
-{% highlight sql linenos %}
+```sql
 ALTER TABLE TDMS_DOC_FILE ADD CONSTRAINT TDMS_DOC_FILE_FK FOREIGN KEY(ID_DMS_DOC) REFERENCES TDMS_DOC(ID_DMS_DOC);
 ALTER TABLE TDMS_DOC_FILE_VERSION ADD CONSTRAINT TDMS_DOC_FILE_VERSION_FK FOREIGN KEY(ID_DMS_DOC_FILE) REFERENCES TDMS_DOC_FILE(ID_DMS_DOC_FILE);
 ALTER TABLE TDMS_DOC_PROPERTY ADD CONSTRAINT TDMS_DOC_PROPERTY_FK FOREIGN KEY(ID_DMS_DOC) REFERENCES TDMS_DOC(ID_DMS_DOC)
@@ -77,62 +78,64 @@ ALTER TABLE TDMS_RELATED_DOC ADD CONSTRAINT TDMS_RELATED_DOC_FK FOREIGN KEY(ID_D
 ALTER TABLE TDMS_RELATED_DOC ADD CONSTRAINT TDMS_RELATED_DOC_FK_1 FOREIGN KEY(ID_DMS_DOC_CHILD) REFERENCES TDMS_DOC(ID_DMS_DOC);
 ALTER TABLE TDMS_DOC_CATEGORY ADD CONSTRAINT TDMS_DOC_CATEGORY_FK FOREIGN KEY(ID_DMS_DOC) REFERENCES TDMS_DOC(ID_DMS_DOC);
 ALTER TABLE TDMS_DOC_FILE ADD CONSTRAINT TDMS_DOC_FILE_FK_1 FOREIGN KEY(ID_DMS_DOC_CATEGORY) REFERENCES TDMS_DOC_CATEGORY(ID_DMS_DOC_CATEGORY);
-{% endhighlight %}
+```
 
 ### Link DMS table with entity table
 
 In this example we want each new candidate added to the application to have its own space to store documents, so we will modify the `CANDIDATES` table to contain a column that stores the primary key of the **document** (or **workspace**) that will be associated with it.
 
-{% highlight sql linenos %}
+```sql
 ALTER TABLE CANDIDATE ADD ID_DMS_DOC INTEGER;
-{% endhighlight %}
+```
 
-{% highlight sql linenos %}
+```sql
 ALTER TABLE CANDIDATE ADD CONSTRAINT CANDIDATE_FK FOREIGN KEY(ID_DMS_DOC) REFERENCES TDMS_DOC(ID_DMS_DOC);
-{% endhighlight %}
+```
 
 ## Server
 
 ### Add DMS dependencies
 
 <div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
-<ul>
-  <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-examples
+  <div class="multiColumn jstreeloader">
   <ul>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-    projectwiki-api
+    <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    ontimize-examples
     <ul>
       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-      src
+      projectwiki-api
       <ul>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-        main
+        src
         <ul>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          java
+          main
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-            com
+            java
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-              ontimize
+              com
               <ul>
                 <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                projectwiki
+                ontimize
                 <ul>
                   <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                  api
+                  projectwiki
                   <ul>
                     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                    core
+                    api
                     <ul>
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                      service
+                      core
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ICandidateService.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                        service
+                        <ul>
+                          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ICandidateService.java</li>
+                          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
+                        </ul>
+                        </li>
                       </ul>
                       </li>
                     </ul>
@@ -149,202 +152,200 @@ ALTER TABLE CANDIDATE ADD CONSTRAINT CANDIDATE_FK FOREIGN KEY(ID_DMS_DOC) REFERE
           </li>
         </ul>
         </li>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
       </ul>
       </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      projectwiki-boot
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        src
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          main
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            java
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              com
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                ontimize
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  projectwiki
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerApplication.java</li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            resources
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>application.yml</li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      projectwiki-model
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        src
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          main
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            db
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            java
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              com
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                ontimize
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  projectwiki
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                    model
+                    <ul>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      core
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                        dao
+                        <ul>
+                          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.java</li>
+                          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.java</li>
+                          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.java</li>
+                        </ul>
+                        </li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                        service
+                        <ul>
+                          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateService.java</li>
+                          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserService.java</li>
+                        </ul>
+                        </li>
+                      </ul>
+                      </li>
+                    </ul>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            resources
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              dao
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.xml</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>placeholders.properties</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleDao.xml</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleServerPermissionDao.xml</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerPermissionDao.xml</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.xml</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.xml</li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+        <li data-jstree='{"selected":true,"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      projectwiki-ws
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        src
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          main
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            java
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              com
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                ontimize
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  projectwiki
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                    ws
+                    <ul>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      core
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                        rest
+                        <ul>
+                          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateRestController.java</li>
+                          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MainRestController.java</li>
+                          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>TestRestController.java</li>
+                          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRestController.java</li>
+                        </ul>
+                        </li>
+                      </ul>
+                      </li>
+                    </ul>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+        <li data-jstree='{"selected":true,"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.gitignore</li>
       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>README.md</li>
     </ul>
     </li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-    projectwiki-boot
-    <ul>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-      src
-      <ul>
-        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-        main
-        <ul>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          java
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-            com
-            <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-              ontimize
-              <ul>
-                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                projectwiki
-                <ul>
-                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerApplication.java</li>
-                </ul>
-                </li>
-              </ul>
-              </li>
-            </ul>
-            </li>
-          </ul>
-          </li>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          resources
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>application.yml</li>
-          </ul>
-          </li>
-        </ul>
-        </li>
-      </ul>
-      </li>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
-    </ul>
-    </li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-    projectwiki-model
-    <ul>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-      src
-      <ul>
-        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-        main
-        <ul>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          db
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
-          </ul>
-          </li>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          java
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-            com
-            <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-              ontimize
-              <ul>
-                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                projectwiki
-                <ul>
-                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                  model
-                  <ul>
-                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                    core
-                    <ul>
-                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                      dao
-                      <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.java</li>
-                      </ul>
-                      </li>
-                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                      service
-                      <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateService.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserService.java</li>
-                      </ul>
-                      </li>
-                    </ul>
-                    </li>
-                  </ul>
-                  </li>
-                </ul>
-                </li>
-              </ul>
-              </li>
-            </ul>
-            </li>
-          </ul>
-          </li>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          resources
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-            dao
-            <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>placeholders.properties</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleServerPermissionDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerPermissionDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.xml</li>
-            </ul>
-            </li>
-          </ul>
-          </li>
-        </ul>
-        </li>
-      </ul>
-      </li>
-      <li data-jstree='{"selected":true,"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
-    </ul>
-    </li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-    projectwiki-ws
-    <ul>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-      src
-      <ul>
-        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-        main
-        <ul>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          java
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-            com
-            <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-              ontimize
-              <ul>
-                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                projectwiki
-                <ul>
-                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                  ws
-                  <ul>
-                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                    core
-                    <ul>
-                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                      rest
-                      <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateRestController.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MainRestController.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>TestRestController.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRestController.java</li>
-                      </ul>
-                      </li>
-                    </ul>
-                    </li>
-                  </ul>
-                  </li>
-                </ul>
-                </li>
-              </ul>
-              </li>
-            </ul>
-            </li>
-          </ul>
-          </li>
-        </ul>
-        </li>
-      </ul>
-      </li>
-      <li data-jstree='{"selected":true,"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
-    </ul>
-    </li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.gitignore</li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>README.md</li>
   </ul>
-  </li>
-</ul>
-</div>
-<div class="multiColumn multiColumnGrow">
+  </div>
+  <div class="multiColumn multiColumnGrow">
   {{ "**model/pom.xml**"| markdownify }}
 
 {% highlight xml %}
@@ -646,7 +647,7 @@ A specific DAO will be created for each table in the DMS system, and each of the
 <div class="multiColumn multiColumnGrow">
 
 {{ "**DMSCategoryDao.xml**" | markdownify}}
-{% highlight xml linenos %}
+{% highlight xml %}
 
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -667,7 +668,7 @@ A specific DAO will be created for each table in the DMS system, and each of the
 {% endhighlight %}
 
 {{ "**DMSDocumentDao.xml**" | markdownify}}
-{% highlight xml linenos %}
+{% highlight xml %}
 
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -688,7 +689,7 @@ A specific DAO will be created for each table in the DMS system, and each of the
 {% endhighlight %}
 
 {{ "**DMSDocumentFileDao.xml**" | markdownify}}
-{% highlight xml linenos %}
+{% highlight xml %}
 
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -788,7 +789,7 @@ A specific DAO will be created for each table in the DMS system, and each of the
 {% endhighlight %}
 
 {{ "**DMSDocumentFileVersionDao.xml**" | markdownify}}
-{% highlight xml linenos %}
+{% highlight xml %}
 
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -852,7 +853,7 @@ A specific DAO will be created for each table in the DMS system, and each of the
 {% endhighlight %}
 
 {{ "**DMSDocumentPropertyDao.xml**" | markdownify}}
-{% highlight xml linenos %}
+{% highlight xml %}
 
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -873,7 +874,7 @@ A specific DAO will be created for each table in the DMS system, and each of the
 {% endhighlight %}
 
 {{ "**DMSRelatedDocumentDao.xml**" | markdownify}}
-{% highlight xml linenos %}
+{% highlight xml %}
 
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -1170,7 +1171,7 @@ public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";
 {% endhighlight %}
 
 {{ "**DMSCategoryDao.java**" | markdownify}}
-{% highlight java linenos %}
+{% highlight java %}
 package com.ontimize.projectwiki.model.core.dao;
 
 import org.springframework.context.annotation.Lazy;
@@ -1194,7 +1195,7 @@ public static final String ATTR_CATEGORY_NAME = "CATEGORY_NAME";
 {% endhighlight %}
 
 {{ "**DMSDocumentDao.java**" | markdownify}}
-{% highlight java linenos %}
+{% highlight java %}
 package com.ontimize.projectwiki.model.core.dao;
 
 import org.springframework.context.annotation.Lazy;
@@ -1221,7 +1222,7 @@ public static final String ATTR_DOC_KEYWORDS = "DOC_KEYWORDS";
 {% endhighlight %}
 
 {{ "**DMSDocumentFileDao.java**" | markdownify}}
-{% highlight java linenos %}
+{% highlight java %}
 package com.ontimize.projectwiki.model.core.dao;
 
 import org.springframework.context.annotation.Lazy;
@@ -1246,7 +1247,7 @@ public static final String ATTR_ID_DMS_DOC_FILE = "ID_DMS_DOC_FILE";
 {% endhighlight %}
 
 {{ "**DMSDocumentFileVersionDao.java**" | markdownify}}
-{% highlight java linenos %}
+{% highlight java %}
 package com.ontimize.projectwiki.model.core.dao;
 
 import org.springframework.context.annotation.Lazy;
@@ -1276,7 +1277,7 @@ public static final String ATT_FILE_SIZE = "FILE_SIZE";
 {% endhighlight %}
 
 {{ "**DMSDocumentPropertyDao.java**" | markdownify}}
-{% highlight java linenos %}
+{% highlight java %}
 package com.ontimize.projectwiki.model.core.dao;
 
 import org.springframework.context.annotation.Lazy;
@@ -1300,7 +1301,7 @@ public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";
 {% endhighlight %}
 
 {{ "**DMSRelatedDocumentDao.java**" | markdownify}}
-{% highlight java linenos %}
+{% highlight java %}
 package com.ontimize.projectwiki.model.core.dao;
 
 import org.springframework.context.annotation.Lazy;
@@ -1901,7 +1902,7 @@ public EntityResult candidateInsert(Map<String, Object> attrMap) throws Ontimize
 <div class="multiColumn multiColumnGrow">
 
 {{"**DMSNameConverter.java**" | markdownify }}
-{% highlight java linenos %}
+{% highlight java %}
 package com.ontimize.projectwiki.ws.core.rest;
 
 import java.util.Arrays;
@@ -1973,7 +1974,7 @@ DMSNaming.CATEGORY_ID_CATEGORY_PARENT);
 {%endhighlight%}
 
 {{"**FileManagerRestController.java**" | markdownify }}
-{% highlight java linenos %}
+{% highlight java %}
 package com.ontimize.projectwiki.ws.core.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -2009,8 +2010,9 @@ return this.dmsService;
 
 The **application.yml** file will be modified to indicate the path where the dms files will be stored and the engine it will use. [In this link](https://ontimize.github.io/ontimize-boot/v1/basics/autoconfigurators/#dms) you have information about the configuration of the DMS system in the **application.yml** file.
 
-**Note:** The path specified in the _basePath_ variable must exist before the server is started.
-{: .notice--info}
+{: .note}
+
+> The path specified in the _basePath_ variable must exist before the server is started.
 
 <div class="multiColumnRow">
 <div class="multiColumn jstreeloader">
@@ -2292,7 +2294,7 @@ basePath: file:/C:/applications/projectwiki/dms
 
 It is necessary to add the permissions required for the role associated with the user to be able to execute REST requests, which are secured. For the example, we will add all the methods and give access to the _demo_ user role.
 
-{%highlight sql linenos%}
+{%highlight sql %}
 INSERT INTO TSERVER_PERMISSION (PERMISSION_NAME) VALUES('com.ontimize.jee.server.services.dms.DMSServiceImpl/fileGetContentOfVersion');
 INSERT INTO TSERVER_PERMISSION (PERMISSION_NAME) VALUES('com.ontimize.jee.server.services.dms.DMSServiceImpl/documentGetProperty');
 INSERT INTO TSERVER_PERMISSION (PERMISSION_NAME) VALUES('com.ontimize.jee.server.services.dms.DMSServiceImpl/fileRecoverPreviousVersion');
@@ -2323,23 +2325,23 @@ INSERT INTO TSERVER_PERMISSION (PERMISSION_NAME) VALUES('com.ontimize.jee.server
 
 Add all permissions to the user role _demo_.
 
-{%highlight sql linenos%}
+{%highlight sql %}
 INSERT
-INTO
-PUBLIC.PUBLIC.TROLE*SERVER_PERMISSION tsp (ID_SERVER_PERMISSION, ID_ROLENAME)
+	INTO
+	PUBLIC.PUBLIC.TROLE_SERVER_PERMISSION tsp (ID_SERVER_PERMISSION, ID_ROLENAME)
 SELECT
-ID_SERVER_PERMISSION,
-(
-SELECT
-ID_ROLENAME
+	ID_SERVER_PERMISSION,
+	(
+	SELECT
+		ID_ROLENAME
+	FROM
+		TUSER_ROLE
+	WHERE
+		USER_ = 'demo') AS ID_ROLENAME
 FROM
-TUSER_ROLE
-WHERE
-USER* = 'demo') AS ID_ROLENAME
-FROM
-TSERVER_PERMISSION tp
+	TSERVER_PERMISSION tp
 LEFT JOIN TROLE_SERVER_PERMISSION tsp ON
-tp.ID_SERVER_PERMISSION = tsp.ID_SERVER_PERMISSION
+	tp.ID_SERVER_PERMISSION = tsp.ID_SERVER_PERMISSION
 WHERE
-tsp.ID_SERVER_PERMISSION IS NULL
+	tsp.ID_SERVER_PERMISSION IS NULL
 {%endhighlight%}
