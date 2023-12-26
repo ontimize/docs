@@ -5,6 +5,7 @@ permalink: /basics/autoconfigurators/
 breadcrumbs: true
 ---
 
+{% include base_path %}
 {% include toc %}
 
 Autoconfigurators are an easy way to indicate common elements that need minimal customization in applications, such as database connection. These configurations are used within the **application.yml** file located inside the **boot** folder.

@@ -5,6 +5,7 @@ permalink: /basics/security/
 breadcrumbs: true
 ---
 
+{% include base_path %}
 {% include toc %}
 
 # Introduction
