@@ -421,7 +421,7 @@
   },"60": {
     "doc": "Introduction",
     "title": "Sections",
-    "content": "| Prerequisites | Check you meet minimum requirements to start. | . | Getting started | First contact with an Ontimize Boot app. Generate an app is easy with an archetype. | . | Basics | Basic information about the configuration of an application. | . ",
+    "content": "| Prerequisites | Check you meet minimum requirements to start. | . | Getting started | First contact with an Ontimize Boot app. Generate an app is easy with an archetype. | . ",
     "url": "/newdocs/v1/introduction/#sections",
     
     "relUrl": "/introduction/#sections"
