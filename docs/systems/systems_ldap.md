@@ -1,24 +1,24 @@
 ---
-title: "Preferences System"
-layout: single
-permalink: /basics/preferences/
-toc: true
-toc_label: "Table of Contents"
-toc_sticky: true
-breadcrumbs: true
-sidebar:
-  title: "Ontimize Basics"
-  nav: sidebar-basics
+title: "LDAP Security"
+layout: default
+permalink: /systems/ldap
+parent: Systems
+nav_order: 5
 ---
 
-**Important:** This module works only for Ontimize Boot version 3.9.0 or above. Actual release version: [![Ontimize Boot](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot?label=Ontimize%20Boot&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot)
-{: .notice--warning}
+{% include base_path %}
+{% include toc %}
 
-# Introduction
-The Ontimize preferences allow you to save the settings that are stored in the localstorage (window size, tables preferences, graphics, or reports) into the database.
+# LDAP Security
 
-# Prerequisites
-You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page](https://ontimize.github.io/ontimize-boot/getting_started/) and with a REST service.
+## Introduction
+
+The **L**ightweight **D**irectory **A**ccess **P**rotocol (**LDAP**) is an open protocol for accessing a company's information services. Typically, this protocol is used to provide all company users with an easy way to use all services that require access credentials with a single username and password.
+
+## Prerequisites
+
+{: .note}
+> You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page]({{ base_path }}/getting_started/) and with a REST service.
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
@@ -26,9 +26,9 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 <div class="multiColumn multiColumnGrow" >
   {{ "**Initial project**
 
-    /$ git clone https://github.com/ontimize/ontimize-examples
+    /$ git clone https://github.com/ontimize/ontimize-examples 
     /ontimize-examples$ cd ontimize-examples
-    /ontimize-examples$ git checkout boot-preferences-initial"
+    /ontimize-examples$ git checkout boot-ldap-login-initial" 
     | markdownify }}
 </div>
 <div class="verticalDivider"></div>
@@ -36,35 +36,32 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
   {{ "**Final example**
 
-    /$ git clone https://github.com/ontimize/ontimize-examples
+    /$ git clone https://github.com/ontimize/ontimize-examples 
     /ontimize-examples$ cd ontimize-examples
-    /ontimize-examples$ git checkout boot-preferences"
+    /ontimize-examples$ git checkout boot-ldap-login" 
     | markdownify }}
 
 </div>
 </div>
 
-**Note:** To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
-{: .notice--info}
+## Steps
+### Database
+#### Add a new user
 
-# Steps
-
-## Database
-
-### Configurations Table
-
-With the database started, we create the new table that will store the configuration preferences information.
+With the database started, we create a new user with the same username that we have registered in the domain. When we try to login we need to use the password of the domain, not the password that inserts into the database. Then, we need to bind this new user with an existing role.
 
 {% highlight sql %}
-CREATE TABLE TCONFIGS ( ID_CONFIG INTEGER NOT NULL IDENTITY, USER_CONFIG VARCHAR(255), TYPE_CONFIG VARCHAR(255), COMPONENTS VARCHAR(16777216));
+INSERT INTO TUSER (USER_, PASSWORD, NAME, SURNAME, EMAIL, NIF, USERBLOCKED, LASTPASSWORDUPDATE, FIRSTLOGIN) VALUES('domain.username', 'somepassword', 'Name', 'Surname', 'Email', 'Nif', NULL, NULL, NULL);
+{% endhighlight %}
+
+{% highlight sql %}
+INSERT INTO TUSER_ROLE (ID_ROLENAME,USER_) VALUES (0,'domain.username');
 {% endhighlight %}
 
 
-## Server
+### Autoconfigurators
 
-### Configuration Dao
-
-A specific DAO will be created for the table in the Preferences system, and it will implement a interface.
+#### Add LDAP autoconfigurators
 
 <div class="multiColumnRow">
 <div class="multiColumn jstreeloader">
@@ -102,7 +99,6 @@ A specific DAO will be created for the table in the Preferences system, and it w
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       service
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ICandidateService.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
                       </ul>
                       </li>
@@ -146,6 +142,14 @@ A specific DAO will be created for the table in the Preferences system, and it w
                 <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                 projectwiki
                 <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  security
+                  <ul>
+                    <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CustomSecurityAutoConfiguration.java</li>
+                    <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>LdapAuthenticationMechanism.java</li>
+                    <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>LdapError.java</li>
+                  </ul>
+                  </li>
                   <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerApplication.java</li>
                 </ul>
                 </li>
@@ -181,6 +185,7 @@ A specific DAO will be created for the table in the Preferences system, and it w
           db
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.script</li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
           </ul>
           </li>
@@ -205,8 +210,6 @@ A specific DAO will be created for the table in the Preferences system, and it w
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       dao
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.java</li>
-                        <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ConfigsDao.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.java</li>
                       </ul>
@@ -214,7 +217,6 @@ A specific DAO will be created for the table in the Preferences system, and it w
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       service
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateService.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserService.java</li>
                       </ul>
                       </li>
@@ -236,8 +238,6 @@ A specific DAO will be created for the table in the Preferences system, and it w
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             dao
             <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.xml</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ConfigsDao.xml</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>placeholders.properties</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleDao.xml</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleServerPermissionDao.xml</li>
@@ -285,7 +285,6 @@ A specific DAO will be created for the table in the Preferences system, and it w
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       rest
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MainRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>TestRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRestController.java</li>
@@ -319,55 +318,289 @@ A specific DAO will be created for the table in the Preferences system, and it w
 </div>
 <div class="multiColumn multiColumnGrow">
 
-{{"**ConfigsDao.java**" | markdownify}}
-{% highlight java%}
-package com.ontimize.projectwiki.model.core.dao;
+  {{ "**LdapError.java**"| markdownify }}
 
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
+{% highlight java %}
+package com.ontimize.projectwiki.security;
 
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+public interface LdapError {
 
-@Lazy
-@Repository(value = "ConfigsDao")
-@ConfigurationFile(
-	configurationFile = "dao/ConfigsDao.xml",
-	configurationFilePlaceholder = "dao/placeholders.properties")
-public class ConfigsDao extends OntimizeJdbcDaoSupport {
+	public static final String NO_LDAP_CONNECTION = "NO_CONNECT_TO_LDAP";
+	public static final String ERROR_SEARCHING_IN_LDAP = "ERROR_SEARCHING_IN_LDAP";
+	public static final String ERROR_LOGIN_LDAP = "LOGINEXCEPTION_WITH_LDAP";
+	public static final String ERROR_IO_LDAP = "IOEXCEPTION_WITH_LDAP";
+	public static final String EMPTY_LDAP_HOST = "HOST_CANNOT_BE_EMPTY";
+	public static final String EMPTY_LDAP_USER = "USER_CANNOT_BE_EMPTY";
+	public static final String EMPTY_LDAP_PASSWORD = "PASSWORD_CANNOT_BE_EMPTY";;
+	public static final String LDAP_AUTH_USER_PASS_NOT_VALID = "LDAP_CREDENTIALS_NOT_VALID";
 
-	public static final String ID   	  = "ID_CONFIG";
-	public static final String USER 	  = "USER_CONFIG";
-	public static final String TYPE  	  = "TYPE_CONFIG";
-	public static final String COMPONENTS = "COMPONENTS";
+}
+
+{% endhighlight %}
+  {{ "**LdapAuthenticationMechanism.java**"| markdownify }}
+
+{% highlight java %}
+package com.ontimize.projectwiki.security;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
+
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+import javax.security.auth.login.LoginException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.aspectj.weaver.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.codec.Base64;
+import org.springframework.stereotype.Component;
+
+import com.ontimize.jee.server.security.authentication.AuthenticationResult;
+import com.ontimize.jee.server.security.authentication.IAuthenticationMechanism;
+import com.ontimize.jee.server.security.authentication.OntimizeAuthenticationProvider;
+
+@Component
+public class LdapAuthenticationMechanism implements IAuthenticationMechanism {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(LdapAuthenticationMechanism.class);
+	private String credentialsCharset = "UTF-8";
+
+	@Value("${ldap.host}")
+	private String ldapHost;
+
+	@Value("${ldap.port}")
+	private int ldapPort;
+
+	@Value("${ldap.login-type}")
+	private String loginType;
+
+	@Value("${ldap.bind.dn}")
+	private String ldapBindDn;
+
+	@Value("${ldap.domain}")
+	private String ldapDomain;
+
+	@Value("${ldap.base.dn}")
+	private String ldapBaseDn;
+
+	@Override
+	public AuthenticationResult authenticate(final HttpServletRequest request, final HttpServletResponse response,
+
+			final AuthenticationManager authenticationManager, final UserDetailsService userDetailsService) {
+
+		try {
+
+			final String header = request.getHeader("Authorization");
+			if ((header == null) || !header.startsWith("Basic ")) {
+				return null;
+			}
+
+			final String[] tokens = this.extractAndDecodeHeader(header, request);
+			assert tokens.length == 2;
+			final String username = tokens[0];
+			final String password = tokens[1];
+
+			LdapAuthenticationMechanism.LOGGER.trace("Validating access for user : '{}'", username);
+
+			DirContext dirContext = null;
+
+			if (loginType.equals("DN")) {
+				String userDn = "uid=" + username + "," + ldapBindDn;
+				dirContext = connect(userDn, password, ldapHost, ldapPort, null, false);
+			} else if (loginType.equals("simple")) {
+				dirContext = connect(username, password, ldapHost, ldapPort, ldapDomain, false);
+			}
+
+			if (dirContext != null) {
+				return new AuthenticationResult(true, new UsernamePasswordAuthenticationToken(username,
+						OntimizeAuthenticationProvider.NO_AUTHENTICATION_TOKEN));
+			} else {
+				LOGGER.error("System authentication failed: no connect to LDAP");
+				throw new BadCredentialsException(LdapError.NO_LDAP_CONNECTION.toString());
+			}
+		} catch (NamingException e) {
+			LOGGER.error("System authentication failed: NamingException searching into server LDAP", e);
+			throw new BadCredentialsException(LdapError.ERROR_SEARCHING_IN_LDAP.toString());
+		} catch (LoginException e) {
+			LOGGER.error("System authentication failed: LoginException with server LDAP", e);
+			throw new BadCredentialsException(LdapError.ERROR_LOGIN_LDAP.toString());
+		} catch (IOException e) {
+			LOGGER.error("System authentication failed: IOException with server LDAP", e);
+			throw new BadCredentialsException(LdapError.ERROR_IO_LDAP.toString());
+		}
+
+	}
+
+	public static synchronized DirContext connect(final String user, final String password, final String hosts,
+			final int port, final String adddomain, boolean ssl)
+			throws NamingException, java.io.IOException, LoginException {
+
+		if ((hosts == null) || (hosts.length() == 0)) {
+			LOGGER.error("LDAP host cannot be neither null nor empty");
+			throw new IllegalArgumentException(LdapError.EMPTY_LDAP_HOST.toString());
+		}
+
+		StringTokenizer st = new StringTokenizer(hosts, ";");
+
+		while (st.hasMoreTokens()) {
+			String host = st.nextToken();
+			return _connect(user, password, host, port, adddomain, ssl);
+		}
+
+		return null;
+
+	}
+
+	private static synchronized DirContext _connect(final String user, final String password, final String host,
+			final int port, final String adddomain, boolean ssl)
+			throws NamingException, java.io.IOException, LoginException {
+
+		Hashtable<String, String> props = new Hashtable<>();
+		if ((user == null) || (user.length() == 0)) {
+			LOGGER.error("user cannot be neither null nor empty");
+			throw new IllegalArgumentException(LdapError.EMPTY_LDAP_USER.toString());
+
+		}
+
+		if ((password == null) || (password.length() == 0)) {
+			LOGGER.error("password cannot be neither null nor empty");
+			throw new IllegalArgumentException(LdapError.EMPTY_LDAP_PASSWORD.toString());
+
+		}
+
+		props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+		props.put(Context.PROVIDER_URL, "ldap://" + host + ":" + port);
+		props.put(Context.SECURITY_AUTHENTICATION, "simple");
+
+		if (adddomain != null) {
+			props.put(Context.SECURITY_PRINCIPAL, user + "@" + adddomain);
+		} else {
+			props.put(Context.SECURITY_PRINCIPAL, user);
+		}
+
+		props.put(Context.SECURITY_CREDENTIALS, password);
+
+		if (ssl) {
+			props.put(Context.SECURITY_PROTOCOL, "ssl");
+		}
+
+		props.put(Context.REFERRAL, "follow");
+		DirContext ctx = null;
+
+		try {
+			ctx = new InitialDirContext(props);
+			LOGGER.info("Authentication sucessfully in LDAP");
+
+		} catch (Exception e) {
+			LOGGER.error("System authentication failed: wrong user and/or pass in LDAP");
+			throw new BadCredentialsException(LdapError.LDAP_AUTH_USER_PASS_NOT_VALID.toString());
+
+		}
+
+		return ctx;
+
+	}
+
+	private String[] extractAndDecodeHeader(final String header, final HttpServletRequest request) {
+
+		try {
+			final byte[] base64Token = header.substring(6).getBytes("UTF-8");
+			byte[] decoded;
+			decoded = Base64.decode(base64Token);
+
+			final String token = new String(decoded, this.getCredentialsCharset(request));
+			final int delim = token.indexOf(':');
+
+			if (delim == -1) {
+				throw new BadCredentialsException("Invalid basic authentication token");
+			}
+			return new String[] { token.substring(0, delim), token.substring(delim + 1) };
+		} catch (IllegalArgumentException | UnsupportedEncodingException error) {
+			throw new BadCredentialsException("Failed to decode basic authentication token", error);
+		}
+	}
+
+	protected String getCredentialsCharset(final HttpServletRequest httpRequest) {
+		return this.credentialsCharset;
+	}
 
 }
 {% endhighlight %}
+  {{ "**CustomSecurityAutoConfiguration.java**"| markdownify }}
 
-{{"**ConfigsDao.xml**" | markdownify}}
-{% highlight xml%}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TCONFIGS"
-    datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
-    <DeleteKeys>
-        <Column>ID_CONFIG</Column>
-    </DeleteKeys>
-    <UpdateKeys>
-        <Column>ID_CONFIG</Column>
-    </UpdateKeys>
-</JdbcEntitySetup>
+{% highlight java %}
+package com.ontimize.projectwiki.security;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+
+import com.ontimize.boot.autoconfigure.security.DefaultSecurityAutoConfiguration;
+import com.ontimize.jee.server.security.authentication.IAuthenticationMechanism;
+import com.ontimize.jee.server.security.authentication.OntimizeAuthenticationFilter;
+import com.ontimize.jee.server.security.authentication.OntimizeAuthenticationSuccessHandler;
+
+@Configuration 
+@EnableWebSecurity
+@EnableAutoConfiguration
+@ConditionalOnProperty(name = "ontimize.security.mode", havingValue = "ldap", matchIfMissing = false) 
+public class CustomSecurityAutoConfiguration extends DefaultSecurityAutoConfiguration { 
+
+    @Value("${ontimize.security.service-path:/**}") 
+    private String servicePath; 
+
+    @Value("${ontimize.security.ignore-paths:}") 
+    private String[] ignorePaths; 
+ 
+    @Override 
+    public OntimizeAuthenticationFilter preAuthFilterOntimize() throws Exception { 
+        OntimizeAuthenticationFilter filter = new OntimizeAuthenticationFilter(this.servicePath); 
+        filter.setUserDetailsService(this.userDetailsService()); 
+        filter.setUserCache(this.userCache()); 
+        filter.setTokenGenerator(this.tokenGenerator()); 
+        filter.setGenerateJwtHeader(true); 
+        filter.setAuthenticationManager(this.authenticationManager()); 
+        filter.setAuthenticationEntryPoint(this.authenticationEntryPoint()); 
+        filter.setAuthenticationMechanismList(new ArrayList<>()); 
+		filter.getAuthenticationMechanismList().add(this.jwtAuthenticator());
+		filter.getAuthenticationMechanismList().add(this.ldapAuthenticator()); 
+        filter.setAuthenticationSuccessHandler(new OntimizeAuthenticationSuccessHandler()); 
+        filter.afterPropertiesSet(); 
+        return filter; 
+    } 
+  
+    @Bean 
+    public IAuthenticationMechanism ldapAuthenticator() { 
+        return new LdapAuthenticationMechanism(); 
+    } 
+} 
+
 {% endhighlight %}
 
 </div>
 </div>
 
-### Add parameters to Application YML
+### Modify application.yml
 
-As has already been explained previously (in this [link]({{ base_path }}/basics/autoconfigurators/#preferences)) we add the following parameters to the `application.yml` to define the name of the DAO of the preferences system and to activate autoconfiguration.
+#### Add LDAP properties
+
+In the *application.yml* we need to change the ontimize security mode to **ldap** and add the following properties (More information in [this link]({{ base_path }}/basics/autoconfigurators/#ldap)):
 
 <div class="multiColumnRow">
 <div class="multiColumn jstreeloader">
@@ -405,7 +638,6 @@ As has already been explained previously (in this [link]({{ base_path }}/basics/
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       service
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ICandidateService.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
                       </ul>
                       </li>
@@ -449,6 +681,14 @@ As has already been explained previously (in this [link]({{ base_path }}/basics/
                 <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                 projectwiki
                 <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  security
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CustomSecurityAutoConfiguration.java</li>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>LdapAuthenticationMechanism.java</li>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>LdapError.java</li>
+                  </ul>
+                  </li>
                   <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerApplication.java</li>
                 </ul>
                 </li>
@@ -484,6 +724,7 @@ As has already been explained previously (in this [link]({{ base_path }}/basics/
           db
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.script</li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
           </ul>
           </li>
@@ -508,8 +749,6 @@ As has already been explained previously (in this [link]({{ base_path }}/basics/
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       dao
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ConfigsDao.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.java</li>
                       </ul>
@@ -517,7 +756,6 @@ As has already been explained previously (in this [link]({{ base_path }}/basics/
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       service
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateService.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserService.java</li>
                       </ul>
                       </li>
@@ -539,8 +777,6 @@ As has already been explained previously (in this [link]({{ base_path }}/basics/
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             dao
             <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ConfigsDao.xml</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>placeholders.properties</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleDao.xml</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleServerPermissionDao.xml</li>
@@ -588,7 +824,6 @@ As has already been explained previously (in this [link]({{ base_path }}/basics/
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       rest
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MainRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>TestRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRestController.java</li>
@@ -622,64 +857,21 @@ As has already been explained previously (in this [link]({{ base_path }}/basics/
 </div>
 <div class="multiColumn multiColumnGrow">
 
-{{"**application.yml**" | markdownify}}
-{% highlight yaml%}
+  {{ "**application.yml**"| markdownify }}
+
+{% highlight yaml %}
 ontimize:
-   save-config: true
-   save-config-dao: ConfigsDao
+   security:
+      mode: ldap
+ldap: 
+   active: true 
+   host: 10.0.0.1
+   port: 389
+   login-type: simple
+   bind.dn: 
+   base.dn: 
+   domain: yourdomain.com
 {% endhighlight %}
 
 </div>
 </div>
-
-## Testing the preferences system
-
-Once the preferences system is already configured and the server and the database are running, we will follow the next steps:
-
-### Add preferences to database
-
-To add or modify preferences to the database, we will execute the following REST Request: **http://localhost:33333/configuration/preferences**
-
-The type of the request is POST.
-{: .notice--warning}
-
-| Element | Meaning |
-|--|--|
-| localhost:33333 | Indicates the host |
-| /configuration | Indicates the service |
-| /preferences | Indicates the type of configuration that you're going to save. You can write the name you want. |
-
-The body of the request needs to have the following structure:
-
-{% highlight json%}
-{
-"user":"demo",
-
-"components":{
-
-  "lang":"es",
-
-  . . .
-
-  "theme":{"primary":"#242424","accent":"#ffcc00","href":"ontimize-black-yellow.css","href_dark":"ontimize-black-yellow-dark.css","isDefault":true,"isDark":false},
-}
-}
-{% endhighlight %}
-
-**Note:** By default the request will create a new entry in the database. If it already exists, it will be modified.
-{: .notice--warning}
-
-
-### Query preferences
-
-To query preferences of the database, we will execute the following REST Request: **http://localhost:33333/configuration/preferences?user=demo**
-
-The type of the request is GET.
-{: .notice--warning}
-
-| Element | Meaning |
-|--|--|
-| localhost:33333 | Indicates the host. |
-| /configuration | Indicates the service to be queried. |
-| /preferences | Indicates the type of configuration that will be queried.|
-| ?user=demo | Indicates the user. |

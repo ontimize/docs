@@ -1,28 +1,29 @@
 ---
 title: "SDMS System"
-layout: single
-permalink: /basics/sdms/
-toc: true
-toc_label: "Table of Contents"
-toc_sticky: true
-breadcrumbs: true
-sidebar:
-  title: "Ontimize Basics"
-  nav: sidebar-basics
+layout: default
+permalink: /systems/sdms/
+parent: Systems
+nav_order: 3
 ---
 
-**Important:** This module works only for Ontimize Boot version 3.11.0 or above. Actual release version: [![Ontimize Boot](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot?label=Ontimize%20boot&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot)
-{: .notice--warning}
+{% include base_path %}
+{% include toc %}
 
-# Introduction
+# SDMS System
+
+{: .important}
+> This module works only for Ontimize Boot version 3.11.0 or above. Actual release version: [![Ontimize Boot](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot?label=Ontimize%20boot&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot)
+
+## Introduction
 The **S**torage **D**ocument **M**anagement **S**ystem (**SDMS**) is a system that allows you to manage documents related to an entity in your project. Ontimize Boot provides a DMS that allows to store files in external services according to the engine set in its configuration.
 
-# Previous concepts
+## Previous concepts
 - **Workspace**: Represents the base folder where the documents for an entity will be stored.
 
-# Prerequisites
-**Note:** You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page](https://ontimize.github.io/ontimize-boot/getting_started/) and with a REST service.
-{: .notice--info}
+## Prerequisites
+
+{: .note}
+> You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page]({{ base_path }}/getting_started/) and with a REST service.
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
@@ -48,12 +49,12 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 </div>
 </div>
 
-**Note:** To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
-{: .notice--info}
+{: .note}
+> To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
 
-# Steps
-## Server
-### Add SDMS dependencies
+## Steps
+### Server
+#### Add SDMS dependencies
 
 <div class="multiColumnRow">
 <div class="multiColumn jstreeloader">
@@ -372,12 +373,12 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 </div>
 </div>
 
-### Modify application.yml
+#### Modify application.yml
 
-The **application.yml** file will be modified the engine to be used by the SDMS, for this example we will set up the **S3** engine. Information on the configuration of the SDMS system in the **application.yml** file can be found at [this link](https://ontimize.github.io/ontimize-boot/basics/autoconfigurators/#sdms).
+The **application.yml** file will be modified the engine to be used by the SDMS, for this example we will set up the **S3** engine. Information on the configuration of the SDMS system in the **application.yml** file can be found at [this link]({{ base_path }}/basics/autoconfigurators/#sdms).
 
-**Note:** Currently only the S3 engine using the Amazon AWS S3 service API is available.
-{: .notice--info}
+{: .note}
+> Currently only the S3 engine using the Amazon AWS S3 service API is available.
 
 <div class="multiColumnRow">
 <div class="multiColumn jstreeloader">
@@ -659,7 +660,7 @@ ontimize:
 </div>
 </div>
 
-### Modify the entity service to add the methods of the SDMS service
+#### Modify the entity service to add the methods of the SDMS service
 
 All methods available by the SDMS service will be added to the service interface of our entity.
 Our method names are constructed with the name of the entity followed by the SDMS method name.  
@@ -1322,7 +1323,7 @@ public class CandidateService implements ICandidateService {
 </div>
 </div>
 
-### Modify the entity Rest controller
+#### Modify the entity Rest controller
 
 We modify the Rest controller of our entity so that instead of inheriting from the `ORestController` class, it inherits from the `OSdmsRestController` class. This class adds all the endpoints of the `ORestController` class and the SDMS endpoints, linking them with the corresponding SDMS methods that we have established in the service of our entity.
 
@@ -1606,12 +1607,12 @@ public class CandidateRestController extends OSdmsRestController<ICandidateServi
 </div>
 </div>
 
-# Endpoints
+## Endpoints
 
 The endpoints set by the `OSdmsRestController` are the following:  
 
-**Note:** If the workspace is not sent in an http request, the SDMS will set the `default` workspace as the active workspace. But if the default workspace has variables, you will need to pass it the workspace with the variable values to access the workspace.
-{: .notice--info}
+{: .note}
+> If the workspace is not sent in an http request, the SDMS will set the `default` workspace as the active workspace. But if the default workspace has variables, you will need to pass it the workspace with the variable values to access the workspace.
 
 {{"**Find by ID**" | markdownify }}
 
@@ -1619,8 +1620,8 @@ This endpoint maps the request to the `SdmsFindById` method of the SDMS service.
 
 The id of the requested document is passed in Base64 encrypted in the url and the data parameter is added with the workspace information in JSON format.
 
-**Note:** The data value must be encoded with [percent-encoding](https://en.wikipedia.org/wiki/URL_encoding) to be read correctly.
-{: .notice--info}
+{: .note}
+> The data value must be encoded with [percent-encoding](https://en.wikipedia.org/wiki/URL_encoding){:target="_blank"} to be read correctly.
 
 {% highlight properties %}
 GET: /candidates/candidate/sdms/find/id/Y2FuZGlkYXRlLzEvZmlsZS0wOC50eHQ=
@@ -1646,8 +1647,8 @@ This endpoint maps the request to the `SdmsDownloadById` method of the SDMS serv
 
 The id of the requested document is passed in Base64 encrypted in the url and the data parameter is added with the workspace information in JSON format.
 
-**Note:** The data value must be encoded with [percent-encoding](https://en.wikipedia.org/wiki/URL_encoding) to be read correctly.
-{: .notice--info}
+{: .note}
+> The data value must be encoded with [percent-encoding](https://en.wikipedia.org/wiki/URL_encoding){:target="_blank"} to be read correctly.
 
 {% highlight properties %}
 GET: /candidates/candidate/sdms/download/id/Y2FuZGlkYXRlLzEvZmlsZS0wOC50eHQ=
@@ -1673,8 +1674,8 @@ This endpoint maps the request to the `SdmsUpload` method of the SDMS service.
 
 The data parameter is added with the workspace information in JSON format.
 
-**Note:** The data value must be encoded with [percent-encoding](https://en.wikipedia.org/wiki/URL_encoding) to be read correctly.
-{: .notice--info}
+{: .note}
+> The data value must be encoded with [percent-encoding](https://en.wikipedia.org/wiki/URL_encoding){:target="_blank"} to be read correctly.
 
 {% highlight properties %}
 POST: /candidates/candidate/sdms/upload
@@ -1729,8 +1730,8 @@ This endpoint maps the request to the `SdmsDeleteById` method of the SDMS servic
 
 The id of the requested document is passed in Base64 encrypted in the url and the data parameter is added with the workspace information in JSON format.
 
-**Note:** The data value must be encoded with [percent-encoding](https://en.wikipedia.org/wiki/URL_encoding) to be read correctly.
-{: .notice--info}
+{: .note}
+> The data value must be encoded with [percent-encoding](https://en.wikipedia.org/wiki/URL_encoding){:target="_blank"} to be read correctly.
 
 {% highlight properties %}
 DELETE: /candidates/candidate/sdms/delete/id/Y2FuZGlkYXRlLzEvZmlsZS0wOC50eHQ=
@@ -1750,7 +1751,7 @@ Content-Type: application/json
 Body: {"filter": { "workspace": "default", "data": {"id": 1}, "id": ["Y2FuZGlkYXRlLzEvZmlsZS0wMS50eHQ=", "Y2FuZGlkYXRlLzEvZmlsZS0wMi50eHQ="]}}
 {% endhighlight %}
 
-## Request Parameters
+### Request Parameters
 
 The data parameter of the SDMS system always goes to the "filter" and "data" sections.
 
@@ -1760,7 +1761,7 @@ In the "data" section are the parameters related to the information to be sent t
 
 The rest of the parameters that can be sent in each of the sections will depend on the engine used.
 
-### Possible parameters in the S3 engine
+#### Possible parameters in the S3 engine
 
 - **Filter**
   - `workspace`: _The name of the workspace to use._  

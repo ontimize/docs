@@ -1,21 +1,23 @@
 ---
 title: "Charts On Demand"
-layout: single
-permalink: /basics/charts/chart-on-demand
-toc: true
-toc_label: "Table of Contents"
-toc_sticky: true
-breadcrumbs: true
-sidebar:
-  title: "Ontimize Basics"
-  nav: sidebar-basics
+layout: default
+permalink: /basics/charts-on-demand
+parent: Basics
+nav_order: 2
 ---
 
-**Important:** This module works only for Ontimize Boot version 3.9.0 or above. Actual release version: [![Ontimize Boot](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot?label=Ontimize%20boot&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot)
-{: .notice--warning}
-# Prerequisites
-**Note:** You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page](https://ontimize.github.io/ontimize-boot/getting_started/) and with a REST service.
-{: .notice--info}
+{% include base_path %}
+{% include toc %}
+
+# Charts On Demand
+
+{: .important}
+> This module works only for Ontimize Boot version 3.9.0 or above. Actual release version: [![Ontimize Boot](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot?label=Ontimize%20boot&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot)
+
+## Prerequisites
+
+{: .note}
+> You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page]({{ base_path }}/getting_started/) and with a REST service.
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
@@ -44,9 +46,9 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 **Note:** To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
 {: .notice--info}
 
-# Steps
-## Database
-### Preferences Table
+## Steps
+### Database
+#### Preferences Table
 
 With the database started, we create the new tables that will store the charts information. We're going to need to create two different tables, one for the chart itself and one for the chart custom parameters.
 
@@ -54,8 +56,8 @@ With the database started, we create the new tables that will store the charts i
 CREATE TABLE PREFERENCES(ID INTEGER NOT NULL PRIMARY KEY,NAME VARCHAR(255),DESCRIPTION VARCHAR(255),PREFERENCES VARCHAR(5000),ENTITY VARCHAR(100), TYPE BIT)
 {% endhighlight %}
 
-## Server
-### Add Preferences DAOs
+### Server
+#### Add Preferences DAOs
 A specific DAO will be created for each of both tables in the system, and each of them will implement a different interface.
 
 <div class="multiColumnRow">
@@ -360,8 +362,8 @@ public class PreferencesDao extends OntimizeJdbcDaoSupport implements IPreferenc
 </div>
 </div>
 
-# Testing the preferences system
-## Save preferences
+## Testing the preferences system
+### Save preferences
 Allows to save the configuration of a chart in the database to do it again quickly
 
 - **URL**: http://localhost:33333/preferences/save
@@ -395,7 +397,7 @@ Allows to save the configuration of a chart in the database to do it again quick
 }
 {% endhighlight %}
 
-## Get preferences
+### Get preferences
 
 Execute the following request: **http://localhost:33333/preferences/preferences?entity=*ENTITY*&service=*SERVICE*&type=REPORT**.
 

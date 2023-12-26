@@ -63,6 +63,8 @@ ontimize:
 |--|--|--|
 | engine |s3 | Indicates that the implementation that handles documents via the Amazon AWS S3 service API will be used. |
 
+The configuration of DMS system is done by setting up the application for that system. To see the configuration, check [this link]({{ base_path }}/systems/sdms/).
+
 **Example**
 ```yaml
 ontimize:
@@ -129,7 +131,7 @@ ontimize:
 |bundle-value-key-column| *String* | Column of the database table containing the key of a translation |
 |engine| *default* | Property to enable the i18n system. Need to have any value, commonly, *default*.  |
 
-The configuration of the I18N system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link]({{ base_path }}/basics/i18n/).
+The configuration of the I18N system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link]({{ base_path }}/systems/i18n/).
 
 **Example**
 ```yaml
@@ -192,7 +194,7 @@ ontimize:
 | base.dn | *String* | List of base DNs. |
 | domain | *String* | The domain name |
 
-The LDAP security configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/basics/ldap).
+The LDAP security configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/ldap).
 
 **Example**
 ```yaml
@@ -262,7 +264,7 @@ ontimize:
 | base-path | *String* | The path where the report files will be stored (file system engine only) |
 
 
-The configuration of the reports system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link]({{ base_path }}/basics/reports/).
+The configuration of the reports system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link]({{ base_path }}/systems/reports/).
 
 
 **Example**
@@ -443,7 +445,7 @@ ontimize:
 |--|--|--|
 | save-config-dao | *String* | The name of the DAO for save preferences |
 
-The configuration of the rest of the Preferences System is done by setting up the necessary DAOs for that system. To see the configuration, check [this link]({{ base_path }}/basics/preferences/).
+The configuration of the rest of the Preferences System is done by setting up the necessary DAOs for that system. To see the configuration, check [this link]({{ base_path }}/systems/preferences/).
 
 **Example**
 

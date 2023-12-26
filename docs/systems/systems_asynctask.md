@@ -9,17 +9,19 @@ nav_order: 1
 {% include base_path %}
 {% include toc %}
 
+# Async Tasks
+
 {: .important}
 > This module works only for Ontimize Boot version 3.8.0 or above. Actual release version: [![Ontimize Boot](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot?label=Ontimize%20boot&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot)
 
-# Introduction
+## Introduction
 The **Async Task** system will allow you to run decoupled, asynchronous tasks. This module will let you run any service method in a separate, newly created thread, by simply adding an annotation to its controller method.
 
-# Previous concepts
+## Previous concepts
 - **Task**: It is the generic representation of a decoupled task. It stores information such as its UUID, its current status and the result of the execution.
 - **Aspect**: It is a modularization of a concern that cuts across multiple classes. It allows us to intercept the execution of any given method or class and implement some alternative or extra behaviour for it.
 
-# Prerequisites
+## Prerequisites
 You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page]({{ base_path }}/getting_started/) and with a REST service. 
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
@@ -49,9 +51,9 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 {: .note}
 > To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
 
-# Steps
-## Database
-### Tasks Table
+## Steps
+### Database
+#### Tasks Table
 
 With the database started, we create the new table that will store the tasks information.
 
@@ -59,8 +61,8 @@ With the database started, we create the new table that will store the tasks inf
 CREATE TABLE TASKS(ID INTEGER IDENTITY NOT NULL PRIMARY KEY, UUID VARCHAR(255) NOT NULL, STATUS VARCHAR(255), RESULT VARBINARY(16777216));
 {% endhighlight %}
 
-## Server
-### Add Ontimize AsyncTask dependencies
+### Server
+#### Add Ontimize AsyncTask dependencies
 
 {: .note}
 > The decoupled tasks system is integrated in the **Ontimize Core** module, so we need to declare it as a project dependency.
@@ -345,7 +347,7 @@ CREATE TABLE TASKS(ID INTEGER IDENTITY NOT NULL PRIMARY KEY, UUID VARCHAR(255) N
 
 </div>
 
-### Modify application.yml
+#### Modify application.yml
 
 The **application.yml** file will be modified to enable the decoupled tasks module, indicate the storage engine it will use, the URL base path for the service, and its thread pool configuration. [In this link]({{ base_path }}/basics/autoconfigurators/#asynctask) you have information about the configuration of the asynchronous tasks system in the **application.yml** file.
 
@@ -627,7 +629,7 @@ ontimize:
 </div>
 </div>
 
-### Add Task DAO
+#### Add Task DAO
 A specific DAO will be created for the tasks table, and it will implement the DAO interface in the tasks module.
 
 <div class="multiColumnRow">
@@ -928,7 +930,7 @@ public class TaskDao extends OntimizeJdbcDaoSupport implements IAsyncTaskDao {
 </div>
 </div>
 
-### Annotate controller method
+#### Annotate controller method
 
 In order to run some service method asynchronously, we need to annotate its respective REST controller method with **@OAsyncTask**. This way, a new thread will be created in order to handle the method's execution, and we will recieve an instant response with the URL where we can check the execution status and retrieve its result when it's finished.
 
@@ -1234,7 +1236,7 @@ public class CandidateRestController extends ORestController<ICandidateService>{
 </div>
 </div>
 
-### Delay service method
+#### Delay service method
 
 To know all the states through which the asynchronous request passes, we will add a delay in the `candidateQuery()` method.
 
@@ -1523,7 +1525,7 @@ public class CandidateService implements ICandidateService {
 </div>
 </div>
 
-## Testing
+### Testing
 
 To test the asynchronous tasks we need to execute a REST request to the method that we have marked with the annotation **@OAsyncTask**.
 

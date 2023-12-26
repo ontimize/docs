@@ -12,6 +12,7 @@ permalink: /basics/
 This section pretends to show the basic elements for the development of an application using Ontimize Boot
 
 - [Autoconfigurators]({{ base_path }}/basics/autoconfigurators)
+- [Charts on-demand]({{ base_path }}/basics/charts-on-demand)
 - [Complex Queries]({{ base_path }}/basics/complexqueries)
 - [Export data]({{ base_path }}/basics/exportdata)
 - [Migration from Ontimize 1.x.x to 3.x.x]({{ base_path }}/basics/migration)

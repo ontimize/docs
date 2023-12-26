@@ -1,61 +1,68 @@
 ---
-title: "Multiple Datasources"
+title: "Report On Demand"
 layout: default
-permalink: /basics/multipledatasources/
-nav_order: 6
-parent: Basics
+permalink: /systems/reports/report-on-demand
+grand_parent: Systems
+parent: Reports
+nav_order: 2
 ---
 
 {% include base_path %}
 {% include toc %}
 
-# Multiple Datasources
+# Report On Demand
 
-{: .note}
-> This module works only for Ontimize Boot version 3.9.0 or above. Actual release version: [![Ontimize Boot](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot?label=Ontimize%20Boot&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot)
-
-## Introduction
-
-Ontimize Boot allows a single application to query multiple data sources, thus allowing you to separate the user and permission tables in a database and use one or more other data sources to query the rest of the information you want by configuring the data source you want to query in each DAO. 
+{: .important}
+> This module works only for Ontimize Boot version 3.9.0 or above. Actual release version: [![Ontimize Boot](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot?label=Ontimize%20boot&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot)
 
 ## Prerequisites
+You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page]({{ base_path }}/getting_started/) and with a REST service.
 
-{: .note}
-> You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page]({{ base_path }}/getting_started/), with a REST service and two HSQLDB databases.
-
-There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
+Clone the repository with the initial state and follow the tutorial step by step.
 
 <div class="multiColumnRow multiColumnRowJustify">
-  <div class="multiColumn multiColumnGrow" >
+<div class="multiColumn multiColumnGrow" >
   {{ "**Initial project**
- 
+
     /$ git clone https://github.com/ontimize/ontimize-examples
     /ontimize-examples$ cd ontimize-examples
-    /ontimize-examples$ git checkout boot-multidatasource-initial"
+    /ontimize-examples$ git checkout boot-report-initial"
     | markdownify }}
-   
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow">
+<div class="multiColumn multiColumnGrow" >
 
   {{ "**Final example**
-    
+
     /$ git clone https://github.com/ontimize/ontimize-examples
     /ontimize-examples$ cd ontimize-examples
-    /ontimize-examples$ git checkout boot-multidatasource"
+    /ontimize-examples$ git checkout boot-report"
     | markdownify }}
 
-
-  </div>
+</div>
 </div>
 
-## Steps
-### Modify application.yml file
-Although you can keep the data source already indicated in the file, you can delete it without any problem. New data sources will be added in the *.yml under the `ontimize.datasources` properties, followed by a name for that data source, and then the same settings as required for the data source you normally use.
+{: .note}
+> To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
 
+{: .important}
+> In the first step we will learn how to configure the reports system with the ***database*** engine. If you want to use the *file system* engine you can jump to [this](#server) section.
+
+## Steps
+### Database
+#### Report Tables
+
+With the database started, we create the new tables that will store the reports information. We're going to need to create two different tables, one for the report itself and one for the report custom parameters.
+
+{% highlight sql %}
+CREATE TABLE PREFERENCES(ID INTEGER NOT NULL PRIMARY KEY,NAME VARCHAR(255),DESCRIPTION VARCHAR(255),PREFERENCES VARCHAR(5000),ENTITY VARCHAR(100), TYPE BIT)
+{% endhighlight %}
+
+### Server
+#### Add Ontimize Report dependencies
 
 <div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multiColumn jstreeloader">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -90,7 +97,6 @@ Although you can keep the data source already indicated in the file, you can del
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       service
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ICandidateService.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
                       </ul>
                       </li>
@@ -104,7 +110,8 @@ Although you can keep the data source already indicated in the file, you can del
               </li>
             </ul>
             </li>
-          </ul></li>
+          </ul>
+          </li>
         </ul>
         </li>
       </ul>
@@ -145,14 +152,14 @@ Although you can keep the data source already indicated in the file, you can del
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
           resources
           <ul>
-            <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>application.yml</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>application.yml</li>
           </ul>
           </li>
         </ul>
         </li>
       </ul>
       </li>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+      <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
     </ul>
     </li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -167,14 +174,11 @@ Although you can keep the data source already indicated in the file, you can del
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
           db
           <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>templateDB.tmp</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.lck</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.log</li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
-          </ul>
-          </li>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          db2
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.script</li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
           </ul>
           </li>
@@ -199,7 +203,6 @@ Although you can keep the data source already indicated in the file, you can del
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       dao
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.java</li>
                       </ul>
@@ -207,7 +210,6 @@ Although you can keep the data source already indicated in the file, you can del
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       service
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateService.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserService.java</li>
                       </ul>
                       </li>
@@ -229,7 +231,6 @@ Although you can keep the data source already indicated in the file, you can del
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             dao
             <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.xml</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>placeholders.properties</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleDao.xml</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleServerPermissionDao.xml</li>
@@ -244,7 +245,7 @@ Although you can keep the data source already indicated in the file, you can del
         </li>
       </ul>
       </li>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+      <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
     </ul>
     </li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -277,7 +278,6 @@ Although you can keep the data source already indicated in the file, you can del
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       rest
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MainRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>TestRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRestController.java</li>
@@ -302,43 +302,55 @@ Although you can keep the data source already indicated in the file, you can del
       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
     </ul>
     </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.gitignore</li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>candidates.zip</li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>README.md</li>
   </ul>
   </li>
 </ul>
-  </div>
-  <div class="multiColumn multiColumnGrow" >
-  {{ "**application.yml**"| markdownify }}
+</div>
+<div class="multiColumn multiColumnGrow">
+  {{ "**projectwiki-boot/pom.xml**"| markdownify }}
 
-{% highlight yaml %}
+{% highlight xml %}
 ...
-
-ontimize:
-   datasources:
-      dbone:
-         driver-class-name: org.hsqldb.jdbcDriver
-         jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB
-         username: SA
-         password:
-      dbtwo:
-         driver-class-name: org.hsqldb.jdbcDriver
-         jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB
-         username: SA
-         password:
-
+<dependencies>
+	...
+	<dependency>
+		<groupId>com.ontimize.boot</groupId>
+		<artifactId>ontimize-boot-starter-report</artifactId>
+	</dependency>
+	...
+</dependencies>
 ...
 {% endhighlight %}
 
-  </div>
+
+  {{ "**projectwiki-model/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+	...
+	<dependency>
+		<groupId>com.ontimize.jee.report</groupId>
+		<artifactId>ontimize-jee-report-server</artifactId>
+	</dependency>
+	...
+</dependencies>
+...
+{% endhighlight %}
+
 </div>
 
-**Modify DAO's datasource**
+</div>
 
-In the DAOs the data source must be modified to indicate the correct data source, and the database table that belongs to that data source. In the case of this example, as indicated in the *.yml file, that would be `dbone` and `dbtwo`.
+#### Add Preferences DAOs
+A specific DAO will be created for each of both tables in the system, and each of them will implement a different interface.
 
 <div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multiColumn jstreeloader">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -373,7 +385,6 @@ In the DAOs the data source must be modified to indicate the correct data source
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       service
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ICandidateService.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
                       </ul>
                       </li>
@@ -451,14 +462,11 @@ In the DAOs the data source must be modified to indicate the correct data source
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
           db
           <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>templateDB.tmp</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.lck</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.log</li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
-          </ul>
-          </li>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          db2
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.script</li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
           </ul>
           </li>
@@ -483,7 +491,7 @@ In the DAOs the data source must be modified to indicate the correct data source
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       dao
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.java</li>
+                        <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>PreferencesDao.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.java</li>
                       </ul>
@@ -491,7 +499,6 @@ In the DAOs the data source must be modified to indicate the correct data source
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       service
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateService.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserService.java</li>
                       </ul>
                       </li>
@@ -513,13 +520,13 @@ In the DAOs the data source must be modified to indicate the correct data source
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             dao
             <ul>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.xml</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>placeholders.properties</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleDao.xml</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleServerPermissionDao.xml</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerPermissionDao.xml</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.xml</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.xml</li>
+              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>PreferencesDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleServerPermissionDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerPermissionDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.xml</li>
             </ul>
             </li>
           </ul>
@@ -561,7 +568,6 @@ In the DAOs the data source must be modified to indicate the correct data source
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       rest
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MainRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>TestRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRestController.java</li>
@@ -586,192 +592,77 @@ In the DAOs the data source must be modified to indicate the correct data source
       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
     </ul>
     </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.gitignore</li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>candidates.zip</li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>README.md</li>
   </ul>
   </li>
 </ul>
-  </div>
-  <div class="multiColumn multiColumnGrow" >
+</div>
+<div class="multiColumn multiColumnGrow">
 
-{{ "**RoleDao.xml**"| markdownify }}
+{{ "**PreferencesDao.xml**" | markdownify}}
 {% highlight xml %}
 <?xml version="1.0" encoding="UTF-8"?>
 <JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TROLE"
-    datasource="dbone" sqlhandler="dbSQLStatementHandler">
-    ...
+ xmlns="http://www.ontimize.com/schema/jdbc"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+ catalog="" schema="${mainschema}" table="PREFERENCES"
+ datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+ <DeleteKeys>
+  <Column>ID</Column>
+ </DeleteKeys>
+ <UpdateKeys>
+  <Column>ID</Column>
+ </UpdateKeys>
+ <GeneratedKey>ID</GeneratedKey>
+</JdbcEntitySetup>
 {% endhighlight %}
 
-{{ "**RoleServerPermissionDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TROLE_SERVER_PERMISSION"
-    datasource="dbone" sqlhandler="dbSQLStatementHandler">
-    ...
+{{ "**PreferencesDao.java**" | markdownify}}
+{% highlight java %}
+package com.imatia.qsallcomponents.model.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.IPreferencesDao;
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+
+@Lazy
+@Repository(value = "PreferencesDao")
+@ConfigurationFile(configurationFile = "base-dao/PreferencesDao.xml", configurationFilePlaceholder = "base-dao/placeholders.properties")
+public class PreferencesDao extends OntimizeJdbcDaoSupport implements IPreferencesDao {
+
+    public static final String ATTR_ID = "ID";
+    public static final String ATTR_NAME = "NAME";
+    public static final String ATTR_DESCRIPTION = "DESCRIPTION";
+    public static final String ATTR_PREFERENCES = "PREFERENCES";
+    public static final String ATTR_TYPE = "TYPE";
+
+}
+
+
 {% endhighlight %}
 
-{{ "**ServerPermissionDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TSERVER_PERMISSION"
-    datasource="dbone" sqlhandler="dbSQLStatementHandler">
-    ...
-{% endhighlight %}
-
-{{ "**UserDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TUSER"
-    datasource="dbone" sqlhandler="dbSQLStatementHandler">
-    ...
-{% endhighlight %}
-
-{{ "**UserRoleDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-	xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	catalog="" schema="${mainschema}" table="TUSER_ROLE"
-	datasource="dbone" sqlhandler="dbSQLStatementHandler">
-  ...
-{% endhighlight %}
-
-{{ "**CandidateDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-	xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	catalog="" schema="${mainschema}" table="CANDIDATE"
-	datasource="dbtwo" sqlhandler="dbSQLStatementHandler">
-  ...
-{% endhighlight %}
-  </div>
+</div>
 </div>
 
-### Modify SQL handler
-At this point more data sources can be queried, as shown in the example, but they all have the same SQL handler. It is quite possible that, when multiple data sources are queried, unlike the example, they are databases of different technologies. To do this, in the same way as it is allowed to do with the data sources, the SQL handlers of each of the DAOs are changed. There is a SQL handler that is configured by the `ontimize.jdbc.sqlhandler` and `ontimize.jdbc.sql-condition-processor.*` properties, called by default **dbSQLStatementHandler**. From this version, it is no longer necessary to indicate which SQL handler we will use in the `ontimize.jdbc.sqlhandler` property, but we will indicate its name, listed below. By default, they already have some pre-established configurations, although they can be modified without any problem in the `application.yml` file.
+#### Modify application.yml
 
-<table>
-<thead>
-  <tr>
-    <th>Handler</th>
-    <th>Bean name</th>
-    <th colspan="2">Default configuration</th>
-    <th>Property</th>
-  </tr>
-  <tr>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td rowspan="2">default</td>
-    <td rowspan="2">dbSQLStatementHandler</td>
-    <td><strong>Upper string</strong></td>
-    <td><em>false</em></td>
-    <td>ontimize.jdbc.sql-condition-processor.upper-string</td>
-  </tr>
-  <tr>
-    <td><strong>Upper like</strong></td>
-    <td><em>true</em></td>
-    <td>ontimize.jdbc.sql-condition-processor.upper-like</td>
-  </tr>
-  <tr>
-    <td rowspan="2">postgres</td>
-    <td rowspan="2">postgresSQLStatementHandler</td>
-   <td><strong>Upper string</strong></td>
-    <td><em>false</em></td>
-    <td>ontimize.jdbc.postgres-sql-condition-processor.upper-string</td>
-  </tr>
-  <tr>
-    <td><strong>Upper like</strong></td>
-    <td><em>true</em></td>
-    <td>ontimize.jdbc.postgres-sql-condition-processor.upper-like</td>
-  </tr>
-  <tr>
-    <td rowspan="2">oracle</td>
-    <td rowspan="2">oracleSQLStatementHandler</td>
-   <td><strong>Upper string</strong></td>
-    <td><em>false</em></td>
-    <td>ontimize.jdbc.oracle-sql-condition-processor.upper-string</td>
-  </tr>
-  <tr>
-    <td><strong>Upper like</strong></td>
-    <td><em>true</em></td>
-    <td>ontimize.jdbc.oracle-sql-condition-processor.upper-like</td>
-  </tr>
-  <tr>
-    <td rowspan="2">oracle12</td>
-    <td rowspan="2">oracle12SQLStatementHandler</td>
-   <td><strong>Upper string</strong></td>
-    <td><em>false</em></td>
-    <td>ontimize.jdbc.oracle12-sql-condition-processor.upper-string</td>
-  </tr>
-  <tr>
-    <td><strong>Upper like</strong></td>
-    <td><em>true</em></td>
-    <td>ontimize.jdbc.oracle12-sql-condition-processor.upper-like</td>
-  </tr>
-  <tr>
-    <td rowspan="2">sqlserver</td>
-    <td rowspan="2">sqlserverSQLStatementHandler</td>
-   <td><strong>Upper string</strong></td>
-    <td><em>false</em></td>
-    <td>ontimize.jdbc.sqlserver-sql-condition-processor.upper-string</td>
-  </tr>
-  <tr>
-    <td><strong>Upper like</strong></td>
-    <td><em>true</em></td>
-    <td>ontimize.jdbc.sqlserver-sql-condition-processor.upper-like</td>
-  </tr>
-  <tr>
-    <td rowspan="2">hsqldb</td>
-    <td rowspan="2">hsqldbSQLStatementHandler</td>
-   <td><strong>Upper string</strong></td>
-    <td><em>false</em></td>
-    <td>ontimize.jdbc.hsqldb-sql-condition-processor.upper-string</td>
-  </tr>
-  <tr>
-    <td><strong>Upper like</strong></td>
-    <td><em>true</em></td>
-    <td>ontimize.jdbc.hsqldb-sql-condition-processor.upper-like</td>
-  </tr>
-  <tr>
-    <td rowspan="2">mysql</td>
-    <td rowspan="2">mysqlSQLStatementHandler</td>
-   <td><strong>Upper string</strong></td>
-    <td><em>false</em></td>
-    <td>ontimize.jdbc.mysql-sql-condition-processor.upper-string</td>
-  </tr>
-  <tr>
-    <td><strong>Upper like</strong></td>
-    <td><em>true</em></td>
-    <td>ontimize.jdbc.mysql-sql-condition-processor.upper-like</td>
-  </tr>
-</tbody>
-</table>
+The **application.yml** file will be modified to enable the reports module, indicate the report engine type it will use and, if needed, the path where the report files will be stored. [In this link]({{ base_path }}/basics/autoconfigurators/#report) you have information about the configuration of the reports system in the **application.yml** file.
+
+{: .note}
+> The *enable* property must be set to ***true*** and the engine type must be specified in the *engine* property before the server is started.
+
+{: .important}
+> You can only choose **ONE** of the two options listed below.
 
 <div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multiColumn jstreeloader">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -806,7 +697,6 @@ At this point more data sources can be queried, as shown in the example, but the
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       service
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ICandidateService.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
                       </ul>
                       </li>
@@ -884,14 +774,11 @@ At this point more data sources can be queried, as shown in the example, but the
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
           db
           <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>templateDB.tmp</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.lck</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.log</li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
-          </ul>
-          </li>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          db2
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.script</li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
           </ul>
           </li>
@@ -916,7 +803,8 @@ At this point more data sources can be queried, as shown in the example, but the
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       dao
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ReportDao.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ReportParameterDao.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.java</li>
                       </ul>
@@ -924,7 +812,6 @@ At this point more data sources can be queried, as shown in the example, but the
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       service
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateService.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserService.java</li>
                       </ul>
                       </li>
@@ -946,13 +833,14 @@ At this point more data sources can be queried, as shown in the example, but the
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             dao
             <ul>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.xml</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>placeholders.properties</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ReportDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ReportParameterDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleDao.xml</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleServerPermissionDao.xml</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerPermissionDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerPermissionDao.xml</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.xml</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.xml</li>
             </ul>
             </li>
           </ul>
@@ -994,7 +882,6 @@ At this point more data sources can be queried, as shown in the example, but the
                       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                       rest
                       <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MainRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>TestRestController.java</li>
                         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRestController.java</li>
@@ -1019,88 +906,132 @@ At this point more data sources can be queried, as shown in the example, but the
       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
     </ul>
     </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.gitignore</li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>candidates.zip</li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>README.md</li>
   </ul>
   </li>
 </ul>
-  </div>
-  <div class="multiColumn multiColumnGrow" >
-
-Modified application.yml (will use default values) and some SQL handlers
-
-{{ "**aplication.yml**"| markdownify }}
-{% highlight yml %}
-...
-ontimize:
-   datasources:
-      dbone:
-         driver-class-name: org.hsqldb.jdbcDriver
-         jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB
-         username: SA
-         password:
-         initial-size: 10
-         test-on-borrow: true
-      dbtwo:
-         driver-class-name: org.hsqldb.jdbcDriver
-         jdbc-url: jdbc:hsqldb:hsql://localhost:9014/templateDB
-         username: SA
-         password:
-         initial-size: 10
-         test-on-borrow: true
-   jdbc:
-      name-convention: upper
-...
-{% endhighlight %}
-
-{{ "**RoleDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TROLE"
-    datasource="dbone" sqlhandler="hsqldbSQLStatementHandler">
-    ...
-{% endhighlight %}
-
-
-{{ "**ServerPermissionDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TSERVER_PERMISSION"
-    datasource="dbone" sqlhandler="hsqldbSQLStatementHandler">
-    ...
-{% endhighlight %}
-
-
-{{ "**UserRoleDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-	xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	catalog="" schema="${mainschema}" table="TUSER_ROLE"
-	datasource="dbone" sqlhandler="hsqldbSQLStatementHandler">
-  ...
-{% endhighlight %}
-
-{{ "**CandidateDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-	xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	catalog="" schema="${mainschema}" table="CANDIDATE"
-	datasource="dbtwo" sqlhandler="hsqldbSQLStatementHandler">
-  ...
-{% endhighlight %}
-  </div>
 </div>
+<div class="multiColumn multiColumnGrow">
+
+{{"**application.yml**" | markdownify}}
+{{"For ***database*** engine" | markdownify}}
+{% highlight yaml%}
+ontimize:
+   report:
+      enable: true
+      engine: database
+{% endhighlight %}
+
+
+{{"For ***file system*** engine" | markdownify}}
+{% highlight yaml%}
+ontimize:
+   report:
+      enable: true
+      engine: file
+      base-path: C:/applications/projectwiki/reports
+{% endhighlight %}
+</div>
+</div>
+
+## Testing the reports system
+
+Once the reports system is already configured and the server and the database are running, we will follow the next steps:
+
+### Generate report
+
+- **URL**: http://localhost:33333/dynamicjasper/report
+- **HTTP Method**: POST
+- **Authorization**: *User:* demo, *Password*: demouser
+- **Body**: JSON
+
+| Element | Meaning |
+|--|--|
+| localhost:33333 | Indicates the host |
+| /dynamicjasper | Indicates the service to be queried |
+| /report | Indicates the method of the service that is going to be executed |
+
+**Body request:**
+{% highlight json %}
+{
+      "title": "Report on demand",
+      "groups": [],
+      "entity": "customer",
+      "service": "Customer",
+      "vertical": true,
+      "functions": [{"columnName":"", "type":"TOTAL"}, {"columnName":"CUSTOMERTYPEID", "type":"SUM"}],
+      "style": { "columnName":true, "grid":false, "rowNumber":false},
+      "subtitle": "Example",
+      "columns": [
+              {"id": "NAME", "name": "Nombre", "columnStyle": {"width": 50, "alignment": "left"}},
+              {"id": "CUSTOMERTYPEID", "name": "ID", "columnStyle": {"width": 80, "alignment": "left"}}, {"id": "STARTDATE", "name": "Date", "columnStyle": {"width": 60, "alignment": "left"}}],
+      "orderBy": []
+}
+  {% endhighlight %}
+
+### Save preferences
+Allows to save the configuration of a report in the database to do it again quickly
+
+- **URL**: http://localhost:33333/preferences/save
+- **HTTP Method**: POST
+- **Authorization**: Basic Auth with parameters *User:* demo, *Password*: demouser
+- **Body**: JSON
+
+| Element | Meaning |
+|--|--|
+| localhost:33333 | Indicates the host |
+| /preferences | Indicates the service to be queried |
+| /save | Indicates the method of the service that is going to be executed |
+
+**Body request:**
+{% highlight json %}
+{
+    "name":"PreferencesExample",
+    "description":"PreferencesDescription",
+    "entity": "customer",
+    "service": "Customer",
+    "type":"REPORT",
+    "params": {
+      "title": "Report on demand",
+      "groups": [],
+      "entity": "customer",
+      "service": "Customer",
+      "vertical": true,
+      "functions": [{"columnName":"", "type":"TOTAL"}, {"columnName":"CUSTOMERTYPEID", "type":"SUM"}],
+      "style": { "columnName":true, "grid":false, "rowNumber":false},
+      "subtitle": "Example",
+      "columns": [
+              {"id": "NAME", "name": "Nombre", "columnStyle": {"width": 50, "alignment": "left"}},
+              {"id": "CUSTOMERTYPEID", "name": "ID", "columnStyle": {"width": 80, "alignment": "left"}}, {"id": "STARTDATE", "name": "Date", "columnStyle": {"width": 60, "alignment": "left"}}],
+      "orderBy": []
+    }
+}
+{% endhighlight %}
+
+### Get preferences
+
+Execute the following request: **http://localhost:33333/preferences/preferences?entity=*ENTITY*&service=*SERVICE*&type=REPORT**.
+
+| Element | Meaning |
+|--|--|
+| localhost:33333 | Indicates the host |
+| /preferences | Indicates the service to be queried |
+| /preferences | Indicates the method of the service that is going to be executed |
+| ?entity=**ENTITY** | **ENTITY** indicates the entity to filter the preferences |
+| &service=**SERVICE** | **SERVICE** indicates the service to filter the preferences |
+| &type=REPORT | Indicates the type to filter the preferences |
+
+
+The authorization used for these requests is authorization of the type **BASIC**.
+
+In all three cases cases, the access must be done with a user and password example:
+
+        User: demo
+    Password: demouser
+
+### Visualize report document
+
+When you run the above request, in the body of the response you will find the key *file*, whose value is a **Base 64** that contains the format and data of the report template. Copy it and go to this [page](https://www.ipvoid.com/base64-to-pdf/){:target="_blank"} to convert the Base 64 into a **PDF** file.

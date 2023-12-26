@@ -1,18 +1,19 @@
 ---
 title: "Report Store"
-layout: single
-permalink: /basics/reports/report-store
-toc: true
-toc_label: "Table of Contents"
-toc_sticky: true
-breadcrumbs: true
-sidebar:
-  title: "Ontimize Basics"
-  nav: sidebar-basics
+layout: default
+permalink: /systems/reports/report-store
+grand_parent: Systems
+parent: Reports
+nav_order: 1
 ---
 
-**Important:** This module works only for Ontimize Boot version 3.7.0 or above. Actual release version: [![Ontimize Boot](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot?label=Ontimize%20boot&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot)
-{: .notice--warning}
+{% include base_path %}
+{% include toc %}
+
+# Report Store
+
+{: .important}
+> This module works only for Ontimize Boot version 3.7.0 or above. Actual release version: [![Ontimize Boot](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot?label=Ontimize%20boot&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot)
 
 # Introduction
 The **Report Store** system will allow you to store, manage and export all kinds of reports designed and implemented via the JasperReports API. This module will let you use your Ontimize application data as data sources for your reports, allowing you to fully customize its layout with tables, charts, graphs... and also visualize, export, print and download your reports.
@@ -23,7 +24,7 @@ The **Report Store** system will allow you to store, manage and export all kinds
 - **Report parameter**: It is the generic representation of a custom report parameter. They are used for defining filters, implementing pagination, or even specifying the report data source.
 
 # Prerequisites
-You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page](https://ontimize.github.io/ontimize-boot/getting_started/) and with a REST service.
+You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page]({{ base_path }}/getting_started/) and with a REST service.
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
@@ -49,11 +50,11 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 </div>
 </div>
 
-**Note:** To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
-{: .notice--info}
+{: .note}
+> To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
 
-**Important:** In the first step we will learn how to configure the reports system with the ***database*** engine. If you want to use the *file system* engine you can jump to [this](#server) section.
-{: .notice--warning}
+{: .important}
+> In the first step we will learn how to configure the reports system with the ***database*** engine. If you want to use the *file system* engine you can jump to [this](#server) section.
 
 # Steps
 ## Database
@@ -720,11 +721,11 @@ public class ReportParameterDao extends OntimizeJdbcDaoSupport implements IRepor
 
 The **application.yml** file will be modified to enable the reports module, indicate the report engine type it will use and, if needed, the path where the report files will be stored. [In this link]({{ base_path }}/basics/autoconfigurators/#report) you have information about the configuration of the reports system in the **application.yml** file.
 
-**Note:** The *enable* property must be set to ***true*** and the engine type must be specified in the *engine* property before the server is started.
-{: .notice--info}
+{: .note}
+> The *enable* property must be set to ***true*** and the engine type must be specified in the *engine* property before the server is started.
 
-**Important:** You can only choose **ONE** of the two options listed below.
-{: .notice--warning}
+{: .important}
+> You can only choose **ONE** of the two options listed below.
 
 <div class="multiColumnRow">
 <div class="multiColumn jstreeloader">
@@ -1007,14 +1008,14 @@ ontimize:
 Once the reports system is already configured and the server and the database are running, we will follow the next steps:
 
 ## Create report template
-In order to create our own report templates, it is recommended to use Jaspersoft Studio. You can download it from [this link](https://community.jaspersoft.com/project/jaspersoft-studio).
+In order to create our own report templates, it is recommended to use Jaspersoft Studio. You can download it from [this link](https://community.jaspersoft.com/project/jaspersoft-studio){:target="_blank"}.
 
-In this tutorial we will provide you a report template for candidates, but if you want more information about how to create and customize a template, check [this tutorial](https://community.jaspersoft.com/documentation/tibco-jaspersoft-studio-user-guide/v60/creating-and-customizing-templates).
+In this tutorial we will provide you a report template for candidates, but if you want more information about how to create and customize a template, check [this tutorial](https://community.jaspersoft.com/documentation/tibco-jaspersoft-studio-user-guide/v60/creating-and-customizing-templates){:target="_blank"}.
 
 Our template is located in the main folder of the project, it is called **candidates.zip**.
 
-**Note:** Do not unzip the compressed file because the request explained below requires it compressed.
-{: .notice--info}
+{: .note}
+> Do not unzip the compressed file because the request explained below requires it compressed.
 
 ## Add report to the reports system
 To add the template we will have to execute the following REST request: **http://localhost:33333/reportstore/addReport**
@@ -1025,7 +1026,7 @@ To add the template we will have to execute the following REST request: **http:/
 | /reportstore | Indicates the service to be queried |
 | /addReport | Indicates the method of the service that is going to be executed |
 
-With the [Postman](https://www.postman.com/) program, you will have to add a body of type form-data in which you will have to add the following values:
+With the [Postman](https://www.postman.com/){:target="_blank"} program, you will have to add a body of type form-data in which you will have to add the following values:
 
 | key | type | value | Description |
 |--|--|--|--|
@@ -1052,8 +1053,10 @@ But if the value of the **engine** set in the `application.yml` is *database*, y
 | /reportstore | Indicates the service to be queried |
 | /listReports | Indicates the method of the service that is going to be executed |
 
-**Example:** http://localhost:33333/reportstore/fillReport/fd656189-2158-4e84-ac5c-8379960fddbd
-{: .notice--info}
+{: .note-title}
+> Example
+>
+> http://localhost:33333/reportstore/fillReport/fd656189-2158-4e84-ac5c-8379960fddbd
 
 The authorization used for these requests is authorization of the type **BASIC**.
 
@@ -1064,4 +1067,4 @@ In both cases, the access must be done with a user and password example:
 
 ## Visualize report document
 
-When you run the above request, in the body of the response you will find the key *file*, whose value is a **Base 64** that contains the format and data of the report template. Copy it and go to this [page](https://www.ipvoid.com/base64-to-pdf/) to convert the Base 64 into a **PDF** file.
+When you run the above request, in the body of the response you will find the key *file*, whose value is a **Base 64** that contains the format and data of the report template. Copy it and go to this [page](https://www.ipvoid.com/base64-to-pdf/){:target="_blank"} to convert the Base 64 into a **PDF** file.

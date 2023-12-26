@@ -1,8 +1,8 @@
 ---
-title: "Using complex queries"
+title: "Complex queries"
 layout: default
 permalink: /basics/complexqueries/
-nav_order: 1
+nav_order: 3
 parent: Basics
 ---
 

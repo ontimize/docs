@@ -2,7 +2,7 @@
 title: "Understanding application.yml"
 layout: default
 permalink: /basics/applicationyml/
-nav_order: 5
+nav_order: 7
 parent: Basics
 ---
 

@@ -1,21 +1,20 @@
 ---
 title: "Security System"
-layout: single
-permalink: /basics/security/
-toc: true
-toc_label: "Table of Contents"
-toc_sticky: true
-breadcrumbs: true
-sidebar:
-  title: "Ontimize Basics"
-  nav: sidebar-basics
+layout: default
+permalink: /systems/security/
+parent: Systems
+nav_order: 8
 ---
 
-# Introduction
+{% include base_path %}
+{% include toc %}
+
+# Security System
+## Introduction
 Ontimize security allows you to set permissions to each role that you assign to a specific user, so that different users can access (or not) the project services and methods.
 
-# Prerequisites
-You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page](https://ontimize.github.io/ontimize-boot/getting_started/) and with a REST service. 
+## Prerequisites
+You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page]({{ base_path }}/getting_started/) and with a REST service. 
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
@@ -41,12 +40,11 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 </div>
 </div>
 
-**Note:** To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
-{: .notice--info}
+{: .note}
+> To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
 
-# Steps
-
-## Add new profile and user
+## Steps
+### Add new profile and user
 
 We will add the following elements to the database:
 
@@ -65,7 +63,7 @@ INSERT INTO TROLE VALUES(1,'candidate','<?xml version="1.0" encoding="UTF-8"?><s
 INSERT INTO TUSER_ROLE VALUES(1,1,'candidate')
 {% endhighlight %}
 
-## Modify the service to add security
+### Modify the service to add security
 
 In the *projectwiki-boot* module we will add the annotation `@EnableAspectJAutoProxy(proxyTargetClass = false)` to the **ServerApplication.java** class and to each service method the `@Secured({ PermissionsProviderSecured.SECURED })` annotation.
 
@@ -393,7 +391,7 @@ public class CandidateService implements ICandidateService {
 </div>
 </div>
 
-## Add permissions for methods
+### Add permissions for methods
 
 Once the methods have been noted, it is necessary to add the service and the method that we have noted to the table of the DB that stores those elements and to the table that indicates the methods for which the role has permission.
 
@@ -410,4 +408,4 @@ INSERT INTO TROLE_SERVER_PERMISSION VALUES(0,4)
 {% endhighlight %}
 
 
-If we try to make requests through [Postman](https://www.postman.com/) to the service of CandidateService, changing the authentication by the user candidate and password candidate, it will give an error, since the user candidate does not belong to the role admin which is the only role that has permissions to make these queries.
+If we try to make requests through [Postman](https://www.postman.com/){:target="_blank"} to the service of CandidateService, changing the authentication by the user candidate and password candidate, it will give an error, since the user candidate does not belong to the role admin which is the only role that has permissions to make these queries.

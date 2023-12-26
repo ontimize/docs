@@ -2,7 +2,7 @@
 title: "Migration from Ontimize 1.x.x to 3.x.x"
 layout: default
 permalink: /basics/migration/
-nav_order: 4
+nav_order: 5
 parent: Basics
 ---
 

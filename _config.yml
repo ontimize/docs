@@ -16,9 +16,9 @@ github:
   - name: "Ontimize"
     url: https://github.com/Ontimize
     icon: assets/icons/github-front.svg
-  - name: "Ontimize Web"
-    url: https://github.com/OntimizeWeb
-    icon: assets/icons/github-front.svg
+  # - name: "Ontimize Web"
+  #   url: https://github.com/OntimizeWeb
+  #   icon: assets/icons/github-front.svg
 color_scheme: ontimize-light
 callouts_level: quiet # or loud
 callouts:

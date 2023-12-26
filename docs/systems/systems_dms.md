@@ -9,16 +9,18 @@ nav_order: 2
 {% include base_path %}
 {% include toc %}
 
-# Introduction
+# DMS System
+
+## Introduction
 A **D**ocument **M**anagement **S**ystem (**DMS**) is a system that allows you to store files and keep track of the versions of those files. Ontimize Boot provides a DMS system that allows to store the files that are associated to the different records of a database table.
 
-# Previous concepts
+## Previous concepts
 - **Document** (or **workspace**): It is superentity into which several files can be grouped. 
 - File: The file is the generic representation of a file. A file groups several versions of itself.
 - Version: Is the relationship to a physical file.
 - **Category** (or **folder**): Is a way of grouping files within the document.
 
-# Prerequisites
+## Prerequisites
 
 {: .note}
 > You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page]({{ base_path }}/getting_started/) and with a REST service.
@@ -50,9 +52,9 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 {: .note}
 > To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
 
-# Steps
-## Database
-### DMS Tables
+## Steps
+### Database
+#### DMS Tables
 
 With the database started, we create the new tables that will store the DMS information.
 
@@ -77,7 +79,7 @@ ALTER TABLE TDMS_DOC_CATEGORY ADD CONSTRAINT TDMS_DOC_CATEGORY_FK FOREIGN KEY(ID
 ALTER TABLE TDMS_DOC_FILE ADD CONSTRAINT TDMS_DOC_FILE_FK_1 FOREIGN KEY(ID_DMS_DOC_CATEGORY) REFERENCES TDMS_DOC_CATEGORY(ID_DMS_DOC_CATEGORY);
 {% endhighlight %}
 
-### Link DMS table with entity table
+#### Link DMS table with entity table
 In this example we want each new candidate added to the application to have its own space to store documents, so we will modify the `CANDIDATES` table to contain a column that stores the primary key of the **document** (or **workspace**) that will be associated with it.
 
 {% highlight sql %}
@@ -88,8 +90,8 @@ ALTER TABLE CANDIDATE ADD ID_DMS_DOC INTEGER;
 ALTER TABLE CANDIDATE ADD CONSTRAINT CANDIDATE_FK FOREIGN KEY(ID_DMS_DOC) REFERENCES TDMS_DOC(ID_DMS_DOC);
 {% endhighlight %}
 
-## Server
-### Add DMS dependencies
+### Server
+#### Add DMS dependencies
 
 <div class="multiColumnRow">
 <div class="multiColumn jstreeloader">
@@ -378,7 +380,7 @@ ALTER TABLE CANDIDATE ADD CONSTRAINT CANDIDATE_FK FOREIGN KEY(ID_DMS_DOC) REFERE
 </div>
 </div>
 
-### Add DMS DAO and modify Candidate DAO
+#### Add DMS DAO and modify Candidate DAO
 A specific DAO will be created for each table in the DMS system, and each of them will implement a different interface. In turn, the candidate DAO will be modified to reflect the new column it contains.
 
 <div class="multiColumnRow">
@@ -1294,7 +1296,7 @@ public class DMSRelatedDocumentDao extends OntimizeJdbcDaoSupport implements IDM
 </div>
 </div>
 
-### Modify CandidateService insert method
+#### Modify CandidateService insert method
 The method of inserting new candidates will be modified so that, when inserting them, they will have a workspace to maintain the files to be uploaded associated with the inserted candidate.
 
 <div class="multiColumnRow">
@@ -1599,7 +1601,7 @@ public class CandidateService implements ICandidateService {
 </div>
 </div>
 
-### Add File Manager Rest Controller
+#### Add File Manager Rest Controller
 
 <div class="multiColumnRow">
 <div class="multiColumn jstreeloader">
@@ -1970,7 +1972,7 @@ public class FileManagerRestController extends DMSRestController<IDMSService, ID
 </div>
 </div>
 
-### Modify application.yml
+#### Modify application.yml
 
 The **application.yml** file will be modified to indicate the path where the dms files will be stored and the engine it will use. [In this link]({{ base_path }}/basics/autoconfigurators/#dms) you have information about the configuration of the DMS system in the **application.yml** file.
 
@@ -2252,7 +2254,7 @@ ontimize:
 </div>
 </div>
 
-### Add permissions
+#### Add permissions
 
 It is necessary to add the permissions required for the role associated with the user to be able to execute REST requests, which are secured. For the example, we will add all the methods and give access to the *demo* user role.
 
