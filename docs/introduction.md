@@ -1,8 +1,9 @@
 ---
 layout: default
 title: Introduction
-permalink: /introduction/
+has_children: true
 nav_order: 2
+permalink: /introduction/
 ---
 
 {% include base_path %}

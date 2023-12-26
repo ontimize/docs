@@ -2,8 +2,9 @@
 layout: default
 title: Prerequisites
 permalink: /prerequisites/
-nav_exclude: true
 excerpt: Prerequisites for the installation and use of an application with Ontimize Boot.
+parent: Introduction
+nav_order: 1
 ---
 
 {% include base_path %}
@@ -14,7 +15,7 @@ excerpt: Prerequisites for the installation and use of an application with Ontim
 
 ## Java JDK 11
 
-Make sure you have the JDK version of Java 1 installed. There are many different builds, but perhaps the most common is Adoptium, which you can download from the following link (add your operating system and your computer's architecture): [Adoptium JDK](https://adoptium.net/es/temurin/releases/?version=11&package=jdk)
+Make sure you have the JDK version of Java 1 installed. There are many different builds, but perhaps the most common is Adoptium, which you can download from the following link (add your operating system and your computer's architecture): [Adoptium JDK](https://adoptium.net/es/temurin/releases/?version=11&package=jdk){:target="_blank"}
 
 > **NOTE**: Check the option to set the JAVA_HOME variable.
 
@@ -22,7 +23,7 @@ Following installation, make sure you have correctly installed Java JDK 1 by inv
 
 > **NOTE**: On the Mac, the command-line is available via the Terminal >application. On the PC, it’s available as Command Prompt.
 
-The result should look similar to
+The result should look similar to:
 
 ```console
 C:\>java -version
@@ -33,9 +34,9 @@ OpenJDK 64-Bit Server VM Temurin-11.0.21+9 (build 11.0.21+9, mixed mode)
 
 ## Maven 3.6.0 or newer
 
-Maven is required for downloading and using the Ontimize Boot application archetype, managing the libraries contained in the framework and even for running the application. You can download Maven from its official project page at the following link: [Maven](https://maven.apache.org/download.cgi)
+Maven is required for downloading and using the Ontimize Boot application archetype, managing the libraries contained in the framework and even for running the application. You can download Maven from its official project page at the following link: [Maven](https://maven.apache.org/download.cgi){:target="_blank"}
 
-Follow the installation steps indicated in the [official web site](https://maven.apache.org/install.html)
+Follow the installation steps indicated in the [official web site](https://maven.apache.org/install.html){:target="_blank"}
 
 To check the installation, run the following command at a command prompt `mvn -v`. The result should look similar to:
 
@@ -50,4 +51,4 @@ OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 
 ## IDE
 
-It is not absolutely necessary to use an IDE, but it is highly recommended and helps the development of the application. We recommend the use of [IntelliJ](https://www.jetbrains.com/idea/download) (in its Community or Ultimate version), [Eclipse](https://www.eclipse.org/downloads/packages/) (in its Enterprise Java and Web Developers version) or [Visual Studio Code](https://code.visualstudio.com/Download).
+It is not absolutely necessary to use an IDE, but it is highly recommended and helps the development of the application. We recommend the use of [IntelliJ](https://www.jetbrains.com/idea/download){:target="_blank"} (in its Community or Ultimate version), [Eclipse](https://www.eclipse.org/downloads/packages/){:target="_blank"} (in its Enterprise Java and Web Developers version) or [Visual Studio Code](https://code.visualstudio.com/Download){:target="_blank"}.
