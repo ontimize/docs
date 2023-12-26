@@ -14,7 +14,7 @@ Ontimize security allows you to set permissions to each role that you assign to 
 
 # Prerequisites
 
-You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page](https://ontimize.github.io/ontimize-boot/getting_started/) and with a REST service.
+You can follow this tutorial using your own application, although for this example we will use an application created using the archetype that can be found [on this page]({{base_path}}/getting_started/) and with a REST service.
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 

@@ -891,7 +891,7 @@ To query the bundle values we create a method that receieves the bundle class, t
 
 {: .note}
 
-> The code to query the values of a bundle is in the previous [section](/ontimize-boot/v1/basics/i18n/#add-i18n-rest-controller).
+> The code to query the values of a bundle is in the previous [section]({{base_path}}/basics/i18n/#add-i18n-rest-controller).
 
 ### Update bundle values
 

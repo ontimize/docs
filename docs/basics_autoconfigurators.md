@@ -19,7 +19,7 @@ Autoconfigurators are an easy way to indicate common elements that need minimal 
 | engine    | _odms_   | Indicates the engine that will be used for the DMS system. Ontimize has an implementation of an engine, whose value is _odms_. |
 | basePath  | _String_ | The path where the DMS files will be stored                                                                                    |
 
-The configuration of DMS system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link](/ontimize-boot/v1/basics/dms/).
+The configuration of DMS system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link]({{base_path}}/basics/dms/).
 
 **Example**
 
@@ -45,7 +45,7 @@ ontimize:
 | bundleValueKeyColumn     | _String_  | Column of the database table containing the key of a translation                                    |
 | engine                   | _default_ | Property to enable the i18n system. Need to have any value, commonly, _default_.                    |
 
-The configuration of the I18N system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link](/ontimize-boot/v1/basics/i18n/).
+The configuration of the I18N system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link]({{base_path}}/basics/i18n/).
 
 **Example**
 
@@ -110,7 +110,7 @@ ontimize:
 | base.dn   | _String_      | List of base DNs.                                                                                                                                  |
 | domain    | _String_      | The domain name                                                                                                                                    |
 
-The LDAP security configuration is done through autoconfigurators. To see the settings, check [this link](/ontimize-boot/v1/basics/ldap).
+The LDAP security configuration is done through autoconfigurators. To see the settings, check [this link]({{base_path}}/basics/ldap).
 
 **Example**
 
@@ -147,7 +147,7 @@ ldap:
 | filterColumnValueJavaMailProperties | _String_ | Name of the key in the row of the key column containing the value for the mail propoerties in the mail service |
 | engine                              | _String_ | Enable or disable mail engine. To enable, have any value int this arribute. By default, use _default_ value    |
 
-The configuration of the mail system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link](/ontimize-boot/v1/basics/mail/).
+The configuration of the mail system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link]({{base_path}}/basics/mail/).
 
 **Example**
 
@@ -257,7 +257,7 @@ ontimize:
 | roleLoginColumn    | _String_ | Database column that stores the username                           |
 | roleNameColumn     | _String_ | Database column that stores the role name                          |
 
-The configuration of the rest of the Security system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link](/ontimize-boot/v1/basics/security/).
+The configuration of the rest of the Security system is done by setting up the necessary DAOs for that system. To see the configuration, check [this link]({{base_path}}/basics/security/).
 
 **Example**
 
