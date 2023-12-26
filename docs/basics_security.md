@@ -392,7 +392,7 @@ public class CandidateService implements ICandidateService {
 
 Once the methods have been noted, it is necessary to add the service and the method that we have noted to the table of the DB that stores those elements and to the table that indicates the methods for which the role has permission.
 
-{% highlight sql lineos%}
+{% highlight sql %}
 INSERT INTO TSERVER_PERMISSION VALUES('com.ontimize.projectwiki.model.core.service.CandidateService/candidateQuery')
 INSERT INTO TSERVER_PERMISSION VALUES('com.ontimize.projectwiki.model.core.service.CandidateService/candidateInsert')
 INSERT INTO TSERVER_PERMISSION VALUES('com.ontimize.projectwiki.model.core.service.CandidateService/candidateUpdate')
