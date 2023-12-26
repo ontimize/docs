@@ -2,7 +2,7 @@ title: Ontimize Boot
 description: Welcome to the Ontimize Boot v3.x.x documentation!
 theme: just-the-docs
 url: https://ontimize.github.io
-logo: images/logo-ontimize-blanco.png
+logo: assets/icons/logo-ontimize-blanco.png
 search_enabled: true
 versions:
   - url: /newdocs/v1
@@ -15,10 +15,10 @@ page_excerpts: true
 github:
   - name: "Ontimize"
     url: https://github.com/Ontimize
-    icon: images/github-front.svg
-  - name: "Ontimize Web"
-    url: https://github.com/OntimizeWeb
-    icon: images/github-front.svg
+    icon: assets/icons/github-front.svg
+  # - name: "Ontimize Web"
+  #   url: https://github.com/OntimizeWeb
+  #   icon: assets/icons/github-front.svg
 color_scheme: ontimize-light
 callouts_level: quiet # or loud
 callouts:
