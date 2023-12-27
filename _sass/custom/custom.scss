@@ -12,7 +12,7 @@
 
 .right-column {
   max-width: calc(100% - 136px);
-  padding-top: 20px;
+  padding-top: 36px;
   box-sizing: border-box;
   border-left: 1px solid #ccc;
   transition: width 0.3s ease; 
@@ -31,6 +31,7 @@
 
 .unstyle {
   all: unset;
+  margin-bottom: 10px;
 }
 
 // //jstree start
