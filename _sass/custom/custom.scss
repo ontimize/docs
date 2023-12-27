@@ -1,3 +1,5 @@
+
+//Multicolumn
 .multicolumn {
   display: flex;
 }
@@ -7,6 +9,14 @@
   max-width: 100%; 
   overflow-x: auto;
   padding: 0 20px 0 0;
+  box-sizing: border-box;
+}
+
+.multicolumnleftnopadding {
+  flex: 1; 
+  max-width: 100%; 
+  overflow-x: auto;
+  padding: 0 0 0 0;
   box-sizing: border-box;
 }
 
@@ -25,8 +35,11 @@
   padding: 0;
   border-left: none;
 }
-.jstreeloader ul>li::before {
-  content: "";
+
+.verticalDivider {
+  border-left: 1px solid #F2F3F3;
+  padding-right: 10px;
+  margin-left: 10px;
 }
 
 .unstyle {
@@ -34,38 +47,10 @@
   margin-bottom: 10px;
 }
 
-// //jstree start
-
-
-// .multiColumnRow {
-//   display: flex;
-// }
-
-// .multiColumnRowJustify {
-//   justify-content: center;
-// }
-
-// .multiColumnGrow {
-//   flex-grow: 1;
-// }
-
-// .multiColumn {
-//   padding: 10px;
-// }
-
-// .verticalDivider {
-//   border-left: 1px solid #F2F3F3;
-// }
-
-// .jstreeloader ul>li::before {
-//   content: "";
-// }
-//Size and margins
-// @media (min-width: 0rem) and ((max-width: 50rem)){
-//   div.jstreeloader{
-//     display: none;
-//   }
-// }
+// //jstree
+.jstreeloader ul>li::before {
+  content: "";
+}
 
 @media (min-width: 50rem) and ((max-width: 66.5rem)){
   #top.main{

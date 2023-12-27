@@ -51,6 +51,7 @@ Fichero → "icon":"{{ base_path }}/assets/jstree/fa-file.svg"
 </div>
 ```
 
+
 <div class="multicolumn">
     <div class="multicolumnleft">
         <button class="unstyle toggle-tree-btn">
@@ -63,4 +64,39 @@ Fichero → "icon":"{{ base_path }}/assets/jstree/fa-file.svg"
   <div class="multicolumnright jstreeloader collapsed">
      <!-- <ul>...</ul> de jstree -->
   </div>
+</div>
+
+## Doble columna (código y código, sin toggle)
+
+```
+Los highlight y endhighlight llevan un % en vez de un -
+
+<div class="multicolumn">
+    <div class="multicolumnleftnopadding" >
+        {- highlight java%}
+            // Aquí el código o lo que sea sin el highlight
+        {- endhighlight %}
+    </div>
+    <div class="verticalDivider"></div>
+    <div class="multicolumnleftnopadding" >
+        {- highlight java%}
+            // Aquí el código o lo que sea sin el highlight
+        {- endhighlight %}
+    </div>
+</div>
+```
+<div class="multicolumn">
+    <div class="multicolumnleftnopadding" >
+        {{ "**First column**"  | markdownify }}
+        {% highlight java%}
+            // Aquí el código o lo que sea sin el highlight
+        {% endhighlight %}
+    </div>
+    <div class="verticalDivider"></div>
+    <div class="multicolumnleftnopadding" >
+        {{ "**Second column**"  | markdownify }}
+        {% highlight java%}
+            // Aquí el código o lo que sea sin el highlight
+        {% endhighlight %}
+    </div>
 </div>
