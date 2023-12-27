@@ -1,8 +1,8 @@
-.custom-container {
+.multicolumn {
   display: flex;
 }
 
-.left-column {
+.multicolumnleft {
   flex: 1; 
   max-width: 100%; 
   overflow-x: auto;
@@ -10,7 +10,7 @@
   box-sizing: border-box;
 }
 
-.right-column {
+.multicolumnright {
   max-width: calc(100% - 136px);
   padding-top: 36px;
   box-sizing: border-box;
@@ -19,7 +19,7 @@
   overflow-x: auto;
 }
 
-.right-column.collapsed {
+.multicolumnright.collapsed {
   width: 0;
   overflow: hidden;
   padding: 0;

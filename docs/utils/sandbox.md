@@ -36,8 +36,8 @@ Los highlight y endhighlight llevan un % en vez de un -
 Carpeta → "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"
 Fichero → "icon":"{{ base_path }}/assets/jstree/fa-file.svg"
 
-<div class="custom-container">
-    <div class="left-column">
+<div class="multicolumn">
+    <div class="multicolumnleft">
         <button class="unstyle toggle-tree-btn">
             <div class="btn">Toggle Tree</div>
         </button>
@@ -45,14 +45,14 @@ Fichero → "icon":"{{ base_path }}/assets/jstree/fa-file.svg"
             // Aquí el código o lo que sea sin el highlight
         {- endhighlight %}
   </div>
-  <div class="right-column jstreeloader collapsed">
+  <div class="multicolumnright jstreeloader collapsed">
     // <ul> </ul> de jstree
   </div>
 </div>
 ```
 
-<div class="custom-container">
-    <div class="left-column">
+<div class="multicolumn">
+    <div class="multicolumnleft">
         <button class="unstyle toggle-tree-btn">
             <div class="btn">Toggle Tree</div>
         </button>
@@ -60,7 +60,7 @@ Fichero → "icon":"{{ base_path }}/assets/jstree/fa-file.svg"
             // Aquí el código o lo que sea sin el highlight
         {% endhighlight %}
   </div>
-  <div class="right-column jstreeloader collapsed">
+  <div class="multicolumnright jstreeloader collapsed">
      <!-- <ul>...</ul> de jstree -->
   </div>
 </div>
