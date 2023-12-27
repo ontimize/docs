@@ -10112,6 +10112,14 @@ blockquote.warning-title > p:last-child {
   box-sizing: border-box;
 }
 
+.multicolumnleftnopadding {
+  flex: 1;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 0 0 0 0;
+  box-sizing: border-box;
+}
+
 .multicolumnright {
   max-width: calc(100% - 136px);
   padding-top: 36px;
@@ -10128,13 +10136,19 @@ blockquote.warning-title > p:last-child {
   border-left: none;
 }
 
-.jstreeloader ul > li::before {
-  content: "";
+.verticalDivider {
+  border-left: 1px solid #F2F3F3;
+  padding-right: 10px;
+  margin-left: 10px;
 }
 
 .unstyle {
   all: unset;
   margin-bottom: 10px;
+}
+
+.jstreeloader ul > li::before {
+  content: "";
 }
 
 @media (min-width: 50rem) and ((max-width: 66.5rem)) {
