@@ -23,8 +23,8 @@ Ontimize provides a system to export the DAO data of a service and dump it direc
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multiColumnRow multiColumnRowJustify">
-  <div class="multiColumn multiColumnGrow" >
+<div class="multicolumn">
+  <div class="multicolumnleftnopadding" >
   {{ "**Initial project**
 
     /$ git clone https://github.com/ontimize/ontimize-examples
@@ -34,7 +34,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow">
+<div class="multicolumnleftnopadding">
 
   {{ "**Final example**
 
@@ -56,8 +56,39 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
 Two dependencies need to be added, one to the ws module containing the controllers (so that it can respond to the export request) and one to the boot module to be able to load the autoconfigurator in the application.yml file for export.
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+
+      <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{ "**projectwiki-boot/pom.xml**" | markdownify }}
+{% highlight xml %}
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>com.ontimize.boot</groupId>
+            <artifactId>ontimize-boot-starter-webaddons</artifactId>
+        </dependency>
+        ...
+    </dependencies>
+{% endhighlight %}
+
+{{ "**projectwiki-ws/pom.xml**" | markdownify }}
+{% highlight xml %}
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>com.ontimize.jee</groupId>
+            <artifactId>ontimize-jee-webclient-addons</artifactId>
+        </dependency>
+        ...
+    </dependencies>
+{% endhighlight %}
+
+  </div>
+    <div class="multicolumnright jstreeloader collapsed" >
     <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -311,40 +342,38 @@ Two dependencies need to be added, one to the ws module containing the controlle
   </li>
 </ul>
   </div>
-  <div class="multiColumn multiColumnGrow" >
-
-{{ "**projectwiki-boot/pom.xml**" | markdownify }}
-{% highlight xml %}
-    <dependencies>
-        ...
-        <dependency>
-            <groupId>com.ontimize.boot</groupId>
-            <artifactId>ontimize-boot-starter-webaddons</artifactId>
-        </dependency>
-        ...
-    </dependencies>
-{% endhighlight %}
-
-{{ "**projectwiki-ws/pom.xml**" | markdownify }}
-{% highlight xml %}
-    <dependencies>
-        ...
-        <dependency>
-            <groupId>com.ontimize.jee</groupId>
-            <artifactId>ontimize-jee-webclient-addons</artifactId>
-        </dependency>
-        ...
-    </dependencies>
-{% endhighlight %}
-
-  </div>
 </div>
 
 ## Add export url to application.yml
 In the application.yml file, a configuration will be added to allow indicating the export URL and the extension used.
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+
+      <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{ "**ontimize:export:**
+
+| Attribute | Values | Meaning |
+|--|--|--|
+| url | *String* | Specifies the path to use the export system. |
+| enable | *Boolean* | Indicates when export is enabled.  |
+
+**Example**
+```yaml
+...
+ontimize:
+...
+   export:
+      url: /export
+      enable: true
+...
+```
+"| markdownify }}
+  </div>
+  <div class="multicolumnright jstreeloader collapsed" >
     <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -597,27 +626,6 @@ In the application.yml file, a configuration will be added to allow indicating t
   </ul>
   </li>
 </ul>
-  </div>
-  <div class="multiColumn multiColumnGrow" >
-
-{{ "**ontimize:export:**
-
-| Attribute | Values | Meaning |
-|--|--|--|
-| url | *String* | Specifies the path to use the export system. |
-| enable | *Boolean* | Indicates when export is enabled.  |
-
-**Example**
-```yaml
-...
-ontimize:
-...
-   export:
-      url: /export
-      enable: true
-...
-```
-"| markdownify }}
   </div>
 </div>
 
