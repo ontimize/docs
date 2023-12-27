@@ -147,8 +147,88 @@ The use of the `<AmbiguousColumn>` tag will indicate which are the ambiguous col
 
 ### Complete example
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+  {{ "**OfferCandidatesDao.xml**"| markdownify }}
+
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+ xmlns="http://www.ontimize.com/schema/jdbc"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+ catalog="" schema="${mainschema}" table="OFFER_CANDIDATES"
+ datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+ <DeleteKeys>
+  <Column>ID</Column>
+ </DeleteKeys>
+ <UpdateKeys>
+  <Column>ID</Column>
+ </UpdateKeys>
+ <GeneratedKey>ID</GeneratedKey>
+
+ <Queries>
+  <Query id="details">
+   <AmbiguousColumns>
+    <AmbiguousColumn name="DESC_STATUS" prefix="OS"
+     databaseName="DESCRIPTION" />
+    <AmbiguousColumn name="OFF_STATUS" prefix="OCS"
+     databaseName="DESCRIPTION" />
+   </AmbiguousColumns>
+   <Sentence>
+   <![CDATA[
+     SELECT
+      #COLUMNS#
+     FROM
+      PUBLIC.OFFER_CANDIDATES OC
+     INNER JOIN PUBLIC.OFFER O ON
+      OC.OFFER_ID = O.ID
+     INNER JOIN PUBLIC.CANDIDATE C ON
+      OC.CANDIDATE_ID = C.ID
+     INNER JOIN PUBLIC.OFFER_STATUS OS ON
+      O.OFFER_STATUS = OS.ID
+     INNER JOIN PUBLIC.OFFER_CANDIDATE_STATUS OCS ON
+      O.OFFER_STATUS = OCS.ID
+     #WHERE#
+   ]]>
+   </Sentence>
+  </Query>
+ </Queries>
+</JdbcEntitySetup>
+{% endhighlight %}
+<br>
+In the java file, we will add a new constant, which will have the same value as the name of the identifier that we have established for the query. 
+<br><br>
+
+{{"**OfferCandidatesDao.java**" | markdownify}}
+
+{% highlight java %}
+package com.ontimize.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+
+@Repository("OfferCandidatesDao")
+@Lazy
+@ConfigurationFile(configurationFile = "dao/OfferCandidatesDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class OfferCandidatesDao extends OntimizeJdbcDaoSupport {
+
+ public static final String ATTR_ID ="ID";
+ public static final String ATTR_OFFER_ID ="OFFER_ID";
+ public static final String ATTR_CANDIDATE_ID ="CANDIDATE_ID";
+ public static final String ATTR_OFFER_CANDIDATE_STATUS ="OFFER_CANDIDATE_STATUS";
+ public static final String QUERY_OFFER_DETAILS = "details";
+  
+}
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-boot-tutorial
@@ -559,83 +639,6 @@ The use of the `<AmbiguousColumn>` tag will indicate which are the ambiguous col
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-  {{ "**OfferCandidatesDao.xml**"| markdownify }}
-
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
- xmlns="http://www.ontimize.com/schema/jdbc"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
- catalog="" schema="${mainschema}" table="OFFER_CANDIDATES"
- datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
- <DeleteKeys>
-  <Column>ID</Column>
- </DeleteKeys>
- <UpdateKeys>
-  <Column>ID</Column>
- </UpdateKeys>
- <GeneratedKey>ID</GeneratedKey>
-
- <Queries>
-  <Query id="details">
-   <AmbiguousColumns>
-    <AmbiguousColumn name="DESC_STATUS" prefix="OS"
-     databaseName="DESCRIPTION" />
-    <AmbiguousColumn name="OFF_STATUS" prefix="OCS"
-     databaseName="DESCRIPTION" />
-   </AmbiguousColumns>
-   <Sentence>
-   <![CDATA[
-     SELECT
-      #COLUMNS#
-     FROM
-      PUBLIC.OFFER_CANDIDATES OC
-     INNER JOIN PUBLIC.OFFER O ON
-      OC.OFFER_ID = O.ID
-     INNER JOIN PUBLIC.CANDIDATE C ON
-      OC.CANDIDATE_ID = C.ID
-     INNER JOIN PUBLIC.OFFER_STATUS OS ON
-      O.OFFER_STATUS = OS.ID
-     INNER JOIN PUBLIC.OFFER_CANDIDATE_STATUS OCS ON
-      O.OFFER_STATUS = OCS.ID
-     #WHERE#
-   ]]>
-   </Sentence>
-  </Query>
- </Queries>
-</JdbcEntitySetup>
-{% endhighlight %}
-<br>
-In the java file, we will add a new constant, which will have the same value as the name of the identifier that we have established for the query. 
-<br><br>
-
-{{"**OfferCandidatesDao.java**" | markdownify}}
-
-{% highlight java %}
-package com.ontimize.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-
-@Repository("OfferCandidatesDao")
-@Lazy
-@ConfigurationFile(configurationFile = "dao/OfferCandidatesDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class OfferCandidatesDao extends OntimizeJdbcDaoSupport {
-
- public static final String ATTR_ID ="ID";
- public static final String ATTR_OFFER_ID ="OFFER_ID";
- public static final String ATTR_CANDIDATE_ID ="CANDIDATE_ID";
- public static final String ATTR_OFFER_CANDIDATE_STATUS ="OFFER_CANDIDATE_STATUS";
- public static final String QUERY_OFFER_DETAILS = "details";
-  
-}
-{% endhighlight %}
-</div>
 </div>
 
 
@@ -643,8 +646,50 @@ public class OfferCandidatesDao extends OntimizeJdbcDaoSupport {
 
 We will update the IOfferService interface to add the new method that will perform the query. In case of being the default query, it would not be necessary to do any of the steps indicated below.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+  {{ "**IOfferService.java**"| markdownify }}
+
+{% highlight java %}
+public interface IOfferService {
+
+        ...
+ // OFFER CANDIDATES
+ ...
+ public EntityResult offerCandidateDetailsQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
+
+        ...
+ // OFFER CANDIDATES STATUS
+        ...
+}
+{% endhighlight %}
+<br>
+In the service, we implement the new interface method, using the daoHelper to create the query, but adding a new parameter after the list of columns to query, which will be the identifier of the query that we have created in the DAO (and that we have associated with a constant in the corresponding java file). 
+<br><br>
+
+{{"**OfferService.java**" | markdownify}}
+
+{% highlight java %}
+@Service("OfferService")
+@Lazy
+public class OfferService implements IOfferService {
+
+ ...
+
+ @Override
+ public EntityResult offerCandidateDetailsQuery(Map<String, Object> keyMap, List<String> attrList)
+   throws OntimizeJEERuntimeException {
+  return this.daoHelper.query(this.offerCandidatesDao, keyMap, attrList, OfferCandidatesDao.QUERY_OFFER_DETAILS);
+ }
+
+ ...
+}
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-boot-tutorial
@@ -1054,44 +1099,5 @@ We will update the IOfferService interface to add the new method that will perfo
   </ul>
   </li>
 </ul>
-</div>
-<div class="multiColumn multiColumnGrow">
-  {{ "**IOfferService.java**"| markdownify }}
-
-{% highlight java %}
-public interface IOfferService {
-
-        ...
- // OFFER CANDIDATES
- ...
- public EntityResult offerCandidateDetailsQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
-
-        ...
- // OFFER CANDIDATES STATUS
-        ...
-}
-{% endhighlight %}
-<br>
-In the service, we implement the new interface method, using the daoHelper to create the query, but adding a new parameter after the list of columns to query, which will be the identifier of the query that we have created in the DAO (and that we have associated with a constant in the corresponding java file). 
-<br><br>
-
-{{"**OfferService.java**" | markdownify}}
-
-{% highlight java %}
-@Service("OfferService")
-@Lazy
-public class OfferService implements IOfferService {
-
- ...
-
- @Override
- public EntityResult offerCandidateDetailsQuery(Map<String, Object> keyMap, List<String> attrList)
-   throws OntimizeJEERuntimeException {
-  return this.daoHelper.query(this.offerCandidatesDao, keyMap, attrList, OfferCandidatesDao.QUERY_OFFER_DETAILS);
- }
-
- ...
-}
-{% endhighlight %}
 </div>
 </div>
