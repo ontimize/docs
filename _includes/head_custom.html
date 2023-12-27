@@ -31,11 +31,13 @@
 <script src="{{ base_path }}/assets/jstree/jstree.min.js"></script>
 <script>$(document).ready(function () { $('.jstreeloader').jstree(); });</script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('toggle-tree').addEventListener('click', function() {
-        var treeColumn = document.getElementById('tree-column');
-        treeColumn.classList.toggle('collapsed');
+  document.addEventListener('DOMContentLoaded', function() {
+    var toggleButtons = document.getElementsByClassName('toggle-tree-btn');
+    for (let btn of toggleButtons) {
+      btn.addEventListener('click', function() {
+        btn.closest('.custom-container').querySelector('.jstreeloader').classList.toggle('collapsed');
       });
-    });
+    }
+   });
   </script>
 <!-- end custom head snippets -->
