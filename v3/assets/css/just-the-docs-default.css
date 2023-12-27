@@ -9836,6 +9836,43 @@ blockquote.warning-title > p:last-child {
   margin-bottom: 0;
 }
 
+.multicolumn {
+  display: flex;
+}
+
+.multicolumnleft {
+  flex: 1;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 0 20px 0 0;
+  box-sizing: border-box;
+}
+
+.multicolumnright {
+  max-width: calc(100% - 136px);
+  padding-top: 36px;
+  box-sizing: border-box;
+  border-left: 1px solid #ccc;
+  transition: width 0.3s ease;
+  overflow-x: auto;
+}
+
+.multicolumnright.collapsed {
+  width: 0;
+  overflow: hidden;
+  padding: 0;
+  border-left: none;
+}
+
+.jstreeloader ul > li::before {
+  content: "";
+}
+
+.unstyle {
+  all: unset;
+  margin-bottom: 10px;
+}
+
 @media (min-width: 50rem) and ((max-width: 66.5rem)) {
   #top.main {
     max-width: none;
@@ -9860,30 +9897,6 @@ blockquote.warning-title > p:last-child {
 table {
   table-layout: auto;
   width: 120px;
-}
-
-.multiColumnRow {
-  display: flex;
-}
-
-.multiColumnRowJustify {
-  justify-content: center;
-}
-
-.multiColumnGrow {
-  flex-grow: 1;
-}
-
-.multiColumn {
-  padding: 10px;
-}
-
-.verticalDivider {
-  border-left: 1px solid #F2F3F3;
-}
-
-.jstreeloader ul > li::before {
-  content: "";
 }
 
 .text-primary-900 {
