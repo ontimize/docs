@@ -30,4 +30,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 <script src="{{ base_path }}/assets/jstree/jstree.min.js"></script>
 <script>$(document).ready(function () { $('.jstreeloader').jstree(); });</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('toggle-tree').addEventListener('click', function() {
+        var treeColumn = document.getElementById('tree-column');
+        treeColumn.classList.toggle('collapsed');
+      });
+    });
+  </script>
 <!-- end custom head snippets -->
