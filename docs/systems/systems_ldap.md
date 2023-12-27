@@ -60,7 +60,6 @@ INSERT INTO TUSER_ROLE (ID_ROLENAME,USER_) VALUES (0,'domain.username');
 
 
 ### Autoconfigurators
-
 #### Add LDAP autoconfigurators
 
 <div class="multiColumnRow">
