@@ -34,8 +34,21 @@ Open a console and type the next command:
 
 ## Start the project
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+  <div class="multicolumnleft">
+          <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+{{ "To start the project, it is necessary to start both the database and the server.
+The first thing to do is to execute the `mvn install` command inside the project's root folder
+
+    $ cd app
+    /app$ mvn install
+
+" | markdownify }}
+
+  </div>
+  <div class="multicolumnright jstreeloader collapsed" >
     <ul>
   <li data-jstree='{"selected": true, "opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   app
@@ -230,22 +243,24 @@ Open a console and type the next command:
   </li>
 </ul>
   </div>
-  <div class="multiColumn">
-{{ "To start the project, it is necessary to start both the database and the server.
-The first thing to do is to execute the `mvn install` command inside the project's root folder
-
-    $ cd app
-    /app$ mvn install
-
-" | markdownify }}
-
-  </div>
 </div>
 
 ### Start the database
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+      <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+  {{ "Next, we navigate to the `model` folder to start the HSQLDB database
+
+    /app$ cd model
+    /app/model$ mvn exec:java -Prun_database
+
+" | markdownify }}
+
+  </div>
+  <div class="multicolumnright jstreeloader collapsed" >
     <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   app
@@ -440,21 +455,24 @@ The first thing to do is to execute the `mvn install` command inside the project
   </li>
 </ul>
   </div>
-  <div class="multiColumn">
-  {{ "Next, we navigate to the `model` folder to start the HSQLDB database
-
-    /app$ cd model
-    /app/model$ mvn exec:java -Prun_database
-
-" | markdownify }}
-
-  </div>
 </div>
 
 ### Start the server
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+      <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+  {{ "To start the server, open a new console in the root folder of the project, navigate to `boot` folder and type the following command
+
+    /app$ cd boot
+    /app/boot$ mvn spring-boot:run
+
+" | markdownify }}
+
+  </div>
+  <div class="multicolumnright jstreeloader collapsed" >
     <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   app
@@ -648,15 +666,6 @@ The first thing to do is to execute the `mvn install` command inside the project
   </ul>
   </li>
 </ul>
-  </div>
-  <div class="multiColumn">
-  {{ "To start the server, open a new console in the root folder of the project, navigate to `boot` folder and type the following command
-
-    /app$ cd boot
-    /app/boot$ mvn spring-boot:run
-
-" | markdownify }}
-
   </div>
 </div>
 
