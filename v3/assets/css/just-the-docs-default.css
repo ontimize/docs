@@ -9836,18 +9836,30 @@ blockquote.warning-title > p:last-child {
   margin-bottom: 0;
 }
 
+@media (min-width: 50rem) and ((max-width: 66.5rem)) {
+  #top.main {
+    max-width: none;
+    margin-left: 16.5rem;
+  }
+}
+@media (min-width: 66.5rem) {
+  body > div.side-bar {
+    min-width: auto;
+    width: auto;
+  }
+  #top.main {
+    max-width: none;
+    margin-left: calc(16.5rem + 1px);
+  }
+}
+@media (min-width: 50rem) {
+  div.side-bar {
+    width: 16.5rem;
+  }
+}
 table {
   table-layout: auto;
   width: 120px;
-}
-
-body > div.side-bar {
-  width: auto;
-}
-
-#top.main {
-  max-width: none;
-  margin-left: calc(16.5rem + 1px);
 }
 
 .multiColumnRow {
