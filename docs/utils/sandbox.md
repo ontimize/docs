@@ -39,17 +39,17 @@ nav_order: X
         {% endhighlight %}
     </div>
     <div class="right-column jstreeloader collapsed" id="tree-column">
-    // jsTree <ul>...</ul>
+        // jsTree <ul>...</ul>
     </div>
 </div>
 ```
 
 <div class="custom-container">
-  <div class="left-column">
+    <div class="left-column">
         <button id="toggle-tree" class="unstyle">
-        <div class="btn">Toggle Tree</div>
-      </button>
-    {% highlight java%}
+            <div class="btn">Toggle Tree</div>
+        </button>
+        {% highlight java%}
         package com.ontimize.projectwiki.security;
 
         import java.io.IOException;
