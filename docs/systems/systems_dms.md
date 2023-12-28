@@ -27,8 +27,8 @@ A **D**ocument **M**anagement **S**ystem (**DMS**) is a system that allows you t
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multiColumnRow multiColumnRowJustify">
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumn">
+<div class="multicolumnnopadding" >
   {{ "**Initial project**
 
     /$ git clone https://github.com/ontimize/ontimize-examples 
@@ -37,7 +37,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
     | markdownify }}
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumnnopadding" >
 
   {{ "**Final example**
 
@@ -93,9 +93,48 @@ ALTER TABLE CANDIDATE ADD CONSTRAINT CANDIDATE_FK FOREIGN KEY(ID_DMS_DOC) REFERE
 ### Server
 #### Add DMS dependencies
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
-<ul class="sticky">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+  {{ "**model/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+  ...
+  <dependency>
+    <groupId>com.ontimize.jee.dms</groupId>
+    <artifactId>ontimize-jee-dms-server</artifactId>
+  </dependency>
+
+  <dependency>
+    <groupId>com.ontimize.jee.dms</groupId>
+    <artifactId>ontimize-jee-dms-common</artifactId>
+  </dependency>
+  ...
+</dependencies>
+...
+{% endhighlight %}
+
+  {{ "**ws/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+  ...
+    <dependency>
+        <groupId>com.ontimize.jee.dms</groupId>
+        <artifactId>ontimize-jee-dms-rest</artifactId>
+    </dependency>
+  ...
+</dependencies>
+...
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
+<ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
   <ul>
@@ -342,49 +381,244 @@ ALTER TABLE CANDIDATE ADD CONSTRAINT CANDIDATE_FK FOREIGN KEY(ID_DMS_DOC) REFERE
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-  {{ "**model/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-  ...
-  <dependency>
-    <groupId>com.ontimize.jee.dms</groupId>
-    <artifactId>ontimize-jee-dms-server</artifactId>
-  </dependency>
-
-  <dependency>
-    <groupId>com.ontimize.jee.dms</groupId>
-    <artifactId>ontimize-jee-dms-common</artifactId>
-  </dependency>
-  ...
-</dependencies>
-...
-{% endhighlight %}
-
-  {{ "**ws/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-  ...
-    <dependency>
-        <groupId>com.ontimize.jee.dms</groupId>
-        <artifactId>ontimize-jee-dms-rest</artifactId>
-    </dependency>
-  ...
-</dependencies>
-...
-{% endhighlight %}
-</div>
 </div>
 
 #### Add DMS DAO and modify Candidate DAO
 A specific DAO will be created for each table in the DMS system, and each of them will implement a different interface. In turn, the candidate DAO will be modified to reflect the new column it contains.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{ "**DMSCategoryDao.xml**" | markdownify}}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+  xmlns="http://www.ontimize.com/schema/jdbc"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+  catalog="" schema="${mainschema}" table="TDMS_DOC_CATEGORY"
+  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+  <DeleteKeys>
+    <Column>ID_DMS_DOC_CATEGORY</Column>
+  </DeleteKeys>
+  <UpdateKeys>
+    <Column>ID_DMS_DOC_CATEGORY</Column>
+  </UpdateKeys>
+  <GeneratedKey>ID_DMS_DOC_CATEGORY</GeneratedKey>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+{{ "**DMSDocumentDao.xml**" | markdownify}}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+  xmlns="http://www.ontimize.com/schema/jdbc"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+  catalog="" schema="${mainschema}" table="TDMS_DOC"
+  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+  <DeleteKeys>
+    <Column>ID_DMS_DOC</Column>
+  </DeleteKeys>
+  <UpdateKeys>
+    <Column>ID_DMS_DOC</Column>
+  </UpdateKeys>
+  <GeneratedKey>ID_DMS_DOC</GeneratedKey>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+
+{{ "**DMSDocumentFileDao.xml**" | markdownify}}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+  xmlns="http://www.ontimize.com/schema/jdbc"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+  catalog="" schema="${mainschema}" table="TDMS_DOC_FILE"
+  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+  <DeleteKeys>
+    <Column>ID_DMS_DOC_FILE</Column>
+  </DeleteKeys>
+  <UpdateKeys>
+    <Column>ID_DMS_DOC_FILE</Column>
+  </UpdateKeys>
+  <GeneratedKey>ID_DMS_DOC_FILE</GeneratedKey>
+  <Queries>
+    <Query id="default">
+      <AmbiguousColumns>
+        <AmbiguousColumn name="ID_DMS_DOC_FILE"
+          prefix="tddf" />
+        <AmbiguousColumn name="ID_DMS_DOC" prefix="tddf" />
+      </AmbiguousColumns>
+      <ValidColumns>
+        <!-- TDMS_DOC_FILE -->
+        <Column>ID_DMS_DOC_FILE</Column>
+        <Column>FILE_NAME</Column>
+        <Column>ID_DMS_DOC</Column>
+        <Column>FILE_TYPE</Column>
+        <Column>ID_DMS_DOC_CATEGORY</Column>
+        <!-- TDMS_DOC -->
+        <Column>ID_DMS_DOC</Column>
+        <Column>UPDATE_DATE</Column>
+        <Column>UPDATE_BY_ID</Column>
+        <Column>DOC_NAME</Column>
+        <Column>OWNER_ID</Column>
+        <Column>DOC_DESCRIPTION</Column>
+        <Column>DOC_KEYWORDS</Column>
+        <!-- TDMS_DOC_FILE_VERSION -->
+        <Column>ID_DMS_DOC_FILE_VERSION</Column>
+        <Column>FILE_PATH</Column>
+        <Column>VERSION</Column>
+        <Column>FILE_DESCRIPTION</Column>
+        <Column>IS_ACTIVE</Column>
+        <Column>FILE_ADDED_DATE</Column>
+        <Column>FILE_ADDED_USER_ID</Column>
+        <Column>ID_DMS_DOC_FILE</Column>
+        <Column>THUMBNAIL</Column>
+        <Column>FILE_SIZE</Column>
+      </ValidColumns>
+      <Sentence>
+        <![CDATA[
+          SELECT
+            #COLUMNS#
+          FROM
+            ${mainschema}.TDMS_DOC_FILE AS tddf
+            JOIN ${mainschema}.TDMS_DOC AS tdd ON tddf.ID_DMS_DOC = tdd.ID_DMS_DOC
+            LEFT JOIN ${mainschema}.TDMS_DOC_FILE_VERSION AS tddfv ON tddf.id_dms_doc_file = tddfv.id_dms_doc_file
+          WHERE (tddfv.IS_ACTIVE = 'Y' OR tddfv.id_dms_doc_file_version IS NULL)
+          #WHERE_CONCAT#
+          #ORDER#
+         ]]>
+    </Sentence>
+    </Query>
+    <Query id="allfiles">
+      <AmbiguousColumns>
+        <AmbiguousColumn name="ID_DMS_DOC_FILE"
+          prefix="tddf" />
+      </AmbiguousColumns>
+      <ValidColumns>
+        <Column>ID_DMS_DOC_FILE</Column>
+        <Column>FILE_NAME</Column>
+        <Column>ID_DMS_DOC</Column>
+        <Column>FILE_TYPE</Column>
+        <Column>ID_DMS_DOC_CATEGORY</Column>
+      </ValidColumns>
+      <Sentence>
+        <![CDATA[
+          SELECT
+            #COLUMNS#
+          FROM
+            ${mainschema}.TDMS_DOC_FILE AS tddf
+          #WHERE#
+          #ORDER#
+         ]]>
+    </Sentence>
+    </Query>
+  </Queries>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+{{ "**DMSDocumentFileVersionDao.xml**" | markdownify}}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+  xmlns="http://www.ontimize.com/schema/jdbc"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+  catalog="" schema="${mainschema}" table="TDMS_DOC_FILE_VERSION"
+  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+  <DeleteKeys>
+    <Column>ID_DMS_DOC_FILE_VERSION</Column>
+  </DeleteKeys>
+  <UpdateKeys>
+    <Column>ID_DMS_DOC_FILE_VERSION</Column>
+  </UpdateKeys>
+  <GeneratedKey>ID_DMS_DOC_FILE_VERSION</GeneratedKey>
+  <Queries>
+    <Query id="default">
+      <AmbiguousColumns>
+        <AmbiguousColumn name="ID_DMS_DOC_FILE"
+          prefix="tddfv" />
+      </AmbiguousColumns>
+      <ValidColumns>
+        <!-- TDMS_DOC_FILE_VERSION -->
+        <Column>ID_DMS_DOC_FILE_VERSION</Column>
+        <Column>FILE_PATH</Column>
+        <Column>VERSION</Column>
+        <Column>FILE_DESCRIPTION</Column>
+        <Column>IS_ACTIVE</Column>
+        <Column>FILE_ADDED_DATE</Column>
+        <Column>FILE_ADDED_USER_ID</Column>
+        <Column>ID_DMS_DOC_FILE</Column>
+        <Column>THUMBNAIL</Column>
+        <Column>FILE_SIZE</Column>
+        <!-- TDMS_DOC_FILE -->
+        <Column>ID_DMS_DOC_FILE</Column>
+        <Column>FILE_NAME</Column>
+        <Column>ID_DMS_DOC</Column>
+        <Column>FILE_TYPE</Column>
+        <Column>ID_DMS_DOC_CATEGORY</Column>
+      </ValidColumns>
+      <Sentence>
+        <![CDATA[
+           SELECT
+             #COLUMNS#
+        FROM
+          ${mainschema}.TDMS_DOC_FILE_VERSION AS tddfv
+          LEFT JOIN ${mainschema}.TDMS_DOC_FILE AS tddf ON tddfv.ID_DMS_DOC_FILE = tddf.ID_DMS_DOC_FILE
+        #WHERE#
+        #ORDER#
+         ]]>
+      </Sentence>
+    </Query>
+  </Queries>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+{{ "**DMSDocumentPropertyDao.xml**" | markdownify}}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+  xmlns="http://www.ontimize.com/schema/jdbc"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+  catalog="" schema="${mainschema}" table="TDMS_DOC_PROPERTY"
+  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+  <DeleteKeys>
+    <Column>ID_DMS_DOC_PROPERTY</Column>
+  </DeleteKeys>
+  <UpdateKeys>
+    <Column>ID_DMS_DOC_PROPERTY</Column>
+  </UpdateKeys>
+  <GeneratedKey>ID_DMS_DOC_PROPERTY</GeneratedKey>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+{{ "**DMSRelatedDocumentDao.xml**" | markdownify}}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+  xmlns="http://www.ontimize.com/schema/jdbc"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+  catalog="" schema="${mainschema}" table="TDMS_RELATED_DOC"
+  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+  <DeleteKeys>
+    <Column>ID_DMS_RELATED_PROPERTY</Column>
+  </DeleteKeys>
+  <UpdateKeys>
+    <Column>ID_DMS_RELATED_PROPERTY</Column>
+  </UpdateKeys>
+  <GeneratedKey>ID_DMS_RELATED_PROPERTY</GeneratedKey>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -638,238 +872,177 @@ A specific DAO will be created for each table in the DMS system, and each of the
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{ "**DMSCategoryDao.xml**" | markdownify}}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-  xmlns="http://www.ontimize.com/schema/jdbc"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-  catalog="" schema="${mainschema}" table="TDMS_DOC_CATEGORY"
-  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
-  <DeleteKeys>
-    <Column>ID_DMS_DOC_CATEGORY</Column>
-  </DeleteKeys>
-  <UpdateKeys>
-    <Column>ID_DMS_DOC_CATEGORY</Column>
-  </UpdateKeys>
-  <GeneratedKey>ID_DMS_DOC_CATEGORY</GeneratedKey>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-{{ "**DMSDocumentDao.xml**" | markdownify}}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-  xmlns="http://www.ontimize.com/schema/jdbc"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-  catalog="" schema="${mainschema}" table="TDMS_DOC"
-  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
-  <DeleteKeys>
-    <Column>ID_DMS_DOC</Column>
-  </DeleteKeys>
-  <UpdateKeys>
-    <Column>ID_DMS_DOC</Column>
-  </UpdateKeys>
-  <GeneratedKey>ID_DMS_DOC</GeneratedKey>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-
-{{ "**DMSDocumentFileDao.xml**" | markdownify}}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-  xmlns="http://www.ontimize.com/schema/jdbc"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-  catalog="" schema="${mainschema}" table="TDMS_DOC_FILE"
-  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
-  <DeleteKeys>
-    <Column>ID_DMS_DOC_FILE</Column>
-  </DeleteKeys>
-  <UpdateKeys>
-    <Column>ID_DMS_DOC_FILE</Column>
-  </UpdateKeys>
-  <GeneratedKey>ID_DMS_DOC_FILE</GeneratedKey>
-  <Queries>
-    <Query id="default">
-      <AmbiguousColumns>
-        <AmbiguousColumn name="ID_DMS_DOC_FILE"
-          prefix="tddf" />
-        <AmbiguousColumn name="ID_DMS_DOC" prefix="tddf" />
-      </AmbiguousColumns>
-      <ValidColumns>
-        <!-- TDMS_DOC_FILE -->
-        <Column>ID_DMS_DOC_FILE</Column>
-        <Column>FILE_NAME</Column>
-        <Column>ID_DMS_DOC</Column>
-        <Column>FILE_TYPE</Column>
-        <Column>ID_DMS_DOC_CATEGORY</Column>
-        <!-- TDMS_DOC -->
-        <Column>ID_DMS_DOC</Column>
-        <Column>UPDATE_DATE</Column>
-        <Column>UPDATE_BY_ID</Column>
-        <Column>DOC_NAME</Column>
-        <Column>OWNER_ID</Column>
-        <Column>DOC_DESCRIPTION</Column>
-        <Column>DOC_KEYWORDS</Column>
-        <!-- TDMS_DOC_FILE_VERSION -->
-        <Column>ID_DMS_DOC_FILE_VERSION</Column>
-        <Column>FILE_PATH</Column>
-        <Column>VERSION</Column>
-        <Column>FILE_DESCRIPTION</Column>
-        <Column>IS_ACTIVE</Column>
-        <Column>FILE_ADDED_DATE</Column>
-        <Column>FILE_ADDED_USER_ID</Column>
-        <Column>ID_DMS_DOC_FILE</Column>
-        <Column>THUMBNAIL</Column>
-        <Column>FILE_SIZE</Column>
-      </ValidColumns>
-      <Sentence>
-        <![CDATA[
-          SELECT
-            #COLUMNS#
-          FROM
-            ${mainschema}.TDMS_DOC_FILE AS tddf
-            JOIN ${mainschema}.TDMS_DOC AS tdd ON tddf.ID_DMS_DOC = tdd.ID_DMS_DOC
-            LEFT JOIN ${mainschema}.TDMS_DOC_FILE_VERSION AS tddfv ON tddf.id_dms_doc_file = tddfv.id_dms_doc_file
-          WHERE (tddfv.IS_ACTIVE = 'Y' OR tddfv.id_dms_doc_file_version IS NULL)
-          #WHERE_CONCAT#
-          #ORDER#
-         ]]>
-    </Sentence>
-    </Query>
-    <Query id="allfiles">
-      <AmbiguousColumns>
-        <AmbiguousColumn name="ID_DMS_DOC_FILE"
-          prefix="tddf" />
-      </AmbiguousColumns>
-      <ValidColumns>
-        <Column>ID_DMS_DOC_FILE</Column>
-        <Column>FILE_NAME</Column>
-        <Column>ID_DMS_DOC</Column>
-        <Column>FILE_TYPE</Column>
-        <Column>ID_DMS_DOC_CATEGORY</Column>
-      </ValidColumns>
-      <Sentence>
-        <![CDATA[
-          SELECT
-            #COLUMNS#
-          FROM
-            ${mainschema}.TDMS_DOC_FILE AS tddf
-          #WHERE#
-          #ORDER#
-         ]]>
-    </Sentence>
-    </Query>
-  </Queries>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-{{ "**DMSDocumentFileVersionDao.xml**" | markdownify}}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-  xmlns="http://www.ontimize.com/schema/jdbc"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-  catalog="" schema="${mainschema}" table="TDMS_DOC_FILE_VERSION"
-  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
-  <DeleteKeys>
-    <Column>ID_DMS_DOC_FILE_VERSION</Column>
-  </DeleteKeys>
-  <UpdateKeys>
-    <Column>ID_DMS_DOC_FILE_VERSION</Column>
-  </UpdateKeys>
-  <GeneratedKey>ID_DMS_DOC_FILE_VERSION</GeneratedKey>
-  <Queries>
-    <Query id="default">
-      <AmbiguousColumns>
-        <AmbiguousColumn name="ID_DMS_DOC_FILE"
-          prefix="tddfv" />
-      </AmbiguousColumns>
-      <ValidColumns>
-        <!-- TDMS_DOC_FILE_VERSION -->
-        <Column>ID_DMS_DOC_FILE_VERSION</Column>
-        <Column>FILE_PATH</Column>
-        <Column>VERSION</Column>
-        <Column>FILE_DESCRIPTION</Column>
-        <Column>IS_ACTIVE</Column>
-        <Column>FILE_ADDED_DATE</Column>
-        <Column>FILE_ADDED_USER_ID</Column>
-        <Column>ID_DMS_DOC_FILE</Column>
-        <Column>THUMBNAIL</Column>
-        <Column>FILE_SIZE</Column>
-        <!-- TDMS_DOC_FILE -->
-        <Column>ID_DMS_DOC_FILE</Column>
-        <Column>FILE_NAME</Column>
-        <Column>ID_DMS_DOC</Column>
-        <Column>FILE_TYPE</Column>
-        <Column>ID_DMS_DOC_CATEGORY</Column>
-      </ValidColumns>
-      <Sentence>
-        <![CDATA[
-           SELECT
-             #COLUMNS#
-        FROM
-          ${mainschema}.TDMS_DOC_FILE_VERSION AS tddfv
-          LEFT JOIN ${mainschema}.TDMS_DOC_FILE AS tddf ON tddfv.ID_DMS_DOC_FILE = tddf.ID_DMS_DOC_FILE
-        #WHERE#
-        #ORDER#
-         ]]>
-      </Sentence>
-    </Query>
-  </Queries>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-{{ "**DMSDocumentPropertyDao.xml**" | markdownify}}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-  xmlns="http://www.ontimize.com/schema/jdbc"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-  catalog="" schema="${mainschema}" table="TDMS_DOC_PROPERTY"
-  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
-  <DeleteKeys>
-    <Column>ID_DMS_DOC_PROPERTY</Column>
-  </DeleteKeys>
-  <UpdateKeys>
-    <Column>ID_DMS_DOC_PROPERTY</Column>
-  </UpdateKeys>
-  <GeneratedKey>ID_DMS_DOC_PROPERTY</GeneratedKey>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-{{ "**DMSRelatedDocumentDao.xml**" | markdownify}}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-  xmlns="http://www.ontimize.com/schema/jdbc"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-  catalog="" schema="${mainschema}" table="TDMS_RELATED_DOC"
-  datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
-  <DeleteKeys>
-    <Column>ID_DMS_RELATED_PROPERTY</Column>
-  </DeleteKeys>
-  <UpdateKeys>
-    <Column>ID_DMS_RELATED_PROPERTY</Column>
-  </UpdateKeys>
-  <GeneratedKey>ID_DMS_RELATED_PROPERTY</GeneratedKey>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-</div>
 </div>
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{ "**CandidateDao.java**" | markdownify}}
+{% highlight java%}
+...
+public class CandidateDao extends OntimizeJdbcDaoSupport {
+  ...
+  public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";
+}
+{% endhighlight %}
+
+{{ "**DMSCategoryDao.java**" | markdownify}}
+{% highlight java %}
+package com.ontimize.projectwiki.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+import com.ontimize.jee.server.services.dms.dao.IDMSCategoryDao;
+
+@Repository("DMSCategoryDao")
+@Lazy
+@ConfigurationFile(configurationFile = "dao/DMSCategoryDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class DMSCategoryDao extends OntimizeJdbcDaoSupport implements IDMSCategoryDao {
+
+  public static final String ATTR_ID_DMS_DOC_CATEGORY = "ID_DMS_DOC_CATEGORY";
+  public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";
+  public static final String ATTR_ID_DMS_DOC_CATEGORY_PARENT = "ID_DMS_DOC_CATEGORY_PARENT";
+  public static final String ATTR_CATEGORY_NAME = "CATEGORY_NAME";
+
+}
+{% endhighlight %}
+
+{{ "**DMSDocumentDao.java**" | markdownify}}
+{% highlight java %}
+package com.ontimize.projectwiki.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+import com.ontimize.jee.server.services.dms.dao.IDMSDocumentDao;
+
+@Repository("DMSDocumentDao")
+@Lazy
+@ConfigurationFile(configurationFile = "dao/DMSDocumentDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class DMSDocumentDao extends OntimizeJdbcDaoSupport implements IDMSDocumentDao {
+
+  public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";
+  public static final String ATTR_UPDATE_DATE = "UPDATE_DATE";
+  public static final String ATTR_UPDATE_BY_ID = "UPDATE_BY_ID";
+  public static final String ATTR_DOC_NAME = "DOC_NAME";
+  public static final String ATTR_OWNER_ID = "OWNER_ID";
+  public static final String ATTR_DOC_DESCRIPTION = "DOC_DESCRIPTION";
+  public static final String ATTR_DOC_KEYWORDS = "DOC_KEYWORDS";
+
+}
+{% endhighlight %}
+
+{{ "**DMSDocumentFileDao.java**" | markdownify}}
+{% highlight java %}
+package com.ontimize.projectwiki.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+import com.ontimize.jee.server.services.dms.dao.IDMSDocumentFileDao;
+
+@Repository("DMSDocumentFileDao")
+@Lazy
+@ConfigurationFile(configurationFile = "dao/DMSDocumentFileDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class DMSDocumentFileDao extends OntimizeJdbcDaoSupport implements IDMSDocumentFileDao{
+
+  public static final String ATTR_ID_DMS_DOC_FILE = "ID_DMS_DOC_FILE";         
+  public static final String ATTR_FILE_NAME = "FILE_NAME";         
+  public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";         
+  public static final String ATTR_FILE_TYPE = "FILE_TYPE";         
+  public static final String ATTR_ID_DMS_DOC_CATEGORY = "ID_DMS_DOC_CATEGORY";         
+    
+}
+{% endhighlight %}
+
+{{ "**DMSDocumentFileVersionDao.java**" | markdownify}}
+{% highlight java %}
+package com.ontimize.projectwiki.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+import com.ontimize.jee.server.services.dms.dao.IDMSDocumentFileVersionDao;
+
+@Repository("DMSDocumentFileVersionDao")
+@Lazy
+@ConfigurationFile(configurationFile = "dao/DMSDocumentFileVersionDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class DMSDocumentFileVersionDao extends OntimizeJdbcDaoSupport implements IDMSDocumentFileVersionDao {
+
+  public static final String ATT_ID_DMS_DOC_FILE_VERSION = "ID_DMS_DOC_FILE_VERSION";
+  public static final String ATT_FILE_PATH = "FILE_PATH";
+  public static final String ATT_VERSION = "VERSION";
+  public static final String ATT_FILE_DESCRIPTION = "FILE_DESCRIPTION";
+  public static final String ATT_IS_ACTIVE = "IS_ACTIVE";
+  public static final String ATT_FILE_ADDED_DATE = "FILE_ADDED_DATE";
+  public static final String ATT_FILE_ADDED_USER_ID = "FILE_ADDED_USER_ID";
+  public static final String ATT_ID_DMS_DOC_FILE = "ID_DMS_DOC_FILE";
+  public static final String ATT_THUMBNAIL = "THUMBNAIL";
+  public static final String ATT_FILE_SIZE = "FILE_SIZE";
+
+}
+{% endhighlight %}
+
+{{ "**DMSDocumentPropertyDao.java**" | markdownify}}
+{% highlight java %}
+package com.ontimize.projectwiki.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+import com.ontimize.jee.server.services.dms.dao.IDMSDocumentPropertyDao;
+
+@Repository("DMSDocumentPropertyDao")
+@Lazy
+@ConfigurationFile(configurationFile = "dao/DMSDocumentPropertyDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class DMSDocumentPropertyDao extends OntimizeJdbcDaoSupport implements IDMSDocumentPropertyDao {
+
+  public static final String ATTR_ID_DMS_DOC_PROPERTY = "ID_DMS_DOC_PROPERTY";
+  public static final String ATTR_DOC_PROPERTY_KEY = "DOC_PROPERTY_KEY";
+  public static final String ATTR_DOC_PROPERTY_VALUE = "DOC_PROPERTY_VALUE";
+  public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";
+
+}
+{% endhighlight %}
+
+{{ "**DMSRelatedDocumentDao.java**" | markdownify}}
+{% highlight java %}
+package com.ontimize.projectwiki.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+import com.ontimize.jee.server.services.dms.dao.IDMSRelatedDocumentDao;
+
+@Repository("DMSRelatedDocumentDao")
+@Lazy
+@ConfigurationFile(configurationFile = "dao/DMSRelatedDocumentDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class DMSRelatedDocumentDao extends OntimizeJdbcDaoSupport implements IDMSRelatedDocumentDao {
+
+  public static final String ATTR_ID_DMS_RELATED_PROPERTY = "ID_DMS_RELATED_PROPERTY";
+  public static final String ATTR_ID_DMS_DOC_MASTER = "ID_DMS_DOC_MASTER";
+  public static final String ATTR_ID_DMS_DOC_CHILD = "ID_DMS_DOC_CHILD";
+
+}
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1128,179 +1301,56 @@ A specific DAO will be created for each table in the DMS system, and each of the
   </ul>
   </li>
 </ul>
-
-</div>
-<div class="multiColumn multiColumnGrow">
-
-{{ "**CandidateDao.java**" | markdownify}}
-{% highlight java%}
-...
-public class CandidateDao extends OntimizeJdbcDaoSupport {
-  ...
-  public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";
-}
-{% endhighlight %}
-
-{{ "**DMSCategoryDao.java**" | markdownify}}
-{% highlight java %}
-package com.ontimize.projectwiki.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-import com.ontimize.jee.server.services.dms.dao.IDMSCategoryDao;
-
-@Repository("DMSCategoryDao")
-@Lazy
-@ConfigurationFile(configurationFile = "dao/DMSCategoryDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class DMSCategoryDao extends OntimizeJdbcDaoSupport implements IDMSCategoryDao {
-
-  public static final String ATTR_ID_DMS_DOC_CATEGORY = "ID_DMS_DOC_CATEGORY";
-  public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";
-  public static final String ATTR_ID_DMS_DOC_CATEGORY_PARENT = "ID_DMS_DOC_CATEGORY_PARENT";
-  public static final String ATTR_CATEGORY_NAME = "CATEGORY_NAME";
-
-}
-{% endhighlight %}
-
-{{ "**DMSDocumentDao.java**" | markdownify}}
-{% highlight java %}
-package com.ontimize.projectwiki.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-import com.ontimize.jee.server.services.dms.dao.IDMSDocumentDao;
-
-@Repository("DMSDocumentDao")
-@Lazy
-@ConfigurationFile(configurationFile = "dao/DMSDocumentDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class DMSDocumentDao extends OntimizeJdbcDaoSupport implements IDMSDocumentDao {
-
-  public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";
-  public static final String ATTR_UPDATE_DATE = "UPDATE_DATE";
-  public static final String ATTR_UPDATE_BY_ID = "UPDATE_BY_ID";
-  public static final String ATTR_DOC_NAME = "DOC_NAME";
-  public static final String ATTR_OWNER_ID = "OWNER_ID";
-  public static final String ATTR_DOC_DESCRIPTION = "DOC_DESCRIPTION";
-  public static final String ATTR_DOC_KEYWORDS = "DOC_KEYWORDS";
-
-}
-{% endhighlight %}
-
-{{ "**DMSDocumentFileDao.java**" | markdownify}}
-{% highlight java %}
-package com.ontimize.projectwiki.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-import com.ontimize.jee.server.services.dms.dao.IDMSDocumentFileDao;
-
-@Repository("DMSDocumentFileDao")
-@Lazy
-@ConfigurationFile(configurationFile = "dao/DMSDocumentFileDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class DMSDocumentFileDao extends OntimizeJdbcDaoSupport implements IDMSDocumentFileDao{
-
-  public static final String ATTR_ID_DMS_DOC_FILE = "ID_DMS_DOC_FILE";         
-  public static final String ATTR_FILE_NAME = "FILE_NAME";         
-  public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";         
-  public static final String ATTR_FILE_TYPE = "FILE_TYPE";         
-  public static final String ATTR_ID_DMS_DOC_CATEGORY = "ID_DMS_DOC_CATEGORY";         
-    
-}
-{% endhighlight %}
-
-{{ "**DMSDocumentFileVersionDao.java**" | markdownify}}
-{% highlight java %}
-package com.ontimize.projectwiki.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-import com.ontimize.jee.server.services.dms.dao.IDMSDocumentFileVersionDao;
-
-@Repository("DMSDocumentFileVersionDao")
-@Lazy
-@ConfigurationFile(configurationFile = "dao/DMSDocumentFileVersionDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class DMSDocumentFileVersionDao extends OntimizeJdbcDaoSupport implements IDMSDocumentFileVersionDao {
-
-  public static final String ATT_ID_DMS_DOC_FILE_VERSION = "ID_DMS_DOC_FILE_VERSION";
-  public static final String ATT_FILE_PATH = "FILE_PATH";
-  public static final String ATT_VERSION = "VERSION";
-  public static final String ATT_FILE_DESCRIPTION = "FILE_DESCRIPTION";
-  public static final String ATT_IS_ACTIVE = "IS_ACTIVE";
-  public static final String ATT_FILE_ADDED_DATE = "FILE_ADDED_DATE";
-  public static final String ATT_FILE_ADDED_USER_ID = "FILE_ADDED_USER_ID";
-  public static final String ATT_ID_DMS_DOC_FILE = "ID_DMS_DOC_FILE";
-  public static final String ATT_THUMBNAIL = "THUMBNAIL";
-  public static final String ATT_FILE_SIZE = "FILE_SIZE";
-
-}
-{% endhighlight %}
-
-{{ "**DMSDocumentPropertyDao.java**" | markdownify}}
-{% highlight java %}
-package com.ontimize.projectwiki.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-import com.ontimize.jee.server.services.dms.dao.IDMSDocumentPropertyDao;
-
-@Repository("DMSDocumentPropertyDao")
-@Lazy
-@ConfigurationFile(configurationFile = "dao/DMSDocumentPropertyDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class DMSDocumentPropertyDao extends OntimizeJdbcDaoSupport implements IDMSDocumentPropertyDao {
-
-  public static final String ATTR_ID_DMS_DOC_PROPERTY = "ID_DMS_DOC_PROPERTY";
-  public static final String ATTR_DOC_PROPERTY_KEY = "DOC_PROPERTY_KEY";
-  public static final String ATTR_DOC_PROPERTY_VALUE = "DOC_PROPERTY_VALUE";
-  public static final String ATTR_ID_DMS_DOC = "ID_DMS_DOC";
-
-}
-{% endhighlight %}
-
-{{ "**DMSRelatedDocumentDao.java**" | markdownify}}
-{% highlight java %}
-package com.ontimize.projectwiki.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-import com.ontimize.jee.server.services.dms.dao.IDMSRelatedDocumentDao;
-
-@Repository("DMSRelatedDocumentDao")
-@Lazy
-@ConfigurationFile(configurationFile = "dao/DMSRelatedDocumentDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class DMSRelatedDocumentDao extends OntimizeJdbcDaoSupport implements IDMSRelatedDocumentDao {
-
-  public static final String ATTR_ID_DMS_RELATED_PROPERTY = "ID_DMS_RELATED_PROPERTY";
-  public static final String ATTR_ID_DMS_DOC_MASTER = "ID_DMS_DOC_MASTER";
-  public static final String ATTR_ID_DMS_DOC_CHILD = "ID_DMS_DOC_CHILD";
-
-}
-{% endhighlight %}
 </div>
 </div>
 
 #### Modify CandidateService insert method
 The method of inserting new candidates will be modified so that, when inserting them, they will have a workspace to maintain the files to be uploaded associated with the inserted candidate.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{"**CandidateService.java**" | markdownify }}
+{% highlight java %}
+...
+import com.ontimize.jee.common.exceptions.DmsException;
+import com.ontimize.jee.common.naming.DMSNaming;
+import com.ontimize.jee.common.services.dms.DocumentIdentifier;
+import com.ontimize.jee.server.services.dms.DMSCreationHelper;
+...
+
+@Service("CandidateService")
+@Lazy
+public class CandidateService implements ICandidateService {
+
+  ...
+
+  @Autowired
+  private DMSCreationHelper dmsHelper;
+
+  ...
+
+  @Override
+  public EntityResult candidateInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException {
+
+    try {
+    DocumentIdentifier docId = this.dmsHelper.createDocument((String) attrMap.get(CandidateDao.ATTR_DNI));
+    attrMap.put(DMSNaming.DOCUMENT_ID_DMS_DOCUMENT, docId.getDocumentId());
+    } catch (DmsException e) {
+      throw new OntimizeJEERuntimeException("ERROR_CREATING_DMS_DOC", e);
+    }
+
+    return this.daoHelper.insert(this.candidateDao, attrMap);
+  }
+
+  ...
+}
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1560,51 +1610,119 @@ The method of inserting new candidates will be modified so that, when inserting 
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**CandidateService.java**" | markdownify }}
-{% highlight java %}
-...
-import com.ontimize.jee.common.exceptions.DmsException;
-import com.ontimize.jee.common.naming.DMSNaming;
-import com.ontimize.jee.common.services.dms.DocumentIdentifier;
-import com.ontimize.jee.server.services.dms.DMSCreationHelper;
-...
-
-@Service("CandidateService")
-@Lazy
-public class CandidateService implements ICandidateService {
-
-  ...
-
-  @Autowired
-  private DMSCreationHelper dmsHelper;
-
-  ...
-
-  @Override
-  public EntityResult candidateInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException {
-
-    try {
-    DocumentIdentifier docId = this.dmsHelper.createDocument((String) attrMap.get(CandidateDao.ATTR_DNI));
-    attrMap.put(DMSNaming.DOCUMENT_ID_DMS_DOCUMENT, docId.getDocumentId());
-    } catch (DmsException e) {
-      throw new OntimizeJEERuntimeException("ERROR_CREATING_DMS_DOC", e);
-    }
-
-    return this.daoHelper.insert(this.candidateDao, attrMap);
-  }
-
-  ...
-}
-{% endhighlight %}
-</div>
 </div>
 
 #### Add File Manager Rest Controller
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{"**DMSNameConverter.java**" | markdownify }}
+{% highlight java %}
+package com.ontimize.projectwiki.ws.core.rest;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import com.ontimize.jee.common.naming.DMSNaming;
+import com.ontimize.jee.server.dms.model.OFile;
+import com.ontimize.jee.server.dms.rest.IDMSNameConverter;
+
+@Service("DMSNameConverter")
+public class DMSNameConverter implements IDMSNameConverter {
+
+  @Override
+  public Object getFileIdColumn() {
+    return DMSNaming.DOCUMENT_FILE_ID_DMS_DOCUMENT_FILE;
+  }
+
+  @Override
+  public Object getFileNameColumn() {
+    return DMSNaming.DOCUMENT_FILE_NAME;
+  }
+
+  @Override
+  public Object getFileSizeColumn() {
+    return DMSNaming.DOCUMENT_FILE_VERSION_FILE_SIZE;
+  }
+
+  @Override
+  public Object getCategoryIdColumn() {
+    return DMSNaming.CATEGORY_ID_CATEGORY;
+  }
+
+  @Override
+  public Object getCategoryNameColumn() {
+    return DMSNaming.CATEGORY_CATEGORY_NAME;
+  }
+
+  @Override
+  public OFile createOFile(Map<?, ?> params) {
+    OFile file = new OFile();
+    file.setId((Integer) params.get(DMSNaming.DOCUMENT_FILE_ID_DMS_DOCUMENT_FILE));
+    file.setName((String) params.get(DMSNaming.DOCUMENT_FILE_NAME));
+    file.setType((String) params.get(DMSNaming.DOCUMENT_FILE_TYPE));
+    file.setSize((Integer) params.get(DMSNaming.DOCUMENT_FILE_VERSION_FILE_SIZE));
+    file.setCreationDate(((Date) params.get(DMSNaming.DOCUMENT_FILE_VERSION_FILE_ADDED_DATE)).getTime());
+    file.setDirectory(false);
+    return file;
+  }
+
+  @Override
+  public List<?> getFileColumns(List<?> columns) {
+    return Arrays.asList(DMSNaming.DOCUMENT_FILE_ID_DMS_DOCUMENT_FILE, DMSNaming.DOCUMENT_FILE_NAME,
+        DMSNaming.DOCUMENT_FILE_TYPE, DMSNaming.DOCUMENT_FILE_VERSION_FILE_SIZE,
+        DMSNaming.DOCUMENT_FILE_VERSION_FILE_ADDED_DATE);
+  }
+
+  @Override
+  public List<?> getCategoryColumns(List<?> columns) {
+    return Arrays.asList(DMSNaming.CATEGORY_ID_CATEGORY, DMSNaming.CATEGORY_CATEGORY_NAME,
+        DMSNaming.CATEGORY_ID_CATEGORY_PARENT);
+  }
+
+}
+
+{%endhighlight%}
+
+{{"**FileManagerRestController.java**" | markdownify }}
+{% highlight java %}
+package com.ontimize.projectwiki.ws.core.rest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ontimize.jee.common.services.dms.IDMSService;
+import com.ontimize.jee.server.dms.rest.DMSRestController;
+import com.ontimize.jee.server.dms.rest.IDMSNameConverter;
+
+@RestController
+@RequestMapping("/filemanager")
+@ComponentScan(basePackageClasses = { com.ontimize.jee.common.services.dms.IDMSService.class,
+    com.ontimize.jee.server.dms.rest.IDMSNameConverter.class })
+public class FileManagerRestController extends DMSRestController<IDMSService, IDMSNameConverter> {
+
+  @Autowired
+  private IDMSService dmsService;
+
+  @Override
+  public IDMSService getService() {
+    return this.dmsService;
+  }
+
+}
+{%endhighlight%}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1866,110 +1984,6 @@ public class CandidateService implements ICandidateService {
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**DMSNameConverter.java**" | markdownify }}
-{% highlight java %}
-package com.ontimize.projectwiki.ws.core.rest;
-
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Service;
-
-import com.ontimize.jee.common.naming.DMSNaming;
-import com.ontimize.jee.server.dms.model.OFile;
-import com.ontimize.jee.server.dms.rest.IDMSNameConverter;
-
-@Service("DMSNameConverter")
-public class DMSNameConverter implements IDMSNameConverter {
-
-  @Override
-  public Object getFileIdColumn() {
-    return DMSNaming.DOCUMENT_FILE_ID_DMS_DOCUMENT_FILE;
-  }
-
-  @Override
-  public Object getFileNameColumn() {
-    return DMSNaming.DOCUMENT_FILE_NAME;
-  }
-
-  @Override
-  public Object getFileSizeColumn() {
-    return DMSNaming.DOCUMENT_FILE_VERSION_FILE_SIZE;
-  }
-
-  @Override
-  public Object getCategoryIdColumn() {
-    return DMSNaming.CATEGORY_ID_CATEGORY;
-  }
-
-  @Override
-  public Object getCategoryNameColumn() {
-    return DMSNaming.CATEGORY_CATEGORY_NAME;
-  }
-
-  @Override
-  public OFile createOFile(Map<?, ?> params) {
-    OFile file = new OFile();
-    file.setId((Integer) params.get(DMSNaming.DOCUMENT_FILE_ID_DMS_DOCUMENT_FILE));
-    file.setName((String) params.get(DMSNaming.DOCUMENT_FILE_NAME));
-    file.setType((String) params.get(DMSNaming.DOCUMENT_FILE_TYPE));
-    file.setSize((Integer) params.get(DMSNaming.DOCUMENT_FILE_VERSION_FILE_SIZE));
-    file.setCreationDate(((Date) params.get(DMSNaming.DOCUMENT_FILE_VERSION_FILE_ADDED_DATE)).getTime());
-    file.setDirectory(false);
-    return file;
-  }
-
-  @Override
-  public List<?> getFileColumns(List<?> columns) {
-    return Arrays.asList(DMSNaming.DOCUMENT_FILE_ID_DMS_DOCUMENT_FILE, DMSNaming.DOCUMENT_FILE_NAME,
-        DMSNaming.DOCUMENT_FILE_TYPE, DMSNaming.DOCUMENT_FILE_VERSION_FILE_SIZE,
-        DMSNaming.DOCUMENT_FILE_VERSION_FILE_ADDED_DATE);
-  }
-
-  @Override
-  public List<?> getCategoryColumns(List<?> columns) {
-    return Arrays.asList(DMSNaming.CATEGORY_ID_CATEGORY, DMSNaming.CATEGORY_CATEGORY_NAME,
-        DMSNaming.CATEGORY_ID_CATEGORY_PARENT);
-  }
-
-}
-
-{%endhighlight%}
-
-{{"**FileManagerRestController.java**" | markdownify }}
-{% highlight java %}
-package com.ontimize.projectwiki.ws.core.rest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.ontimize.jee.common.services.dms.IDMSService;
-import com.ontimize.jee.server.dms.rest.DMSRestController;
-import com.ontimize.jee.server.dms.rest.IDMSNameConverter;
-
-@RestController
-@RequestMapping("/filemanager")
-@ComponentScan(basePackageClasses = { com.ontimize.jee.common.services.dms.IDMSService.class,
-    com.ontimize.jee.server.dms.rest.IDMSNameConverter.class })
-public class FileManagerRestController extends DMSRestController<IDMSService, IDMSNameConverter> {
-
-  @Autowired
-  private IDMSService dmsService;
-
-  @Override
-  public IDMSService getService() {
-    return this.dmsService;
-  }
-
-}
-{%endhighlight%}
-</div>
 </div>
 
 #### Modify application.yml
@@ -1979,8 +1993,21 @@ The **application.yml** file will be modified to indicate the path where the dms
 {: .note}
 > The path specified in the *basePath* variable must exist before the server is started.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{"**application.yml**" | markdownify}}
+{% highlight yaml%}
+ontimize:
+   dms:
+      engine: odms
+      basePath: file:/C:/applications/projectwiki/dms
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -2241,16 +2268,6 @@ The **application.yml** file will be modified to indicate the path where the dms
   </ul>
   </li>
 </ul>
-</div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**application.yml**" | markdownify}}
-{% highlight yaml%}
-ontimize:
-   dms:
-      engine: odms
-      basePath: file:/C:/applications/projectwiki/dms
-{% endhighlight %}
 </div>
 </div>
 

@@ -27,8 +27,8 @@ The **S**torage **D**ocument **M**anagement **S**ystem (**SDMS**) is a system th
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multiColumnRow multiColumnRowJustify">
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumn">
+<div class="multicolumnnopadding" >
   {{ "**Initial project**
 
     /$ git clone https://github.com/ontimize/ontimize-examples 
@@ -37,7 +37,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
     | markdownify }}
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumnnopadding" >
 
   {{ "**Final example**
 
@@ -56,8 +56,77 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 ### Server
 #### Add SDMS dependencies
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+  {{ "**/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+  ...
+  <dependency>
+    <groupId>com.ontimize.jee.sdms</groupId>
+    <artifactId>ontimize-jee-sdms-common</artifactId>
+  </dependency>
+  ...
+</dependencies>
+...
+{% endhighlight %}
+
+  {{ "**ws/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+  ...
+    <dependency>
+        <groupId>com.ontimize.jee.sdms</groupId>
+        <artifactId>ontimize-jee-sdms-rest</artifactId>
+    </dependency>
+  ...
+</dependencies>
+...
+{% endhighlight %}
+
+  {{ "**model/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+...
+  <dependency>
+    <groupId>com.ontimize.jee.sdms</groupId>
+    <artifactId>ontimize-jee-sdms-server</artifactId>
+  </dependency>
+
+  <dependency>
+    <groupId>com.ontimize.jee.sdms</groupId>
+    <artifactId>ontimize-jee-sdms-event</artifactId>
+  </dependency>
+...
+</dependencies>
+...
+{% endhighlight %}
+
+  {{ "**boot/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+...
+  <dependency>
+    <groupId>com.ontimize.boot</groupId>
+    <artifactId>ontimize-boot-starter-sdms</artifactId>
+  </dependency>
+...
+</dependencies>
+...
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul class="sticky">
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -305,72 +374,6 @@ There are 2 options to follow this tutorial, clone the repository with the initi
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-  {{ "**/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-  ...
-  <dependency>
-    <groupId>com.ontimize.jee.sdms</groupId>
-    <artifactId>ontimize-jee-sdms-common</artifactId>
-  </dependency>
-  ...
-</dependencies>
-...
-{% endhighlight %}
-
-  {{ "**ws/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-  ...
-    <dependency>
-        <groupId>com.ontimize.jee.sdms</groupId>
-        <artifactId>ontimize-jee-sdms-rest</artifactId>
-    </dependency>
-  ...
-</dependencies>
-...
-{% endhighlight %}
-
-  {{ "**model/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-...
-  <dependency>
-    <groupId>com.ontimize.jee.sdms</groupId>
-    <artifactId>ontimize-jee-sdms-server</artifactId>
-  </dependency>
-
-  <dependency>
-    <groupId>com.ontimize.jee.sdms</groupId>
-    <artifactId>ontimize-jee-sdms-event</artifactId>
-  </dependency>
-...
-</dependencies>
-...
-{% endhighlight %}
-
-  {{ "**boot/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-...
-  <dependency>
-    <groupId>com.ontimize.boot</groupId>
-    <artifactId>ontimize-boot-starter-sdms</artifactId>
-  </dependency>
-...
-</dependencies>
-...
-{% endhighlight %}
-</div>
 </div>
 
 #### Modify application.yml
@@ -380,8 +383,26 @@ The **application.yml** file will be modified the engine to be used by the SDMS,
 {: .note}
 > Currently only the S3 engine using the Amazon AWS S3 service API is available.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{"**application.yml**" | markdownify}}
+
+{% highlight yaml%}
+ontimize:
+  sdms:
+    engine: s3
+    s3:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+      bucket: ${S3_BUCKET}
+      region: ${S3_REGION}
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -643,21 +664,6 @@ The **application.yml** file will be modified the engine to be used by the SDMS,
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**application.yml**" | markdownify}}
-
-{% highlight yaml%}
-ontimize:
-  sdms:
-    engine: s3
-    s3:
-      access-key: ${S3_ACCESS_KEY}
-      secret-key: ${S3_SECRET_KEY}
-      bucket: ${S3_BUCKET}
-      region: ${S3_REGION}
-{% endhighlight %}
-</div>
 </div>
 
 #### Modify the entity service to add the methods of the SDMS service
@@ -678,8 +684,41 @@ The SDMS methods available are:
 - **SdmsDeleteById**: _It allows us to delete an SDMS element in the system by its ID (Base64 encrypted id)._
 - **SdmsDelete**: _It allows us to delete several SDMS elements in the system from a filter._
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{"**ICandidateService.java**" | markdownify }}
+{% highlight java %}
+...
+import com.ontimize.jee.sdms.common.dto.OSdmsRestDataDto;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.Serializable;
+...
+
+public interface ICandidateService {
+
+...
+
+EntityResult candidateSdmsFindById( Serializable id, OSdmsRestDataDto data );
+EntityResult candidateSdmsFind( OSdmsRestDataDto data );
+EntityResult candidateSdmsDownloadById( Serializable id, OSdmsRestDataDto data );
+EntityResult candidateSdmsDownload( OSdmsRestDataDto data );
+EntityResult candidateSdmsUpload(OSdmsRestDataDto data, MultipartFile file );
+EntityResult candidateSdmsCreate( OSdmsRestDataDto data );
+EntityResult candidateSdmsUpdate( OSdmsRestDataDto data );
+EntityResult candidateSdmsCopy( OSdmsRestDataDto data );
+EntityResult candidateSdmsMove( OSdmsRestDataDto data );
+EntityResult candidateSdmsDeleteById( Serializable id, OSdmsRestDataDto data );
+EntityResult candidateSdmsDelete( OSdmsRestDataDto data );
+
+...
+}
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -939,36 +978,6 @@ The SDMS methods available are:
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**ICandidateService.java**" | markdownify }}
-{% highlight java %}
-...
-import com.ontimize.jee.sdms.common.dto.OSdmsRestDataDto;
-import org.springframework.web.multipart.MultipartFile;
-import java.io.Serializable;
-...
-
-public interface ICandidateService {
-
-...
-
-EntityResult candidateSdmsFindById( Serializable id, OSdmsRestDataDto data );
-EntityResult candidateSdmsFind( OSdmsRestDataDto data );
-EntityResult candidateSdmsDownloadById( Serializable id, OSdmsRestDataDto data );
-EntityResult candidateSdmsDownload( OSdmsRestDataDto data );
-EntityResult candidateSdmsUpload(OSdmsRestDataDto data, MultipartFile file );
-EntityResult candidateSdmsCreate( OSdmsRestDataDto data );
-EntityResult candidateSdmsUpdate( OSdmsRestDataDto data );
-EntityResult candidateSdmsCopy( OSdmsRestDataDto data );
-EntityResult candidateSdmsMove( OSdmsRestDataDto data );
-EntityResult candidateSdmsDeleteById( Serializable id, OSdmsRestDataDto data );
-EntityResult candidateSdmsDelete( OSdmsRestDataDto data );
-
-...
-}
-{% endhighlight %}
-</div>
 </div>
 
 Now in the implementation of the service we **implement the methods** with the help of the `IOSdmsService` component of the SDMS system and by calling the corresponding method.  
@@ -978,8 +987,93 @@ We will also **establish the workspace** where the entity will store and manage 
 
 The annotation can be set at **class level** by enabling the workspace for all SDMS methods, and/or at **method level** by setting its scope to the annotated method. It can also be set as many workspaces as required.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{"**CandidateService.java**" | markdownify }}
+{% highlight java %}
+...
+
+import com.ontimize.jee.sdms.common.dto.OSdmsRestDataDto;
+import com.ontimize.jee.sdms.common.workspace.annotation.OSdmsWorkspace;
+import com.ontimize.jee.sdms.server.service.IOSdmsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
+
+...
+
+@OSdmsWorkspace( "candidate/doc/{id}" )
+@OSdmsWorkspace( name = "all", value = "candidate/doc" )
+...
+public class CandidateService implements ICandidateService {
+
+  ...
+
+  @Autowired
+  private IOSdmsService oSdmsService;
+
+  ...
+
+  @Override
+  public EntityResult candidateSdmsFind( final OSdmsRestDataDto data ) {
+  	return this.oSdmsService.find( data );
+  }
+
+@OSdmsWorkspace( name = "images", value = "candidate/img/{id}" )
+  @Override
+  public EntityResult candidateSdmsDownloadById( final Serializable id, final OSdmsRestDataDto data ) {
+  	return this.oSdmsService.downloadById( id, data );
+  }
+
+  @Override
+  public EntityResult candidateSdmsDownload( final OSdmsRestDataDto data ) {
+  	return this.oSdmsService.download( data );
+  }
+
+  @Override
+  public EntityResult candidateSdmsUpload(final OSdmsRestDataDto data, final MultipartFile file ) {
+  	return this.oSdmsService.upload( data, file );
+  }
+
+  @Override
+  public EntityResult candidateSdmsCreate( final OSdmsRestDataDto data ) {
+  	return this.oSdmsService.create( data );
+  }
+
+  @Override
+  public EntityResult candidateSdmsUpdate( final OSdmsRestDataDto data ) {
+  	return this.oSdmsService.update( data );
+  }
+
+  @Override
+  public EntityResult candidateSdmsCopy( final OSdmsRestDataDto data ) {
+  	return this.oSdmsService.copy( data );
+  }
+
+  @Override
+  public EntityResult candidateSdmsMove( final OSdmsRestDataDto data ) {
+  	return this.oSdmsService.move( data );
+  }
+
+  @Override
+  public EntityResult candidateSdmsDeleteById( final Serializable id, final OSdmsRestDataDto data ) {
+  	return this.oSdmsService.deleteById( id, data );
+  }
+
+  @Override
+  public EntityResult candidateSdmsDelete( final OSdmsRestDataDto data ) {
+  	return this.oSdmsService.delete( data );
+  }
+
+  ...
+
+}
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1239,96 +1333,34 @@ The annotation can be set at **class level** by enabling the workspace for all S
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**CandidateService.java**" | markdownify }}
-{% highlight java %}
-...
-
-import com.ontimize.jee.sdms.common.dto.OSdmsRestDataDto;
-import com.ontimize.jee.sdms.common.workspace.annotation.OSdmsWorkspace;
-import com.ontimize.jee.sdms.server.service.IOSdmsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.multipart.MultipartFile;
-
-...
-
-@OSdmsWorkspace( "candidate/doc/{id}" )
-@OSdmsWorkspace( name = "all", value = "candidate/doc" )
-...
-public class CandidateService implements ICandidateService {
-
-  ...
-
-  @Autowired
-  private IOSdmsService oSdmsService;
-
-  ...
-
-  @Override
-  public EntityResult candidateSdmsFind( final OSdmsRestDataDto data ) {
-  	return this.oSdmsService.find( data );
-  }
-
-@OSdmsWorkspace( name = "images", value = "candidate/img/{id}" )
-  @Override
-  public EntityResult candidateSdmsDownloadById( final Serializable id, final OSdmsRestDataDto data ) {
-  	return this.oSdmsService.downloadById( id, data );
-  }
-
-  @Override
-  public EntityResult candidateSdmsDownload( final OSdmsRestDataDto data ) {
-  	return this.oSdmsService.download( data );
-  }
-
-  @Override
-  public EntityResult candidateSdmsUpload(final OSdmsRestDataDto data, final MultipartFile file ) {
-  	return this.oSdmsService.upload( data, file );
-  }
-
-  @Override
-  public EntityResult candidateSdmsCreate( final OSdmsRestDataDto data ) {
-  	return this.oSdmsService.create( data );
-  }
-
-  @Override
-  public EntityResult candidateSdmsUpdate( final OSdmsRestDataDto data ) {
-  	return this.oSdmsService.update( data );
-  }
-
-  @Override
-  public EntityResult candidateSdmsCopy( final OSdmsRestDataDto data ) {
-  	return this.oSdmsService.copy( data );
-  }
-
-  @Override
-  public EntityResult candidateSdmsMove( final OSdmsRestDataDto data ) {
-  	return this.oSdmsService.move( data );
-  }
-
-  @Override
-  public EntityResult candidateSdmsDeleteById( final Serializable id, final OSdmsRestDataDto data ) {
-  	return this.oSdmsService.deleteById( id, data );
-  }
-
-  @Override
-  public EntityResult candidateSdmsDelete( final OSdmsRestDataDto data ) {
-  	return this.oSdmsService.delete( data );
-  }
-
-  ...
-
-}
-{% endhighlight %}
-</div>
 </div>
 
 #### Modify the entity Rest controller
 
 We modify the Rest controller of our entity so that instead of inheriting from the `ORestController` class, it inherits from the `OSdmsRestController` class. This class adds all the endpoints of the `ORestController` class and the SDMS endpoints, linking them with the corresponding SDMS methods that we have established in the service of our entity.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{"**ICandidateService.java**" | markdownify }}
+{% highlight java %}
+...
+
+import com.imatia.platform.hr.api.core.service.ICandidateService;
+import com.ontimize.jee.sdms.rest.controller.OSdmsRestController;
+
+...
+
+public class CandidateRestController extends OSdmsRestController<ICandidateService> {
+
+...
+}
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1587,23 +1619,6 @@ We modify the Rest controller of our entity so that instead of inheriting from t
   </ul>
   </li>
 </ul>
-</div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**ICandidateService.java**" | markdownify }}
-{% highlight java %}
-...
-
-import com.imatia.platform.hr.api.core.service.ICandidateService;
-import com.ontimize.jee.sdms.rest.controller.OSdmsRestController;
-
-...
-
-public class CandidateRestController extends OSdmsRestController<ICandidateService> {
-
-...
-}
-{% endhighlight %}
 </div>
 </div>
 

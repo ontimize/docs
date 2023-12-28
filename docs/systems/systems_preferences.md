@@ -22,8 +22,8 @@ You can follow this tutorial using your own application, although for this examp
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multiColumnRow multiColumnRowJustify">
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumn">
+<div class="multicolumnnopadding" >
   {{ "**Initial project**
 
     /$ git clone https://github.com/ontimize/ontimize-examples
@@ -32,7 +32,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
     | markdownify }}
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumnnopadding" >
 
   {{ "**Final example**
 
@@ -66,8 +66,57 @@ CREATE TABLE TCONFIGS ( ID_CONFIG INTEGER NOT NULL IDENTITY, USER_CONFIG VARCHAR
 
 A specific DAO will be created for the table in the Preferences system, and it will implement a interface.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{"**ConfigsDao.java**" | markdownify}}
+{% highlight java%}
+package com.ontimize.projectwiki.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+
+@Lazy
+@Repository(value = "ConfigsDao")
+@ConfigurationFile(
+	configurationFile = "dao/ConfigsDao.xml",
+	configurationFilePlaceholder = "dao/placeholders.properties")
+public class ConfigsDao extends OntimizeJdbcDaoSupport {
+
+	public static final String ID   	  = "ID_CONFIG";
+	public static final String USER 	  = "USER_CONFIG";
+	public static final String TYPE  	  = "TYPE_CONFIG";
+	public static final String COMPONENTS = "COMPONENTS";
+
+}
+{% endhighlight %}
+
+{{"**ConfigsDao.xml**" | markdownify}}
+{% highlight xml%}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+    xmlns="http://www.ontimize.com/schema/jdbc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+    catalog="" schema="${mainschema}" table="TCONFIGS"
+    datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+    <DeleteKeys>
+        <Column>ID_CONFIG</Column>
+    </DeleteKeys>
+    <UpdateKeys>
+        <Column>ID_CONFIG</Column>
+    </UpdateKeys>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -317,60 +366,27 @@ A specific DAO will be created for the table in the Preferences system, and it w
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**ConfigsDao.java**" | markdownify}}
-{% highlight java%}
-package com.ontimize.projectwiki.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-
-@Lazy
-@Repository(value = "ConfigsDao")
-@ConfigurationFile(
-	configurationFile = "dao/ConfigsDao.xml",
-	configurationFilePlaceholder = "dao/placeholders.properties")
-public class ConfigsDao extends OntimizeJdbcDaoSupport {
-
-	public static final String ID   	  = "ID_CONFIG";
-	public static final String USER 	  = "USER_CONFIG";
-	public static final String TYPE  	  = "TYPE_CONFIG";
-	public static final String COMPONENTS = "COMPONENTS";
-
-}
-{% endhighlight %}
-
-{{"**ConfigsDao.xml**" | markdownify}}
-{% highlight xml%}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TCONFIGS"
-    datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
-    <DeleteKeys>
-        <Column>ID_CONFIG</Column>
-    </DeleteKeys>
-    <UpdateKeys>
-        <Column>ID_CONFIG</Column>
-    </UpdateKeys>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-</div>
 </div>
 
 ### Add parameters to Application YML
 
 As has already been explained previously (in this [link]({{ base_path }}/basics/autoconfigurators/#preferences)) we add the following parameters to the `application.yml` to define the name of the DAO of the preferences system and to activate autoconfiguration.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{"**application.yml**" | markdownify}}
+{% highlight yaml%}
+ontimize:
+   save-config: true
+   save-config-dao: ConfigsDao
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -619,16 +635,6 @@ As has already been explained previously (in this [link]({{ base_path }}/basics/
   </ul>
   </li>
 </ul>
-</div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**application.yml**" | markdownify}}
-{% highlight yaml%}
-ontimize:
-   save-config: true
-   save-config-dao: ConfigsDao
-{% endhighlight %}
-
 </div>
 </div>
 

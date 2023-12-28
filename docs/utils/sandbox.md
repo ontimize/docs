@@ -39,7 +39,7 @@ Los highlight y endhighlight llevan un % en vez de un -
             <div class="btn">Toggle Tree</div>
         </button>
         {- highlight java%}
-            // Aquí el código o lo que sea sin el highlight
+            // Aquí el código o lo que sea
         {- endhighlight %}
   </div>
   <div class="multicolumnright jstreeloader collapsed">
@@ -56,7 +56,7 @@ Los highlight y endhighlight llevan un % en vez de un -
         </button>
         {{ "**EjemploDeClase.java**"  | markdownify }}
         {% highlight java%}
-            // Aquí el código o lo que sea sin el highlight
+            // Aquí el código o lo que sea
         {% endhighlight %}
     </div>
     <div class="multicolumnright jstreeloader collapsed">
@@ -89,31 +89,31 @@ Los highlight y endhighlight llevan un % en vez de un -
 Los highlight y endhighlight llevan un % en vez de un -
 
 <div class="multicolumn">
-    <div class="multicolumnleftnopadding" >
+    <div class="multicolumnnopadding" >
         {- highlight java%}
-            // Aquí el código o lo que sea sin el highlight
+            // Aquí el código o lo que sea
         {- endhighlight %}
     </div>
     <div class="verticalDivider"></div>
-    <div class="multicolumnleftnopadding" >
+    <div class="multicolumnnopadding" >
         {- highlight java%}
-            // Aquí el código o lo que sea sin el highlight
+            // Aquí el código o lo que sea
         {- endhighlight %}
     </div>
 </div>
 ```
 <div class="multicolumn">
-    <div class="multicolumnleftnopadding" >
+    <div class="multicolumnnopadding" >
         {{ "**First column**"  | markdownify }}
         {% highlight java%}
-            // Aquí el código o lo que sea sin el highlight
+            // Aquí el código o lo que sea
         {% endhighlight %}
     </div>
     <div class="verticalDivider"></div>
-    <div class="multicolumnleftnopadding" >
+    <div class="multicolumnnopadding" >
         {{ "**Second column**"  | markdownify }}
         {% highlight java%}
-            // Aquí el código o lo que sea sin el highlight
+            // Aquí el código o lo que sea
         {% endhighlight %}
     </div>
 </div>

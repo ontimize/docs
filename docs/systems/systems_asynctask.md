@@ -26,8 +26,8 @@ You can follow this tutorial using your own application, although for this examp
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multiColumnRow multiColumnRowJustify">
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumn">
+<div class="multicolumnnopadding" >
   {{ "**Initial project**
 
     /$ git clone https://github.com/ontimize/ontimize-examples 
@@ -36,7 +36,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
     | markdownify }}
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumnnopadding" >
 
   {{ "**Final example**
 
@@ -67,8 +67,44 @@ CREATE TABLE TASKS(ID INTEGER IDENTITY NOT NULL PRIMARY KEY, UUID VARCHAR(255) N
 {: .note}
 > The decoupled tasks system is integrated in the **Ontimize Core** module, so we need to declare it as a project dependency.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+  {{ "**boot/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+  ...
+  <dependency>
+    <groupId>com.ontimize.boot</groupId>
+    <artifactId>ontimize-boot-starter-core</artifactId>
+  </dependency>
+  ...
+</dependencies>
+...
+{% endhighlight %}
+
+
+  {{ "**model/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+  ...
+  <dependency>
+    <groupId>com.ontimize.boot</groupId>
+    <artifactId>ontimize-boot-core</artifactId>
+  </dependency>
+  ...
+</dependencies>
+...
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -311,40 +347,6 @@ CREATE TABLE TASKS(ID INTEGER IDENTITY NOT NULL PRIMARY KEY, UUID VARCHAR(255) N
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-  {{ "**boot/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-  ...
-  <dependency>
-    <groupId>com.ontimize.boot</groupId>
-    <artifactId>ontimize-boot-starter-core</artifactId>
-  </dependency>
-  ...
-</dependencies>
-...
-{% endhighlight %}
-
-
-  {{ "**model/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-  ...
-  <dependency>
-    <groupId>com.ontimize.boot</groupId>
-    <artifactId>ontimize-boot-core</artifactId>
-  </dependency>
-  ...
-</dependencies>
-...
-{% endhighlight %}
-
-</div>
-
 </div>
 
 #### Modify application.yml
@@ -357,8 +359,24 @@ The **application.yml** file will be modified to enable the decoupled tasks modu
 {: .important}
 > The asynchronous tasks system requires the **Ontimize** ***TaskExecutor*** to be configured, see [this link]({{ base_path }}/basics/autoconfigurators/#taskexecutor).
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+        
+{{"**application.yml**" | markdownify}}
+{{"For *database* storage" | markdownify}}
+{% highlight yaml%}
+ontimize:
+  asynctask:
+    enable: true
+    engine: database
+    url: /tasks
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -614,26 +632,66 @@ The **application.yml** file will be modified to enable the decoupled tasks modu
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**application.yml**" | markdownify}}
-{{"For *database* storage" | markdownify}}
-{% highlight yaml%}
-ontimize:
-  asynctask:
-    enable: true
-    engine: database
-    url: /tasks
-{% endhighlight %}
-
-</div>
 </div>
 
 #### Add Task DAO
 A specific DAO will be created for the tasks table, and it will implement the DAO interface in the tasks module.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{ "**TaskDao.xml**" | markdownify}}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup xmlns="http://www.ontimize.com/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+	table="TASKS" datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+	<DeleteKeys>
+		<Column>ID</Column>
+	</DeleteKeys>
+	<UpdateKeys>
+		<Column>ID</Column>
+	</UpdateKeys>
+	<GeneratedKey>ID</GeneratedKey>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+
+{{ "**TaskDao.java**" | markdownify}}
+{% highlight java %}
+package com.imatia.qsallcomponents.model.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.boot.core.asynctask.IAsyncTaskDao;
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+
+@Lazy
+@Repository(value = "TaskDao")
+@ConfigurationFile(configurationFile = "dao/TaskDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class TaskDao extends OntimizeJdbcDaoSupport implements IAsyncTaskDao {
+	
+	public static final String	ATTR_ID				= "ID";
+	public static final String	ATTR_UUID			= "UUID";
+	public static final String	ATTR_STATUS			= "STATUS";
+	public static final String	ATTR_RESULT			= "RESULT";
+	
+	public TaskDao() {
+		super();
+	}
+
+}
+
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -878,56 +936,6 @@ A specific DAO will be created for the tasks table, and it will implement the DA
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{ "**TaskDao.xml**" | markdownify}}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	table="TASKS" datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
-	<DeleteKeys>
-		<Column>ID</Column>
-	</DeleteKeys>
-	<UpdateKeys>
-		<Column>ID</Column>
-	</UpdateKeys>
-	<GeneratedKey>ID</GeneratedKey>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-
-{{ "**TaskDao.java**" | markdownify}}
-{% highlight java %}
-package com.imatia.qsallcomponents.model.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.boot.core.asynctask.IAsyncTaskDao;
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-
-@Lazy
-@Repository(value = "TaskDao")
-@ConfigurationFile(configurationFile = "dao/TaskDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class TaskDao extends OntimizeJdbcDaoSupport implements IAsyncTaskDao {
-	
-	public static final String	ATTR_ID				= "ID";
-	public static final String	ATTR_UUID			= "UUID";
-	public static final String	ATTR_STATUS			= "STATUS";
-	public static final String	ATTR_RESULT			= "RESULT";
-	
-	public TaskDao() {
-		super();
-	}
-
-}
-
-{% endhighlight %}
-
-</div>
 </div>
 
 #### Annotate controller method
@@ -937,8 +945,57 @@ In order to run some service method asynchronously, we need to annotate its resp
 {: .important}
 > The service's method **MUST** return a *serializable* object with getters and setters, as well as the controller's method must return a *ResponseEntity* object. In this case, the `query()` method returns a Serializable object, the *EntityResult*.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{ "We will override the `query()` method of the *ORestController* class." | markdownify}}
+
+{{ "**CandidateRestController.java**" | markdownify}}
+{% highlight java %}
+package com.ontimize.projectwiki.ws.core.rest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ontimize.boot.core.asynctask.OAsyncTask;
+import com.ontimize.jee.common.dto.EntityResult;
+import com.ontimize.jee.server.rest.ORestController;
+import com.ontimize.projectwiki.api.core.service.ICandidateService;
+
+@RestController
+@RequestMapping("/candidates")
+@ComponentScan(basePackageClasses = { com.ontimize.projectwiki.api.core.service.ICandidateService.class })
+public class CandidateRestController extends ORestController<ICandidateService>{
+
+	@Autowired
+	private ICandidateService candidateService;
+
+	@Override
+	public ICandidateService getService() {
+		return this.candidateService;
+	}
+	
+    @OAsyncTask
+    @Override
+    public ResponseEntity<EntityResult> query(@PathVariable("name") String name,
+            @RequestParam(name = "filter", required = false) String filter,
+            @RequestParam(name = "columns", required = false) String columns) {
+        return super.query(name, filter, columns);
+    }
+}
+
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1188,60 +1245,49 @@ In order to run some service method asynchronously, we need to annotate its resp
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{ "We will override the `query()` method of the *ORestController* class." | markdownify}}
-
-{{ "**CandidateRestController.java**" | markdownify}}
-{% highlight java %}
-package com.ontimize.projectwiki.ws.core.rest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.ontimize.boot.core.asynctask.OAsyncTask;
-import com.ontimize.jee.common.dto.EntityResult;
-import com.ontimize.jee.server.rest.ORestController;
-import com.ontimize.projectwiki.api.core.service.ICandidateService;
-
-@RestController
-@RequestMapping("/candidates")
-@ComponentScan(basePackageClasses = { com.ontimize.projectwiki.api.core.service.ICandidateService.class })
-public class CandidateRestController extends ORestController<ICandidateService>{
-
-	@Autowired
-	private ICandidateService candidateService;
-
-	@Override
-	public ICandidateService getService() {
-		return this.candidateService;
-	}
-	
-    @OAsyncTask
-    @Override
-    public ResponseEntity<EntityResult> query(@PathVariable("name") String name,
-            @RequestParam(name = "filter", required = false) String filter,
-            @RequestParam(name = "columns", required = false) String columns) {
-        return super.query(name, filter, columns);
-    }
-}
-
-{% endhighlight %}
-
-</div>
 </div>
 
 #### Delay service method
 
 To know all the states through which the asynchronous request passes, we will add a delay in the `candidateQuery()` method.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{ "**CandidateService.java**" | markdownify}}
+{% highlight java %}
+package com.ontimize.projectwiki.model.core.service;
+
+import java.util.concurrent.TimeUnit;
+
+. . .
+
+@Service("CandidateService")
+@Lazy
+public class CandidateService implements ICandidateService {
+
+. . .
+
+	@Override
+	public EntityResult candidateQuery(Map<String, Object> keyMap, List<String> attrList)
+			throws OntimizeJEERuntimeException {
+		try {
+			TimeUnit.MINUTES.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return this.daoHelper.query(this.candidateDao, keyMap, attrList);
+	}
+. . .
+}
+
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1490,38 +1536,6 @@ To know all the states through which the asynchronous request passes, we will ad
   </ul>
   </li>
 </ul>
-</div>
-<div class="multiColumn multiColumnGrow">
-
-{{ "**CandidateService.java**" | markdownify}}
-{% highlight java %}
-package com.ontimize.projectwiki.model.core.service;
-
-import java.util.concurrent.TimeUnit;
-
-. . .
-
-@Service("CandidateService")
-@Lazy
-public class CandidateService implements ICandidateService {
-
-. . .
-
-	@Override
-	public EntityResult candidateQuery(Map<String, Object> keyMap, List<String> attrList)
-			throws OntimizeJEERuntimeException {
-		try {
-			TimeUnit.MINUTES.sleep(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return this.daoHelper.query(this.candidateDao, keyMap, attrList);
-	}
-. . .
-}
-
-{% endhighlight %}
-
 </div>
 </div>
 

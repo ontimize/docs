@@ -25,8 +25,8 @@ Ontimize Boot allows a single application to query multiple data sources, thus a
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multiColumnRow multiColumnRowJustify">
-  <div class="multiColumn multiColumnGrow" >
+<div class="multicolumn">
+  <div class="multicolumnnopadding" >
   {{ "**Initial project**
  
     /$ git clone https://github.com/ontimize/ontimize-examples
@@ -36,7 +36,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
    
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow">
+<div class="multicolumnnopadding">
 
   {{ "**Final example**
     
@@ -54,8 +54,34 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 Although you can keep the data source already indicated in the file, you can delete it without any problem. New data sources will be added in the *.yml under the `ontimize.datasources` properties, followed by a name for that data source, and then the same settings as required for the data source you normally use.
 
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+      <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+  {{ "**application.yml**"| markdownify }}
+
+{% highlight yaml %}
+...
+
+ontimize:
+   datasources:
+      dbone:
+         driver-class-name: org.hsqldb.jdbcDriver
+         jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB
+         username: SA
+         password:
+      dbtwo:
+         driver-class-name: org.hsqldb.jdbcDriver
+         jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB
+         username: SA
+         password:
+
+...
+{% endhighlight %}
+
+  </div>
+  <div class="multicolumnright jstreeloader collapsed" >
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -308,37 +334,91 @@ Although you can keep the data source already indicated in the file, you can del
   </li>
 </ul>
   </div>
-  <div class="multiColumn multiColumnGrow" >
-  {{ "**application.yml**"| markdownify }}
-
-{% highlight yaml %}
-...
-
-ontimize:
-   datasources:
-      dbone:
-         driver-class-name: org.hsqldb.jdbcDriver
-         jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB
-         username: SA
-         password:
-      dbtwo:
-         driver-class-name: org.hsqldb.jdbcDriver
-         jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB
-         username: SA
-         password:
-
-...
-{% endhighlight %}
-
-  </div>
 </div>
 
 **Modify DAO's datasource**
 
 In the DAOs the data source must be modified to indicate the correct data source, and the database table that belongs to that data source. In the case of this example, as indicated in the *.yml file, that would be `dbone` and `dbtwo`.
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+      <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{ "**RoleDao.xml**"| markdownify }}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+    xmlns="http://www.ontimize.com/schema/jdbc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+    catalog="" schema="${mainschema}" table="TROLE"
+    datasource="dbone" sqlhandler="dbSQLStatementHandler">
+    ...
+{% endhighlight %}
+
+{{ "**RoleServerPermissionDao.xml**"| markdownify }}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+    xmlns="http://www.ontimize.com/schema/jdbc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+    catalog="" schema="${mainschema}" table="TROLE_SERVER_PERMISSION"
+    datasource="dbone" sqlhandler="dbSQLStatementHandler">
+    ...
+{% endhighlight %}
+
+{{ "**ServerPermissionDao.xml**"| markdownify }}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+    xmlns="http://www.ontimize.com/schema/jdbc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+    catalog="" schema="${mainschema}" table="TSERVER_PERMISSION"
+    datasource="dbone" sqlhandler="dbSQLStatementHandler">
+    ...
+{% endhighlight %}
+
+{{ "**UserDao.xml**"| markdownify }}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+    xmlns="http://www.ontimize.com/schema/jdbc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+    catalog="" schema="${mainschema}" table="TUSER"
+    datasource="dbone" sqlhandler="dbSQLStatementHandler">
+    ...
+{% endhighlight %}
+
+{{ "**UserRoleDao.xml**"| markdownify }}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+	xmlns="http://www.ontimize.com/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+	catalog="" schema="${mainschema}" table="TUSER_ROLE"
+	datasource="dbone" sqlhandler="dbSQLStatementHandler">
+  ...
+{% endhighlight %}
+
+{{ "**CandidateDao.xml**"| markdownify }}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+	xmlns="http://www.ontimize.com/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+	catalog="" schema="${mainschema}" table="CANDIDATE"
+	datasource="dbtwo" sqlhandler="dbSQLStatementHandler">
+  ...
+{% endhighlight %}
+  </div>
+    <div class="multicolumnright jstreeloader collapsed" >
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -592,80 +672,6 @@ In the DAOs the data source must be modified to indicate the correct data source
   </li>
 </ul>
   </div>
-  <div class="multiColumn multiColumnGrow" >
-
-{{ "**RoleDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TROLE"
-    datasource="dbone" sqlhandler="dbSQLStatementHandler">
-    ...
-{% endhighlight %}
-
-{{ "**RoleServerPermissionDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TROLE_SERVER_PERMISSION"
-    datasource="dbone" sqlhandler="dbSQLStatementHandler">
-    ...
-{% endhighlight %}
-
-{{ "**ServerPermissionDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TSERVER_PERMISSION"
-    datasource="dbone" sqlhandler="dbSQLStatementHandler">
-    ...
-{% endhighlight %}
-
-{{ "**UserDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TUSER"
-    datasource="dbone" sqlhandler="dbSQLStatementHandler">
-    ...
-{% endhighlight %}
-
-{{ "**UserRoleDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-	xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	catalog="" schema="${mainschema}" table="TUSER_ROLE"
-	datasource="dbone" sqlhandler="dbSQLStatementHandler">
-  ...
-{% endhighlight %}
-
-{{ "**CandidateDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-	xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	catalog="" schema="${mainschema}" table="CANDIDATE"
-	datasource="dbtwo" sqlhandler="dbSQLStatementHandler">
-  ...
-{% endhighlight %}
-  </div>
 </div>
 
 ### Modify SQL handler
@@ -770,8 +776,91 @@ At this point more data sources can be queried, as shown in the example, but the
 </tbody>
 </table>
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+      <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{ "
+
+Modified application.yml (will use default values) and some SQL handlers
+
+**aplication.yml**"| markdownify }}
+{% highlight yml %}
+...
+ontimize:
+   datasources:
+      dbone:
+         driver-class-name: org.hsqldb.jdbcDriver
+         jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB
+         username: SA
+         password:
+         initial-size: 10
+         test-on-borrow: true
+      dbtwo:
+         driver-class-name: org.hsqldb.jdbcDriver
+         jdbc-url: jdbc:hsqldb:hsql://localhost:9014/templateDB
+         username: SA
+         password:
+         initial-size: 10
+         test-on-borrow: true
+   jdbc:
+      name-convention: upper
+...
+{% endhighlight %}
+
+{{ "**RoleDao.xml**"| markdownify }}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+    xmlns="http://www.ontimize.com/schema/jdbc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+    catalog="" schema="${mainschema}" table="TROLE"
+    datasource="dbone" sqlhandler="hsqldbSQLStatementHandler">
+    ...
+{% endhighlight %}
+
+
+{{ "**ServerPermissionDao.xml**"| markdownify }}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+    xmlns="http://www.ontimize.com/schema/jdbc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+    catalog="" schema="${mainschema}" table="TSERVER_PERMISSION"
+    datasource="dbone" sqlhandler="hsqldbSQLStatementHandler">
+    ...
+{% endhighlight %}
+
+
+{{ "**UserRoleDao.xml**"| markdownify }}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+	xmlns="http://www.ontimize.com/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+	catalog="" schema="${mainschema}" table="TUSER_ROLE"
+	datasource="dbone" sqlhandler="hsqldbSQLStatementHandler">
+  ...
+{% endhighlight %}
+
+{{ "**CandidateDao.xml**"| markdownify }}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+	xmlns="http://www.ontimize.com/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+	catalog="" schema="${mainschema}" table="CANDIDATE"
+	datasource="dbtwo" sqlhandler="hsqldbSQLStatementHandler">
+  ...
+{% endhighlight %}
+  </div>
+  <div class="multicolumnright jstreeloader collapsed" >
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1024,83 +1113,5 @@ At this point more data sources can be queried, as shown in the example, but the
   </ul>
   </li>
 </ul>
-  </div>
-  <div class="multiColumn multiColumnGrow" >
-
-Modified application.yml (will use default values) and some SQL handlers
-
-{{ "**aplication.yml**"| markdownify }}
-{% highlight yml %}
-...
-ontimize:
-   datasources:
-      dbone:
-         driver-class-name: org.hsqldb.jdbcDriver
-         jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB
-         username: SA
-         password:
-         initial-size: 10
-         test-on-borrow: true
-      dbtwo:
-         driver-class-name: org.hsqldb.jdbcDriver
-         jdbc-url: jdbc:hsqldb:hsql://localhost:9014/templateDB
-         username: SA
-         password:
-         initial-size: 10
-         test-on-borrow: true
-   jdbc:
-      name-convention: upper
-...
-{% endhighlight %}
-
-{{ "**RoleDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TROLE"
-    datasource="dbone" sqlhandler="hsqldbSQLStatementHandler">
-    ...
-{% endhighlight %}
-
-
-{{ "**ServerPermissionDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-    xmlns="http://www.ontimize.com/schema/jdbc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-    catalog="" schema="${mainschema}" table="TSERVER_PERMISSION"
-    datasource="dbone" sqlhandler="hsqldbSQLStatementHandler">
-    ...
-{% endhighlight %}
-
-
-{{ "**UserRoleDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-	xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	catalog="" schema="${mainschema}" table="TUSER_ROLE"
-	datasource="dbone" sqlhandler="hsqldbSQLStatementHandler">
-  ...
-{% endhighlight %}
-
-{{ "**CandidateDao.xml**"| markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-	xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	catalog="" schema="${mainschema}" table="CANDIDATE"
-	datasource="dbtwo" sqlhandler="hsqldbSQLStatementHandler">
-  ...
-{% endhighlight %}
   </div>
 </div>

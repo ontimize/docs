@@ -28,8 +28,8 @@ You can follow this tutorial using your own application, although for this examp
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multiColumnRow multiColumnRowJustify">
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumn">
+<div class="multicolumnnopadding" >
   {{ "**Initial project**
 
     /$ git clone https://github.com/ontimize/ontimize-examples
@@ -38,7 +38,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
     | markdownify }}
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumnnopadding" >
 
   {{ "**Final example**
 
@@ -76,8 +76,44 @@ ALTER TABLE REPORT_PARAMETERS ADD CONSTRAINT REPORT_PARAMETERS_FK FOREIGN KEY(RE
 ## Server
 ### Add Ontimize Report dependencies
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+  {{ "**projectwiki-boot/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+	...
+	<dependency>
+		<groupId>com.ontimize.boot</groupId>
+		<artifactId>ontimize-boot-starter-report</artifactId>
+	</dependency>
+	...
+</dependencies>
+...
+{% endhighlight %}
+
+
+  {{ "**projectwiki-model/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+	...
+	<dependency>
+		<groupId>com.ontimize.jee.report</groupId>
+		<artifactId>ontimize-jee-report-server</artifactId>
+	</dependency>
+	...
+</dependencies>
+...
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -325,47 +361,114 @@ ALTER TABLE REPORT_PARAMETERS ADD CONSTRAINT REPORT_PARAMETERS_FK FOREIGN KEY(RE
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-  {{ "**projectwiki-boot/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-	...
-	<dependency>
-		<groupId>com.ontimize.boot</groupId>
-		<artifactId>ontimize-boot-starter-report</artifactId>
-	</dependency>
-	...
-</dependencies>
-...
-{% endhighlight %}
-
-
-  {{ "**projectwiki-model/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-	...
-	<dependency>
-		<groupId>com.ontimize.jee.report</groupId>
-		<artifactId>ontimize-jee-report-server</artifactId>
-	</dependency>
-	...
-</dependencies>
-...
-{% endhighlight %}
-
-</div>
-
 </div>
 
 ### Add Report DAOs
 A specific DAO will be created for each of both tables in the reports system, and each of them will implement a different interface.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{ "**ReportDao.xml**" | markdownify}}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup xmlns="http://www.ontimize.com/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+	table="REPORTS" datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+	<DeleteKeys>
+		<Column>ID</Column>
+	</DeleteKeys>
+	<UpdateKeys>
+		<Column>ID</Column>
+	</UpdateKeys>
+	<GeneratedKey>ID</GeneratedKey>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+{{ "**ReportParameterDao.xml**" | markdownify}}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup xmlns="http://www.ontimize.com/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+	table="REPORT_PARAMETERS" datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+	<DeleteKeys>
+		<Column>ID</Column>
+	</DeleteKeys>
+	<UpdateKeys>
+		<Column>ID</Column>
+	</UpdateKeys>
+	<GeneratedKey>ID</GeneratedKey>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+{{ "**ReportDao.java**" | markdownify}}
+{% highlight java %}
+package com.ontimize.projectwiki.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+import com.ontimize.jee.server.services.reportstore.dao.IReportDao;
+
+@Lazy
+@Repository(value = "ReportDao")
+@ConfigurationFile(configurationFile = "dao/ReportDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class ReportDao extends OntimizeJdbcDaoSupport implements IReportDao {
+
+	public static final String	ATTR_ID					= "ID";
+	public static final String	ATTR_NAME				= "NAME";
+	public static final String	ATTR_DESCRIPTION			= "DESCRIPTION";
+	public static final String	ATTR_REPORT_TYPE			= "REPORT_TYPE";
+	public static final String	ATTR_MAIN_REPORT_FILENAME	        = "MAIN_REPORT_FILENAME";
+	public static final String	ATTR_ZIP				= "ZIP";
+	public static final String	ATTR_COMPILED				= "COMPILED";
+
+	public ReportDao() {
+		super();
+	}
+}
+
+{% endhighlight %}
+
+{{ "**ReportParameterDao.java**" | markdownify}}
+{% highlight java %}
+package com.ontimize.projectwiki.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+import com.ontimize.jee.server.services.reportstore.dao.IReportParameterDao;
+
+@Lazy
+@Repository(value = "ReportParameterDao")
+@ConfigurationFile(configurationFile = "dao/ReportParameterDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class ReportParameterDao extends OntimizeJdbcDaoSupport implements IReportParameterDao {
+
+	public static final String	ATTR_ID					= "ID";
+	public static final String	ATTR_REPORT_ID				= "REPORT_ID";
+	public static final String	ATTR_NAME				= "NAME";
+	public static final String	ATTR_DESCRIPTION			= "DESCRIPTION";
+	public static final String	ATTR_NESTED_TYPE			= "NESTED_TYPE";
+	public static final String	ATTR_VALUE_CLASS			= "VALUE_CLASS";
+
+	public ReportParameterDao() {
+		super();
+	}
+}
+
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -617,104 +720,6 @@ A specific DAO will be created for each of both tables in the reports system, an
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{ "**ReportDao.xml**" | markdownify}}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	table="REPORTS" datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
-	<DeleteKeys>
-		<Column>ID</Column>
-	</DeleteKeys>
-	<UpdateKeys>
-		<Column>ID</Column>
-	</UpdateKeys>
-	<GeneratedKey>ID</GeneratedKey>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-{{ "**ReportParameterDao.xml**" | markdownify}}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	table="REPORT_PARAMETERS" datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
-	<DeleteKeys>
-		<Column>ID</Column>
-	</DeleteKeys>
-	<UpdateKeys>
-		<Column>ID</Column>
-	</UpdateKeys>
-	<GeneratedKey>ID</GeneratedKey>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-{{ "**ReportDao.java**" | markdownify}}
-{% highlight java %}
-package com.ontimize.projectwiki.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-import com.ontimize.jee.server.services.reportstore.dao.IReportDao;
-
-@Lazy
-@Repository(value = "ReportDao")
-@ConfigurationFile(configurationFile = "dao/ReportDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class ReportDao extends OntimizeJdbcDaoSupport implements IReportDao {
-
-	public static final String	ATTR_ID					= "ID";
-	public static final String	ATTR_NAME				= "NAME";
-	public static final String	ATTR_DESCRIPTION			= "DESCRIPTION";
-	public static final String	ATTR_REPORT_TYPE			= "REPORT_TYPE";
-	public static final String	ATTR_MAIN_REPORT_FILENAME	        = "MAIN_REPORT_FILENAME";
-	public static final String	ATTR_ZIP				= "ZIP";
-	public static final String	ATTR_COMPILED				= "COMPILED";
-
-	public ReportDao() {
-		super();
-	}
-}
-
-{% endhighlight %}
-
-{{ "**ReportParameterDao.java**" | markdownify}}
-{% highlight java %}
-package com.ontimize.projectwiki.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-import com.ontimize.jee.server.services.reportstore.dao.IReportParameterDao;
-
-@Lazy
-@Repository(value = "ReportParameterDao")
-@ConfigurationFile(configurationFile = "dao/ReportParameterDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class ReportParameterDao extends OntimizeJdbcDaoSupport implements IReportParameterDao {
-
-	public static final String	ATTR_ID					= "ID";
-	public static final String	ATTR_REPORT_ID				= "REPORT_ID";
-	public static final String	ATTR_NAME				= "NAME";
-	public static final String	ATTR_DESCRIPTION			= "DESCRIPTION";
-	public static final String	ATTR_NESTED_TYPE			= "NESTED_TYPE";
-	public static final String	ATTR_VALUE_CLASS			= "VALUE_CLASS";
-
-	public ReportParameterDao() {
-		super();
-	}
-}
-
-{% endhighlight %}
-
-</div>
 </div>
 
 ### Modify application.yml
@@ -727,8 +732,32 @@ The **application.yml** file will be modified to enable the reports module, indi
 {: .important}
 > You can only choose **ONE** of the two options listed below.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{"**application.yml**" | markdownify}}
+{{"For ***database*** engine" | markdownify}}
+{% highlight yaml%}
+ontimize:
+   report:
+      enable: true
+      engine: database
+{% endhighlight %}
+
+
+{{"For ***file system*** engine" | markdownify}}
+{% highlight yaml%}
+ontimize:
+   report:
+      enable: true
+      engine: file
+      base-path: C:/applications/projectwiki/reports
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -979,27 +1008,6 @@ The **application.yml** file will be modified to enable the reports module, indi
   </ul>
   </li>
 </ul>
-</div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**application.yml**" | markdownify}}
-{{"For ***database*** engine" | markdownify}}
-{% highlight yaml%}
-ontimize:
-   report:
-      enable: true
-      engine: database
-{% endhighlight %}
-
-
-{{"For ***file system*** engine" | markdownify}}
-{% highlight yaml%}
-ontimize:
-   report:
-      enable: true
-      engine: file
-      base-path: C:/applications/projectwiki/reports
-{% endhighlight %}
 </div>
 </div>
 

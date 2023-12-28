@@ -20,8 +20,8 @@ You can follow this tutorial using your own application, although for this examp
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multiColumnRow multiColumnRowJustify">
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumn">
+<div class="multicolumnnopadding" >
   {{ "**Initial project**
 
     /$ git clone https://github.com/ontimize/ontimize-examples 
@@ -30,7 +30,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
     | markdownify }}
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumnnopadding" >
 
   {{ "**Final example**
 
@@ -49,8 +49,24 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 ### Ontimize version
 First of all we need to update the version of Ontimize (ontimize-boot-parent) located in the parent of the project. Use always the latest version: [![Ontimize Boot Parent](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot-parent?label=Ontimize%20Boot%20Parent&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot-parent)
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+  <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+  {{"**pom.xml**" | markdownify}}
+
+{%highlight xml %}
+  <parent>
+    <groupId>com.ontimize.boot</groupId>
+    <artifactId>ontimize-boot-parent</artifactId>
+    <version>3.x.x</version>
+  </parent>
+{% endhighlight %}
+
+</div>
+  <div class="multicolumnright jstreeloader collapsed" >
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -322,27 +338,30 @@ First of all we need to update the version of Ontimize (ontimize-boot-parent) lo
   </li>
 </ul>
   </div>
-  <div class="multiColumn" >
-
-  {{"**pom.xml**" | markdownify}}
-
-{%highlight xml %}
-  <parent>
-    <groupId>com.ontimize.boot</groupId>
-    <artifactId>ontimize-boot-parent</artifactId>
-    <version>3.x.x</version>
-  </parent>
-{% endhighlight %}
-
-</div>
 </div>
 
 ### Java version
 
 In the project properties we will change the java version **from 1.8 to 11**, both for the main **pom.xml** and for the `hr-model` module **pom.xml**.
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+  <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+  {{"**pom.xml**" | markdownify}}
+
+{%highlight xml %}
+  <properties>
+    . . .
+    <java.version>11</java.version>
+    . . .
+  </properties>
+{% endhighlight %}
+
+</div>
+  <div class="multicolumnright jstreeloader collapsed" >
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -614,19 +633,6 @@ In the project properties we will change the java version **from 1.8 to 11**, bo
   </li>
 </ul>
   </div>
-  <div class="multiColumn" >
-
-  {{"**pom.xml**" | markdownify}}
-
-{%highlight xml %}
-  <properties>
-    . . .
-    <java.version>11</java.version>
-    . . .
-  </properties>
-{% endhighlight %}
-
-</div>
 </div>
 
 ### Modifying application.yml
@@ -723,8 +729,95 @@ The package name of **EntityResult** has been renamed from `com.ontimize.db.Enti
 
 In the `hr-api` module we need to change the name of the package of this class in all the interfaces that are using it.
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+  <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+  {{"**ICandidateService.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.hr.api.core.service;
+
+. . .
+import com.ontimize.jee.common.dto.EntityResult;
+. . .
+
+public interface ICandidateService {
+
+ // CANDIDATE
+ public EntityResult candidateQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
+ public EntityResult candidateInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
+ public EntityResult candidateUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+ public EntityResult candidateDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+
+}
+{% endhighlight %}
+
+  {{"**IMasterService.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.hr.api.core.service;
+
+. . .
+import com.ontimize.jee.common.dto.EntityResult;
+. . .
+
+public interface IMasterService {
+
+    . . .
+	 // EDUCATION
+	 public EntityResult educationQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
+	 public EntityResult educationInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
+	 public EntityResult educationUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+	 public EntityResult educationDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+     . . .
+}
+{% endhighlight %}
+
+  {{"**IOfferService.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.hr.api.core.service;
+
+. . .
+import com.ontimize.jee.common.dto.EntityResult;
+. . .
+
+public interface IOfferService {
+
+    . . .
+	// OFFER
+	public EntityResult offerQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
+	public EntityResult offerInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
+	public EntityResult offerUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+	public EntityResult offerDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+    . . .
+
+}
+{% endhighlight %}
+
+  {{"**IUserService.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.hr.api.core.service;
+
+. . .
+import com.ontimize.jee.common.dto.EntityResult;
+. . .
+
+public interface IUserService {
+
+	public EntityResult userQuery(Map<?, ?> keyMap, List<?> attrList);
+	public EntityResult userInsert(Map<?, ?> attrMap);
+	public EntityResult userUpdate(Map<?, ?> attrMap, Map<?, ?> keyMap);
+	public EntityResult userDelete(Map<?, ?> keyMap);
+
+}
+{% endhighlight %}
+</div>
+  <div class="multicolumnright jstreeloader collapsed" >
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -996,98 +1089,95 @@ In the `hr-api` module we need to change the name of the package of this class i
   </li>
 </ul>
   </div>
-  <div class="multiColumn" >
-
-  {{"**ICandidateService.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.hr.api.core.service;
-
-. . .
-import com.ontimize.jee.common.dto.EntityResult;
-. . .
-
-public interface ICandidateService {
-
- // CANDIDATE
- public EntityResult candidateQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
- public EntityResult candidateInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
- public EntityResult candidateUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
- public EntityResult candidateDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
-
-}
-{% endhighlight %}
-
-  {{"**IMasterService.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.hr.api.core.service;
-
-. . .
-import com.ontimize.jee.common.dto.EntityResult;
-. . .
-
-public interface IMasterService {
-
-    . . .
-	 // EDUCATION
-	 public EntityResult educationQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
-	 public EntityResult educationInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
-	 public EntityResult educationUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
-	 public EntityResult educationDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
-     . . .
-}
-{% endhighlight %}
-
-  {{"**IOfferService.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.hr.api.core.service;
-
-. . .
-import com.ontimize.jee.common.dto.EntityResult;
-. . .
-
-public interface IOfferService {
-
-    . . .
-	// OFFER
-	public EntityResult offerQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
-	public EntityResult offerInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
-	public EntityResult offerUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
-	public EntityResult offerDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
-    . . .
-
-}
-{% endhighlight %}
-
-  {{"**IUserService.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.hr.api.core.service;
-
-. . .
-import com.ontimize.jee.common.dto.EntityResult;
-. . .
-
-public interface IUserService {
-
-	public EntityResult userQuery(Map<?, ?> keyMap, List<?> attrList);
-	public EntityResult userInsert(Map<?, ?> attrMap);
-	public EntityResult userUpdate(Map<?, ?> attrMap, Map<?, ?> keyMap);
-	public EntityResult userDelete(Map<?, ?> keyMap);
-
-}
-{% endhighlight %}
-</div>
 </div>
 
 #### Model module
 
 Having changed the class in the interface, we also have to change it in the service. For this we go to the `hr-model` module and replace the import of all services.
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+  <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+  {{"**CandidateService.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.hr.model.core.service;
+
+. . .
+import com.ontimize.jee.common.dto.EntityResult;
+. . .
+
+@Service("CandidateService")
+@Lazy
+public class CandidateService implements ICandidateService {
+
+	@Autowired
+	private CandidateDao candidateDao;
+    . . .
+}
+{% endhighlight %}
+
+  {{"**MasterService.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.hr.model.core.service;
+
+. . .
+import com.ontimize.jee.common.dto.EntityResult;
+. . .
+
+@Service("MasterService")
+@Lazy
+public class MasterService implements MasterService {
+
+	@Autowired
+	private EducationDao educationDao;
+    . . .
+}
+{% endhighlight %}
+
+  {{"**OfferService.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.hr.model.core.service;
+
+. . .
+import com.ontimize.jee.common.dto.EntityResult;
+. . .
+
+@Service("OfferService")
+@Lazy
+public class OfferService implements IOfferService {
+
+	@Autowired
+	private OfferDao offerDao;
+    . . .
+}
+{% endhighlight %}
+
+  {{"**UserService.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.hr.model.core.service;
+
+. . .
+import com.ontimize.jee.common.dto.EntityResult;
+. . .
+
+@Lazy
+@Service("UserService")
+public class UserService implements IUserService {
+
+	@Autowired
+	private UserDao userDao;
+    . . .
+}
+{% endhighlight %}
+</div>
+  <div class="multicolumnright jstreeloader collapsed" >
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1359,84 +1449,6 @@ Having changed the class in the interface, we also have to change it in the serv
   </li>
 </ul>
   </div>
-  <div class="multiColumn" >
-
-  {{"**CandidateService.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.hr.model.core.service;
-
-. . .
-import com.ontimize.jee.common.dto.EntityResult;
-. . .
-
-@Service("CandidateService")
-@Lazy
-public class CandidateService implements ICandidateService {
-
-	@Autowired
-	private CandidateDao candidateDao;
-    . . .
-}
-{% endhighlight %}
-
-  {{"**MasterService.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.hr.model.core.service;
-
-. . .
-import com.ontimize.jee.common.dto.EntityResult;
-. . .
-
-@Service("MasterService")
-@Lazy
-public class MasterService implements MasterService {
-
-	@Autowired
-	private EducationDao educationDao;
-    . . .
-}
-{% endhighlight %}
-
-  {{"**OfferService.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.hr.model.core.service;
-
-. . .
-import com.ontimize.jee.common.dto.EntityResult;
-. . .
-
-@Service("OfferService")
-@Lazy
-public class OfferService implements IOfferService {
-
-	@Autowired
-	private OfferDao offerDao;
-    . . .
-}
-{% endhighlight %}
-
-  {{"**UserService.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.hr.model.core.service;
-
-. . .
-import com.ontimize.jee.common.dto.EntityResult;
-. . .
-
-@Lazy
-@Service("UserService")
-public class UserService implements IUserService {
-
-	@Autowired
-	private UserDao userDao;
-    . . .
-}
-{% endhighlight %}
-</div>
 </div>
 
 #### Ws module
@@ -1445,8 +1457,97 @@ In this case it is not just about changing the name of the package, it must also
 
 Go to the `hr-ws` module and replace the import of the EntityResult class in the rest controllers and make the following changes:
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+ <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+  {{"**OfferRestController.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.hr.ws.core.rest;
+
+. . .
+import com.ontimize.jee.common.db.SQLStatementBuilder;
+import com.ontimize.jee.common.db.SQLStatementBuilder.BasicExpression;
+import com.ontimize.jee.common.db.SQLStatementBuilder.BasicField;
+import com.ontimize.jee.common.db.SQLStatementBuilder.BasicOperator;
+import com.ontimize.jee.common.dto.EntityResult;
+import com.ontimize.jee.common.dto.EntityResultMapImpl;
+. . .
+
+@RestController
+@RequestMapping("/offers")
+@ComponentScan(basePackageClasses = { com.ontimize.hr.api.core.service.IOfferService.class })
+public class OfferRestController extends ORestController<IOfferService> {
+
+	. . .
+
+	@RequestMapping(value = "currentOffers/search", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public EntityResult currentOffersSearch(@RequestBody Map<String, Object> req) {
+		try {
+			List<String> columns = (List<String>) req.get("columns");
+			Map<String, Object> key = new HashMap<String, Object>();
+			key.put(SQLStatementBuilder.ExtendedSQLConditionValuesProcessor.EXPRESSION_KEY,
+					searchBetween(OfferDao.ATTR_START_DATE));
+			return offerService.offerQuery(key, columns);
+		} catch (Exception e) {
+			e.printStackTrace();
+			EntityResult res = new EntityResultMapImpl();
+			res.setCode(EntityResult.OPERATION_WRONG);
+			return res;
+		}
+	}
+
+	@RequestMapping(value = "yearOffers/search", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public EntityResult yearOffersSearch(@RequestBody Map<String, Object> req) {
+		try {
+			List<String> columns = (List<String>) req.get("columns");
+			Map<String, Object> filter = (Map<String, Object>) req.get("filter");
+			int year = (int) filter.get("YEAR");
+			Map<String, Object> key = new HashMap<String, Object>();
+			key.put(SQLStatementBuilder.ExtendedSQLConditionValuesProcessor.EXPRESSION_KEY,
+					searchBetweenWithYear(OfferDao.ATTR_START_DATE, year));
+			return offerService.offerQuery(key, columns);
+		} catch (Exception e) {
+			e.printStackTrace();
+			EntityResult res = new EntityResultMapImpl();
+			res.setCode(EntityResult.OPERATION_WRONG);
+			return res;
+		}
+	}
+
+    . . .
+
+}
+{% endhighlight %}
+
+  {{"**UserRestController.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.hr.ws.core.rest;
+
+. . .
+import com.ontimize.jee.common.dto.EntityResult;
+. . .
+
+@RestController
+@RequestMapping("/users")
+public class UserRestController extends ORestController<IUserService> {
+
+	. . .
+	@RequestMapping(
+		value = "/login",
+		method = RequestMethod.POST,
+		produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<EntityResult> login() {
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+}
+{% endhighlight %}
+</div>
+  <div class="multicolumnright jstreeloader collapsed" >
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1718,90 +1819,4 @@ Go to the `hr-ws` module and replace the import of the EntityResult class in the
   </li>
 </ul> 
   </div>
-  <div class="multiColumn" >
-
-  {{"**OfferRestController.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.hr.ws.core.rest;
-
-. . .
-import com.ontimize.jee.common.db.SQLStatementBuilder;
-import com.ontimize.jee.common.db.SQLStatementBuilder.BasicExpression;
-import com.ontimize.jee.common.db.SQLStatementBuilder.BasicField;
-import com.ontimize.jee.common.db.SQLStatementBuilder.BasicOperator;
-import com.ontimize.jee.common.dto.EntityResult;
-import com.ontimize.jee.common.dto.EntityResultMapImpl;
-. . .
-
-@RestController
-@RequestMapping("/offers")
-@ComponentScan(basePackageClasses = { com.ontimize.hr.api.core.service.IOfferService.class })
-public class OfferRestController extends ORestController<IOfferService> {
-
-	. . .
-
-	@RequestMapping(value = "currentOffers/search", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public EntityResult currentOffersSearch(@RequestBody Map<String, Object> req) {
-		try {
-			List<String> columns = (List<String>) req.get("columns");
-			Map<String, Object> key = new HashMap<String, Object>();
-			key.put(SQLStatementBuilder.ExtendedSQLConditionValuesProcessor.EXPRESSION_KEY,
-					searchBetween(OfferDao.ATTR_START_DATE));
-			return offerService.offerQuery(key, columns);
-		} catch (Exception e) {
-			e.printStackTrace();
-			EntityResult res = new EntityResultMapImpl();
-			res.setCode(EntityResult.OPERATION_WRONG);
-			return res;
-		}
-	}
-
-	@RequestMapping(value = "yearOffers/search", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public EntityResult yearOffersSearch(@RequestBody Map<String, Object> req) {
-		try {
-			List<String> columns = (List<String>) req.get("columns");
-			Map<String, Object> filter = (Map<String, Object>) req.get("filter");
-			int year = (int) filter.get("YEAR");
-			Map<String, Object> key = new HashMap<String, Object>();
-			key.put(SQLStatementBuilder.ExtendedSQLConditionValuesProcessor.EXPRESSION_KEY,
-					searchBetweenWithYear(OfferDao.ATTR_START_DATE, year));
-			return offerService.offerQuery(key, columns);
-		} catch (Exception e) {
-			e.printStackTrace();
-			EntityResult res = new EntityResultMapImpl();
-			res.setCode(EntityResult.OPERATION_WRONG);
-			return res;
-		}
-	}
-
-    . . .
-
-}
-{% endhighlight %}
-
-  {{"**UserRestController.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.hr.ws.core.rest;
-
-. . .
-import com.ontimize.jee.common.dto.EntityResult;
-. . .
-
-@RestController
-@RequestMapping("/users")
-public class UserRestController extends ORestController<IUserService> {
-
-	. . .
-	@RequestMapping(
-		value = "/login",
-		method = RequestMethod.POST,
-		produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<EntityResult> login() {
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-}
-{% endhighlight %}
-</div>
 </div>

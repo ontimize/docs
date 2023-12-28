@@ -18,8 +18,8 @@ Ontimize Boot's remote internationalization service (**i18n**) allows you to man
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multiColumnRow multiColumnRowJustify">
-  <div class="multiColumn multiColumnGrow" >
+<div class="multicolumn">
+  <div class="multicolumnnopadding" >
   {{ "**Initial project**
  
     /$ git clone https://github.com/ontimize/ontimize-examples
@@ -29,7 +29,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
    
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow">
+<div class="multicolumnnopadding">
 
   {{ "**Final example**
     
@@ -162,8 +162,104 @@ This configuration indicates the keys and values to be stored in the database. T
 It is necessary to create the **DAO**s that reflect the new DB tables we have created.
 
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+      <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+  {{ "First we will create the \*.xml files." | markdownify }}
+
+  {{ "**OCDatabaseBundleDao.xml**" | markdownify }}   
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+	xmlns="http://www.ontimize.com/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+	table="TI18N" datasource="mainDataSource"
+	catalog="" schema="${mainschema}"
+	sqlhandler="dbSQLStatementHandler">
+	<DeleteKeys>
+		<Column>ID_I18N</Column>
+	</DeleteKeys>
+	<UpdateKeys>
+		<Column>ID_I18N</Column>
+	</UpdateKeys>
+	<GeneratedKey>ID_I18N</GeneratedKey>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+
+{{ "**OCDatabaseBundleValueDao.xml**" | markdownify }}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+	xmlns="http://www.ontimize.com/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+	table="TI18N_VALUE" datasource="mainDataSource"
+	catalog="" schema="${mainschema}"
+	sqlhandler="dbSQLStatementHandler">
+	<DeleteKeys>
+		<Column>ID_I18N</Column>
+		<Column>KEY</Column>
+	</DeleteKeys>
+	<UpdateKeys>
+		<Column>ID_I18N</Column>
+		<Column>KEY</Column>
+	</UpdateKeys>
+	<GeneratedKey>ID_I18N_VALUE</GeneratedKey>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+{{ "In the \*.java files we indicate that it is a repository whose name will be *OCDatabaseBundleDao* and *OCDatabaseBundleValueDao* respectively, using the `@Repository` annotation. With the `@Lazy` annotation, we indicate that the loading is delayed until it is completely necessary, and the `@ConfigurationFile` annotation allows us to configure this **DAO** using the **XML** file and an additional file where some features common to several **DAO**s can be stored, such as the schema they belong to." | markdownify}}
+
+{{"**OCDatabaseBundleDao.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.projectwiki.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+
+@Repository(value = "OCDatabaseBundleDao")
+@Lazy
+@ConfigurationFile(configurationFile = "dao/OCDatabaseBundleDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class OCDatabaseBundleDao extends OntimizeJdbcDaoSupport {
+
+  public OCDatabaseBundleDao() {
+    super();
+  }
+}
+{% endhighlight %}
+
+{{"**OCDatabaseBundleValueDao.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.projectwiki.model.core.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+
+@Repository(value = "OCDatabaseBundleValueDao")
+@Lazy
+@ConfigurationFile(configurationFile = "dao/OCDatabaseBundleValueDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
+public class OCDatabaseBundleValueDao extends OntimizeJdbcDaoSupport {
+
+  public OCDatabaseBundleValueDao() {
+    super();
+  }
+}
+{% endhighlight %}
+
+</div>
+  <div class="multicolumnright jstreeloader collapsed" >
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -415,365 +511,17 @@ It is necessary to create the **DAO**s that reflect the new DB tables we have cr
   </li>
 </ul>
   </div>
-  <div class="multiColumn" >
-  {{ "First we will create the \*.xml files." | markdownify }}
-
-  {{ "**OCDatabaseBundleDao.xml**" | markdownify }}   
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-	xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	table="TI18N" datasource="mainDataSource"
-	catalog="" schema="${mainschema}"
-	sqlhandler="dbSQLStatementHandler">
-	<DeleteKeys>
-		<Column>ID_I18N</Column>
-	</DeleteKeys>
-	<UpdateKeys>
-		<Column>ID_I18N</Column>
-	</UpdateKeys>
-	<GeneratedKey>ID_I18N</GeneratedKey>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-
-{{ "**OCDatabaseBundleValueDao.xml**" | markdownify }}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
-	xmlns="http://www.ontimize.com/schema/jdbc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
-	table="TI18N_VALUE" datasource="mainDataSource"
-	catalog="" schema="${mainschema}"
-	sqlhandler="dbSQLStatementHandler">
-	<DeleteKeys>
-		<Column>ID_I18N</Column>
-		<Column>KEY</Column>
-	</DeleteKeys>
-	<UpdateKeys>
-		<Column>ID_I18N</Column>
-		<Column>KEY</Column>
-	</UpdateKeys>
-	<GeneratedKey>ID_I18N_VALUE</GeneratedKey>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-{{ "In the \*.java files we indicate that it is a repository whose name will be *OCDatabaseBundleDao* and *OCDatabaseBundleValueDao* respectively, using the `@Repository` annotation. With the `@Lazy` annotation, we indicate that the loading is delayed until it is completely necessary, and the `@ConfigurationFile` annotation allows us to configure this **DAO** using the **XML** file and an additional file where some features common to several **DAO**s can be stored, such as the schema they belong to." | markdownify}}
-
-{{"**OCDatabaseBundleDao.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.projectwiki.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-
-@Repository(value = "OCDatabaseBundleDao")
-@Lazy
-@ConfigurationFile(configurationFile = "dao/OCDatabaseBundleDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class OCDatabaseBundleDao extends OntimizeJdbcDaoSupport {
-
-  public OCDatabaseBundleDao() {
-    super();
-  }
-}
-{% endhighlight %}
-
-{{"**OCDatabaseBundleValueDao.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.projectwiki.model.core.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-
-@Repository(value = "OCDatabaseBundleValueDao")
-@Lazy
-@ConfigurationFile(configurationFile = "dao/OCDatabaseBundleValueDao.xml", configurationFilePlaceholder = "dao/placeholders.properties")
-public class OCDatabaseBundleValueDao extends OntimizeJdbcDaoSupport {
-
-  public OCDatabaseBundleValueDao() {
-    super();
-  }
-}
-{% endhighlight %}
-
-</div>
 </div>
 
 
 ### Add I18n Rest Controller
 
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
-<ul>
-  <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-examples
-<ul>
-  <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-examples
-  <ul>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-    projectwiki-api
-    <ul>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-      src
-      <ul>
-        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-        main
-        <ul>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          java
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-            com
-            <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-              ontimize
-              <ul>
-                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                projectwiki
-                <ul>
-                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                  api
-                  <ul>
-                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                    core
-                    <ul>
-                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                      service
-                      <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ICandidateService.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
-                      </ul>
-                      </li>
-                    </ul>
-                    </li>
-                  </ul>
-                  </li>
-                </ul>
-                </li>
-              </ul>
-              </li>
-            </ul>
-            </li>
-          </ul>
-          </li>
-        </ul>
-        </li>
-      </ul>
-      </li>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
-    </ul>
-    </li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-    projectwiki-boot
-    <ul>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-      src
-      <ul>
-        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-        main
-        <ul>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          java
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-            com
-            <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-              ontimize
-              <ul>
-                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                projectwiki
-                <ul>
-                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerApplication.java</li>
-                </ul>
-                </li>
-              </ul>
-              </li>
-            </ul>
-            </li>
-          </ul>
-          </li>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          resources
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>application.yml</li>
-          </ul>
-          </li>
-        </ul>
-        </li>
-      </ul>
-      </li>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
-    </ul>
-    </li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-    projectwiki-model
-    <ul>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-      src
-      <ul>
-        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-        main
-        <ul>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          db
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
-          </ul>
-          </li>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          java
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-            com
-            <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-              ontimize
-              <ul>
-                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                projectwiki
-                <ul>
-                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                  model
-                  <ul>
-                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                    core
-                    <ul>
-                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                      dao
-                      <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OCDatabaseBundleDao.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OCDatabaseBundleValueDao.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.java</li>
-                      </ul>
-                      </li>
-                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                      service
-                      <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateService.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserService.java</li>
-                      </ul>
-                      </li>
-                    </ul>
-                    </li>
-                  </ul>
-                  </li>
-                </ul>
-                </li>
-              </ul>
-              </li>
-            </ul>
-            </li>
-          </ul>
-          </li>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          resources
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-            dao
-            <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OCDatabaseBundleDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OCDatabaseBundleValueDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>placeholders.properties</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleServerPermissionDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerPermissionDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.xml</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.xml</li>
-            </ul>
-            </li>
-          </ul>
-          </li>
-        </ul>
-        </li>
-      </ul>
-      </li>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
-    </ul>
-    </li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-    projectwiki-ws
-    <ul>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-      src
-      <ul>
-        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-        main
-        <ul>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-          java
-          <ul>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-            com
-            <ul>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-              ontimize
-              <ul>
-                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                projectwiki
-                <ul>
-                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                  ws
-                  <ul>
-                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                    core
-                    <ul>
-                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-                      rest
-                      <ul>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateRestController.java</li>
-                        <li data-jstree='{"selected":true,"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>I18nRestController.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MainRestController.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>TestRestController.java</li>
-                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRestController.java</li>
-                      </ul>
-                      </li>
-                    </ul>
-                    </li>
-                  </ul>
-                  </li>
-                </ul>
-                </li>
-              </ul>
-              </li>
-            </ul>
-            </li>
-          </ul>
-          </li>
-        </ul>
-        </li>
-      </ul>
-      </li>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
-    </ul>
-    </li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.gitignore</li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>README.md</li>
-  </ul>
-  </li>
-</ul>
-  </li>
-</ul>
-  </div>
-  <div class="multiColumn" >
+<div class="multicolumn">
+      <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
 
   {{"**I18nRestController.java**
     
@@ -841,6 +589,264 @@ public class I18nRestController {
 {% endhighlight %}
 
 </div>
+  <div class="multicolumnright jstreeloader collapsed" >
+<ul>
+  <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+  ontimize-examples
+<ul>
+  <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+  ontimize-examples
+  <ul>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-api
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  api
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                    core
+                    <ul>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      service
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ICandidateService.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
+                      </ul>
+                      </li>
+                    </ul>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-boot
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerApplication.java</li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          resources
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>application.yml</li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-model
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          db
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.properties</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  model
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                    core
+                    <ul>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      dao
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OCDatabaseBundleDao.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OCDatabaseBundleValueDao.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.java</li>
+                      </ul>
+                      </li>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      service
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateService.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserService.java</li>
+                      </ul>
+                      </li>
+                    </ul>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          resources
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            dao
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OCDatabaseBundleDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OCDatabaseBundleValueDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>placeholders.properties</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>RoleServerPermissionDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerPermissionDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.xml</li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-ws
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  ws
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                    core
+                    <ul>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      rest
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>CandidateRestController.java</li>
+                        <li data-jstree='{"selected":true,"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>I18nRestController.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MainRestController.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>TestRestController.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRestController.java</li>
+                      </ul>
+                      </li>
+                    </ul>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.gitignore</li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>README.md</li>
+  </ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </div>
 </div>
 
 ## Testing the i18n services
@@ -901,8 +907,57 @@ To update the bundle values we create a method that receieves the translations t
 
 **Code**
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+      <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+  {{"**I18nRestController.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.projectwiki.ws.core.rest;
+
+import java.util.ArrayList;
+. . .
+
+import com.ontimize.jee.common.gui.i18n.DatabaseBundleValues;
+import com.ontimize.jee.server.rest.UpdateParameter;
+
+. . .
+
+@RestController
+@RequestMapping("/i18n")
+@ComponentScan(basePackageClasses = { com.ontimize.jee.common.services.i18n.II18nService.class })
+public class I18nRestController {
+
+	@Autowired
+	@Qualifier("I18nService")
+	private II18nService iI18nService;
+
+  . . .
+
+	@RequestMapping(value = "/bundle/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void updateBundleValues(@RequestBody UpdateParameter parameter) {
+
+		DatabaseBundleValues values = new DatabaseBundleValues(iI18nService.getAvailableLocales());
+		String bundleClass = String.valueOf(parameter.getData().get("bundleClass"));
+		String key = String.valueOf(parameter.getFilter().get("key"));
+		ArrayList e = (ArrayList) parameter.getData().get("bundleValues");
+		Map<String, Object> translationValues = new HashMap<>(); 
+		for (int i = 0; i < e.size(); i++) {
+			Map<String,Object> map = (Map<String, Object>) e.get(i);
+			translationValues.put(String.valueOf(map.get("language")), map.get("value"));
+		}
+		values.addBundleValue(key, bundleClass, translationValues);
+		iI18nService.updateBundleValues(values);
+	}
+
+}
+{% endhighlight %}
+
+</div>
+  <div class="multicolumnright jstreeloader collapsed" >
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1155,52 +1210,6 @@ To update the bundle values we create a method that receieves the translations t
   </li>
 </ul>
   </div>
-  <div class="multiColumn" >
-
-  {{"**I18nRestController.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.projectwiki.ws.core.rest;
-
-import java.util.ArrayList;
-. . .
-
-import com.ontimize.jee.common.gui.i18n.DatabaseBundleValues;
-import com.ontimize.jee.server.rest.UpdateParameter;
-
-. . .
-
-@RestController
-@RequestMapping("/i18n")
-@ComponentScan(basePackageClasses = { com.ontimize.jee.common.services.i18n.II18nService.class })
-public class I18nRestController {
-
-	@Autowired
-	@Qualifier("I18nService")
-	private II18nService iI18nService;
-
-  . . .
-
-	@RequestMapping(value = "/bundle/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void updateBundleValues(@RequestBody UpdateParameter parameter) {
-
-		DatabaseBundleValues values = new DatabaseBundleValues(iI18nService.getAvailableLocales());
-		String bundleClass = String.valueOf(parameter.getData().get("bundleClass"));
-		String key = String.valueOf(parameter.getFilter().get("key"));
-		ArrayList e = (ArrayList) parameter.getData().get("bundleValues");
-		Map<String, Object> translationValues = new HashMap<>(); 
-		for (int i = 0; i < e.size(); i++) {
-			Map<String,Object> map = (Map<String, Object>) e.get(i);
-			translationValues.put(String.valueOf(map.get("language")), map.get("value"));
-		}
-		values.addBundleValue(key, bundleClass, translationValues);
-		iI18nService.updateBundleValues(values);
-	}
-
-}
-{% endhighlight %}
-
-</div>
 </div>
 
 **REST request**
@@ -1272,8 +1281,52 @@ if (key != null) {
 
 To delete the bundle values we create a method that receives the bundle class and the key of the bundle values.
 
-<div class="multiColumnRow">
-  <div class="multiColumn jstreeloader" >
+<div class="multicolumn">
+      <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+  {{"**I18nRestController.java**" | markdownify}}
+
+{%highlight java %}
+package com.ontimize.projectwiki.ws.core.rest;
+
+import java.util.ArrayList;
+. . .
+
+import com.ontimize.jee.common.gui.i18n.DatabaseBundleValues;
+import com.ontimize.jee.server.rest.DeleteParameter;
+
+. . .
+
+@RestController
+@RequestMapping("/i18n")
+@ComponentScan(basePackageClasses = { com.ontimize.jee.common.services.i18n.II18nService.class })
+public class I18nRestController {
+
+	@Autowired
+	@Qualifier("I18nService")
+	private II18nService iI18nService;
+
+  . . .
+
+	@RequestMapping(value = "/bundle/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void deleteBundleValues(@RequestBody DeleteParameter parameter) {
+		DatabaseBundleValues values = new DatabaseBundleValues(iI18nService.getAvailableLocales());
+
+		String bundleClass = String.valueOf(parameter.getFilter().get("bundleClass"));
+		String key = String.valueOf(parameter.getFilter().get("key"));
+		
+		values.addBundleValue(key, bundleClass, null);
+		iI18nService.deleteBundleValues(values);
+	}
+
+}
+{% endhighlight %}
+
+</div>
+  <div class="multicolumnright jstreeloader collapsed" >
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -1526,47 +1579,6 @@ To delete the bundle values we create a method that receives the bundle class an
   </li>
 </ul>
   </div>
-  <div class="multiColumn" >
-
-  {{"**I18nRestController.java**" | markdownify}}
-
-{%highlight java %}
-package com.ontimize.projectwiki.ws.core.rest;
-
-import java.util.ArrayList;
-. . .
-
-import com.ontimize.jee.common.gui.i18n.DatabaseBundleValues;
-import com.ontimize.jee.server.rest.DeleteParameter;
-
-. . .
-
-@RestController
-@RequestMapping("/i18n")
-@ComponentScan(basePackageClasses = { com.ontimize.jee.common.services.i18n.II18nService.class })
-public class I18nRestController {
-
-	@Autowired
-	@Qualifier("I18nService")
-	private II18nService iI18nService;
-
-  . . .
-
-	@RequestMapping(value = "/bundle/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void deleteBundleValues(@RequestBody DeleteParameter parameter) {
-		DatabaseBundleValues values = new DatabaseBundleValues(iI18nService.getAvailableLocales());
-
-		String bundleClass = String.valueOf(parameter.getFilter().get("bundleClass"));
-		String key = String.valueOf(parameter.getFilter().get("key"));
-		
-		values.addBundleValue(key, bundleClass, null);
-		iI18nService.deleteBundleValues(values);
-	}
-
-}
-{% endhighlight %}
-
-</div>
 </div>
 
 The request to execute is the following: **localhost:33333/i18n/bundle/delete**
