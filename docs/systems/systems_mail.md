@@ -384,7 +384,7 @@ Now we need to add the correct dependency in the correct **pom.xml**:
         <button class="unstyle toggle-tree-btn">
             <div class="btn">Toggle Tree</div>
         </button>
-        {{ "To configure this service, a new configuration fragment shall be added to the **application.yml** file.| markdownify }}
+        {{ "To configure this service, a new configuration fragment shall be added to the **application.yml** file."| markdownify }}
 
 {% highlight yaml %}
 
@@ -408,7 +408,7 @@ ontimize:
 
 {{ "This configuration indicates the keys and values to be stored in the database. The database table is the one corresponding to the bean described in the **refRepository: OCSettingsDao** attribute (in this case, OCSettingsDao), which can be seen in the table `TSETTING` attribute (for this example, `TSETTING`) of the \*.xml configuration file of the bean (*OCSettingsDao.xml*). The keys would be stored in the `SETTING_KEY` column, the values in the `SETTING_VALUE` column and the rest of the attributes map the keys that exist in the database.
 
-In addition, the packet that will be scanned to look for the implementation of the email service is indicated.| markdownify }}
+In addition, the packet that will be scanned to look for the implementation of the email service is indicated."| markdownify }}
   </div>
   <div class="multicolumnright jstreeloader collapsed" >
  <ul>
