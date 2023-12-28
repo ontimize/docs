@@ -20,8 +20,8 @@ You can follow this tutorial using your own application, although for this examp
 
 Clone the repository with the initial state and follow the tutorial step by step.
 
-<div class="multiColumnRow multiColumnRowJustify">
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumn">
+<div class="multicolumnnopadding" >
   {{ "**Initial project**
 
     /$ git clone https://github.com/ontimize/ontimize-examples
@@ -30,7 +30,7 @@ Clone the repository with the initial state and follow the tutorial step by step
     | markdownify }}
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumnnopadding" >
 
   {{ "**Final example**
 
@@ -61,8 +61,44 @@ CREATE TABLE PREFERENCES(ID INTEGER NOT NULL PRIMARY KEY,NAME VARCHAR(255),DESCR
 ### Server
 #### Add Ontimize Report dependencies
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+  {{ "**projectwiki-boot/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+	...
+	<dependency>
+		<groupId>com.ontimize.boot</groupId>
+		<artifactId>ontimize-boot-starter-report</artifactId>
+	</dependency>
+	...
+</dependencies>
+...
+{% endhighlight %}
+
+
+  {{ "**projectwiki-model/pom.xml**"| markdownify }}
+
+{% highlight xml %}
+...
+<dependencies>
+	...
+	<dependency>
+		<groupId>com.ontimize.jee.report</groupId>
+		<artifactId>ontimize-jee-report-server</artifactId>
+	</dependency>
+	...
+</dependencies>
+...
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -310,47 +346,65 @@ CREATE TABLE PREFERENCES(ID INTEGER NOT NULL PRIMARY KEY,NAME VARCHAR(255),DESCR
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-  {{ "**projectwiki-boot/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-	...
-	<dependency>
-		<groupId>com.ontimize.boot</groupId>
-		<artifactId>ontimize-boot-starter-report</artifactId>
-	</dependency>
-	...
-</dependencies>
-...
-{% endhighlight %}
-
-
-  {{ "**projectwiki-model/pom.xml**"| markdownify }}
-
-{% highlight xml %}
-...
-<dependencies>
-	...
-	<dependency>
-		<groupId>com.ontimize.jee.report</groupId>
-		<artifactId>ontimize-jee-report-server</artifactId>
-	</dependency>
-	...
-</dependencies>
-...
-{% endhighlight %}
-
-</div>
-
 </div>
 
 #### Add Preferences DAOs
 A specific DAO will be created for each of both tables in the system, and each of them will implement a different interface.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{ "**PreferencesDao.xml**" | markdownify}}
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<JdbcEntitySetup
+ xmlns="http://www.ontimize.com/schema/jdbc"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
+ catalog="" schema="${mainschema}" table="PREFERENCES"
+ datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
+ <DeleteKeys>
+  <Column>ID</Column>
+ </DeleteKeys>
+ <UpdateKeys>
+  <Column>ID</Column>
+ </UpdateKeys>
+ <GeneratedKey>ID</GeneratedKey>
+</JdbcEntitySetup>
+{% endhighlight %}
+
+{{ "**PreferencesDao.java**" | markdownify}}
+{% highlight java %}
+package com.imatia.qsallcomponents.model.dao;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.ontimize.jee.server.dao.IPreferencesDao;
+import com.ontimize.jee.server.dao.common.ConfigurationFile;
+import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
+
+@Lazy
+@Repository(value = "PreferencesDao")
+@ConfigurationFile(configurationFile = "base-dao/PreferencesDao.xml", configurationFilePlaceholder = "base-dao/placeholders.properties")
+public class PreferencesDao extends OntimizeJdbcDaoSupport implements IPreferencesDao {
+
+    public static final String ATTR_ID = "ID";
+    public static final String ATTR_NAME = "NAME";
+    public static final String ATTR_DESCRIPTION = "DESCRIPTION";
+    public static final String ATTR_PREFERENCES = "PREFERENCES";
+    public static final String ATTR_TYPE = "TYPE";
+
+}
+
+
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -600,55 +654,6 @@ A specific DAO will be created for each of both tables in the system, and each o
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-
-{{ "**PreferencesDao.xml**" | markdownify}}
-{% highlight xml %}
-<?xml version="1.0" encoding="UTF-8"?>
-<JdbcEntitySetup
- xmlns="http://www.ontimize.com/schema/jdbc"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.ontimize.com/schema/jdbc http://www.ontimize.com/schema/jdbc/ontimize-jdbc-dao.xsd"
- catalog="" schema="${mainschema}" table="PREFERENCES"
- datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
- <DeleteKeys>
-  <Column>ID</Column>
- </DeleteKeys>
- <UpdateKeys>
-  <Column>ID</Column>
- </UpdateKeys>
- <GeneratedKey>ID</GeneratedKey>
-</JdbcEntitySetup>
-{% endhighlight %}
-
-{{ "**PreferencesDao.java**" | markdownify}}
-{% highlight java %}
-package com.imatia.qsallcomponents.model.dao;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-
-import com.ontimize.jee.server.dao.IPreferencesDao;
-import com.ontimize.jee.server.dao.common.ConfigurationFile;
-import com.ontimize.jee.server.dao.jdbc.OntimizeJdbcDaoSupport;
-
-@Lazy
-@Repository(value = "PreferencesDao")
-@ConfigurationFile(configurationFile = "base-dao/PreferencesDao.xml", configurationFilePlaceholder = "base-dao/placeholders.properties")
-public class PreferencesDao extends OntimizeJdbcDaoSupport implements IPreferencesDao {
-
-    public static final String ATTR_ID = "ID";
-    public static final String ATTR_NAME = "NAME";
-    public static final String ATTR_DESCRIPTION = "DESCRIPTION";
-    public static final String ATTR_PREFERENCES = "PREFERENCES";
-    public static final String ATTR_TYPE = "TYPE";
-
-}
-
-
-{% endhighlight %}
-
-</div>
 </div>
 
 #### Modify application.yml
@@ -661,8 +666,32 @@ The **application.yml** file will be modified to enable the reports module, indi
 {: .important}
 > You can only choose **ONE** of the two options listed below.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <div class="btn">Toggle Tree</div>
+        </button>
+
+{{"**application.yml**" | markdownify}}
+{{"For ***database*** engine" | markdownify}}
+{% highlight yaml%}
+ontimize:
+   report:
+      enable: true
+      engine: database
+{% endhighlight %}
+
+
+{{"For ***file system*** engine" | markdownify}}
+{% highlight yaml%}
+ontimize:
+   report:
+      enable: true
+      engine: file
+      base-path: C:/applications/projectwiki/reports
+{% endhighlight %}
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -913,27 +942,6 @@ The **application.yml** file will be modified to enable the reports module, indi
   </ul>
   </li>
 </ul>
-</div>
-<div class="multiColumn multiColumnGrow">
-
-{{"**application.yml**" | markdownify}}
-{{"For ***database*** engine" | markdownify}}
-{% highlight yaml%}
-ontimize:
-   report:
-      enable: true
-      engine: database
-{% endhighlight %}
-
-
-{{"For ***file system*** engine" | markdownify}}
-{% highlight yaml%}
-ontimize:
-   report:
-      enable: true
-      engine: file
-      base-path: C:/applications/projectwiki/reports
-{% endhighlight %}
 </div>
 </div>
 
