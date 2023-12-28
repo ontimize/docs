@@ -22,14 +22,15 @@
   letter-spacing: 1px;
   .nav__title {
     margin: 0;
-
+    cursor: pointer;
     @include fs-5;
 
     @include mq(md) {
       @include fs-4;
     }
 
-    background-color: $sidebar-color;
+    color: $primary-500;
+    background-color: $primary-50;
     padding: 20px 14px 8px 14px;
   }
 }
@@ -77,12 +78,13 @@
 
   .toc.collapsed{
     position: relative;
-    bottom: 16px;
+    bottom: 14px;
   }
 
   .nav__title.collapsed{
     font-size: 15px !important;
     height: 30px;
+    cursor: pointer;
   }
 
   .sidebar__right.collapsed{
@@ -90,10 +92,10 @@
     width: auto;
     transform: rotate(270deg);
     transform-origin: bottom right;
-    top: calc(64px - 32px);
+    top: calc(64px - 30px);
     height: 30px;
     overflow: hidden;
-    background-color: $sidebar-color
+    background-color: $primary-50;
   }
 }
 
@@ -275,6 +277,7 @@ a:not([class]) {
   display: flex;
   place-content: end;
   column-gap: 10px;
+  margin-right: 33px;
 
   .select {
     border-style: none;
