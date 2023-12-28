@@ -24,7 +24,7 @@ Ontimize provides a system to export the DAO data of a service and dump it direc
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
 <div class="multicolumn">
-  <div class="multicolumnleftnopadding" >
+  <div class="multicolumnnopadding" >
   {{ "**Initial project**
 
     /$ git clone https://github.com/ontimize/ontimize-examples
@@ -34,7 +34,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
 </div>
 <div class="verticalDivider"></div>
-<div class="multicolumnleftnopadding">
+<div class="multicolumnnopadding">
 
   {{ "**Final example**
 

@@ -28,7 +28,7 @@ A **D**ocument **M**anagement **S**ystem (**DMS**) is a system that allows you t
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
 <div class="multicolumn">
-<div class="multicolumnleftnopadding" >
+<div class="multicolumnnopadding" >
   {{ "**Initial project**
 
     /$ git clone https://github.com/ontimize/ontimize-examples 
@@ -37,7 +37,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
     | markdownify }}
 </div>
 <div class="verticalDivider"></div>
-<div class="multicolumnleftnopadding" >
+<div class="multicolumnnopadding" >
 
   {{ "**Final example**
 
