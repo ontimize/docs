@@ -1,3 +1,101 @@
+// Onitmize TOC
+.sidebar__right {
+  @include mq(md) {}
+
+  @include mq(lg) {
+    position: fixed;
+    top: 64px;
+    right: 0px;
+    max-height: calc(100% - 112px);
+    min-height: fit-content;
+    width: 360px;
+    padding-bottom: 20px;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    overflow: auto;
+    background-color: $body-background-color;
+    z-index: 999;
+  }
+}
+
+.toc {
+  letter-spacing: 1px;
+  .nav__title {
+    margin: 0;
+
+    @include fs-5;
+
+    @include mq(md) {
+      @include fs-4;
+    }
+
+    background-color: $sidebar-color;
+    padding: 20px 14px 8px 14px;
+  }
+}
+
+.toc__menu {
+
+  @include fs-5;
+
+  @include mq(md) {
+    @include fs-4;
+  }
+
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style: none;
+
+  li::before {
+    content: "" !important;
+  }
+
+  a {
+    text-decoration: none;
+    color: $dark-74;
+
+    &.active {
+      color: $dark-60;
+      font-weight: 500;
+    }
+  }
+
+  li ul>li a {
+    padding-top: 0.2rem;
+    border: none;
+    text-transform: none;
+
+  }
+}
+
+//Ontimize TOC screen size bigger than 66.5 rem
+@media (min-width: 66.5rem){
+  .toc__menu.collapsed {
+    display: none;
+  }
+
+  .toc.collapsed{
+    position: relative;
+    bottom: 16px;
+  }
+
+  .nav__title.collapsed{
+    font-size: 15px !important;
+    height: 30px;
+  }
+
+  .sidebar__right.collapsed{
+    padding-bottom: 0px;
+    width: auto;
+    transform: rotate(270deg);
+    transform-origin: bottom right;
+    top: calc(64px - 32px);
+    height: 30px;
+    overflow: hidden;
+    background-color: $sidebar-color
+  }
+}
 
 //Multicolumn
 .multicolumn {
@@ -25,15 +123,15 @@
   padding-top: 36px;
   box-sizing: border-box;
   border-left: 1px solid #ccc;
-  transition: width 0.3s ease; 
+  transition: width 0.3s ease;
   overflow-x: auto;
-}
 
-.multicolumnright.collapsed {
-  width: 0;
-  overflow: hidden;
-  padding: 0;
-  border-left: none;
+  &.collapsed {
+    width: 0;
+    overflow: hidden;
+    padding: 0;
+    border-left: none;
+  }
 }
 
 .verticalDivider {
@@ -269,80 +367,7 @@ a:not([class]) {
   }
 }
 
-// Onitmize TOC
 
-.sidebar__right {
-  @include mq(md) {}
-
-  @include mq(lg) {
-    position: fixed;
-    top: 64px;
-    right: 0px;
-    max-height: calc(100% - 112px);
-    min-height: fit-content;
-    width: 360px;
-    padding-bottom: 20px;
-    border: 1px solid $border-color;
-    border-radius: 4px;
-    overflow: auto;
-    background-color: $body-background-color;
-    z-index: 999;
-  }
-}
-
-.toc {
-  letter-spacing: 1px;
-
-  .nav__title {
-    margin: 0;
-
-    @include fs-5;
-
-    @include mq(md) {
-      @include fs-4;
-    }
-
-    background-color: $sidebar-color;
-    padding: 20px 14px 8px 14px;
-  }
-}
-
-.toc__menu {
-
-  @include fs-5;
-
-  @include mq(md) {
-    @include fs-4;
-  }
-
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  list-style: none;
-
-  li::before {
-    content: "" !important;
-  }
-
-  a {
-    text-decoration: none;
-    color: $dark-74;
-
-    &.active {
-      color: $dark-60;
-      font-weight: 500;
-    }
-  }
-
-  li ul>li a {
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-    border: none;
-    text-transform: none;
-
-  }
-
-}
 
 // FAQ page
 
