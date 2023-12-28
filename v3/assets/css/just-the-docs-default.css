@@ -9848,7 +9848,7 @@ blockquote.warning-title > p:last-child {
   box-sizing: border-box;
 }
 
-.multicolumnleftnopadding {
+.multicolumnnopadding {
   flex: 1;
   max-width: 100%;
   overflow-x: auto;
