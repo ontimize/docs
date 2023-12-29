@@ -30,9 +30,6 @@ The purpose of this page is to indicate the latest versions of Ontimize Boot pro
             <th>Ontimize EE Report</th>
             <th>Ontimize OpenAPI Generator</th>
             <th>Ontimize EE SMDS</th>
-            <th>Spring Boot</th>
-            <th>Spring Cloud</th>
-            <th>Keycloak Starter</th>
         </tr>
     </thead>
     <tbody>
@@ -40,157 +37,74 @@ The purpose of this page is to indicate the latest versions of Ontimize Boot pro
             <td>3.13.0</td>
             <td>3.13.0</td>
             <td>5.10.0</td>
-            <td>3.1.0</td>
-            <td>3.3.0</td>
+            <td rowspan="13">3.1.0</td>
+            <td rowspan="2">3.3.0</td>
             <td>1.0.4</td>
-            <td>1.3.1</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>15.0.2</td>
+            <td rowspan="2">1.3.1</td>
         </tr>
         <tr>
             <td>3.12.0</td>
             <td>3.12.0</td>
             <td>5.9.0</td>
-            <td>3.1.0</td>
-            <td>3.3.0</td>
-            <td>1.0.2</td>
-            <td>1.3.1</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>15.0.2</td>
+            <td rowspan="2">1.0.2</td>
         </tr>
         <tr>
             <td>3.11.0</td>
             <td>3.11.0</td>
             <td>5.8.0</td>
-            <td>3.1.0</td>
-            <td>3.2.0</td>
-            <td>1.0.2</td>
+            <td rowspan="3">3.2.0</td>
             <td>1.0.0</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>15.0.2</td>
         </tr>
         <tr>
             <td>3.10.0</td>
             <td>3.10.0</td>
             <td>5.7.0-SNAPSHOT</td>
-            <td>3.1.0</td>
-            <td>3.2.0</td>
-            <td>1.0.1</td>
-            <td>-</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>9.0.3</td>
+            <td rowspan="9">1.0.1</td>
+            <td rowspan="10">-</td>
         </tr>
         <tr>
             <td>3.9.0</td>
             <td>3.9.0</td>
             <td>5.6.0</td>
-            <td>3.1.0</td>
-            <td>3.2.0</td>
-            <td>1.0.1</td>
-            <td>-</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>9.0.3</td>
         </tr>
         <tr>
             <td>3.8.0</td>
             <td>3.8.0</td>
-            <td>5.5.0</td>
-            <td>3.1.0</td>
-            <td>3.1.0</td>
-            <td>1.0.1</td>
-            <td>-</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>9.0.3</td>
+            <td rowspan="7">5.5.0</td>
+            <td rowspan="2">3.1.0</td>
         </tr>
         <tr>
             <td>3.7.0</td>
             <td>3.7.0</td>
-            <td>5.5.0</td>
-            <td>3.1.0</td>
-            <td>3.1.0</td>
-            <td>1.0.1</td>
-            <td>-</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>9.0.3</td>
         </tr>
         <tr>
             <td>3.6.0</td>
             <td>3.6.0</td>
-            <td>5.5.0</td>
-            <td>3.1.0</td>
-            <td>3.0.0</td>
-            <td>1.0.1</td>
-            <td>-</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>9.0.3</td>
+            <td rowspan="3">3.0.0</td>
         </tr>
         <tr>
             <td>3.5.0</td>
             <td>3.5.0</td>
-            <td>5.5.0</td>
-            <td>3.1.0</td>
-            <td>3.0.0</td>
-            <td>1.0.1</td>
-            <td>-</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>9.0.3</td>
         </tr>
         <tr>
             <td>3.4.0</td>
             <td>3.4.0</td>
-            <td>5.5.0</td>
-            <td>3.1.0</td>
-            <td>3.0.0</td>
-            <td>1.0.1</td>
-            <td>-</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>9.0.3</td>
         </tr>
         <tr>
             <td>3.3.0</td>
             <td>3.3.0</td>
-            <td>5.5.0</td>
-            <td>3.1.0</td>
-            <td>3.0.0-SNAPSHOT</td>
-            <td>1.0.1</td>
-            <td>-</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>9.0.3</td>
+            <td rowspan="2">3.0.0-SNAPSHOT</td>
         </tr>
         <tr>
             <td>3.2.0</td>
             <td>3.2.0</td>
-            <td>5.5.0</td>
-            <td>3.1.0</td>
-            <td>3.0.0-SNAPSHOT</td>
-            <td>1.0.1</td>
-            <td>-</td>
-            <td>2.5.0</td>
-            <td>Greenwich.RELEASE</td>
-            <td>9.0.3</td>
         </tr>
         <tr>
             <td>3.1.0</td>
             <td>-</td>
             <td>5.4.0</td>
-            <td>3.1.0</td>
             <td>-</td>
             <td>-</td>
-            <td>-</td>
-            <td>2.5.0</td>
-            <td>-</td>
-            <td>9.0.3</td>
         </tr>
     </tbody>
 </table>
