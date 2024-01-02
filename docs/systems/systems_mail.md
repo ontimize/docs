@@ -19,7 +19,7 @@ Ontimize Boot is a framework that allows you to simplify the configuration of a 
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumn">
+<div class="multicolumncontent">
   <div class="multicolumnnopadding" >
   {{ "**Initial project**
  
@@ -107,10 +107,11 @@ INSERT INTO TROLE_SERVER_PERMISSION (ID_ROLENAME, ID_SERVER_PERMISSION) VALUES((
 Now we need to add the correct dependency in the correct **pom.xml**: 
 
 <div class="multicolumn">
-      <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
 
 {% highlight xml %}
 ...
@@ -374,16 +375,17 @@ Now we need to add the correct dependency in the correct **pom.xml**:
 </ul>
   </div>
 </div>
-
+</div>
 
 
 ### Server Configuration
 
 <div class="multicolumn">
-    <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
         {{ "To configure this service, a new configuration fragment shall be added to the **application.yml** file."| markdownify }}
 
 {% highlight yaml %}
@@ -659,17 +661,18 @@ In addition, the packet that will be scanned to look for the implementation of t
 </ul>
   </div>
 </div>
-
+</div>
 
 ### Creation of DAO files
 
 Let's create a **DAO** (**D**ata **A**ccess **O**bject) in the `projectwiki-model` module to use as a model of this database table. The **DAO** is composed by 2 files, a file with extension \*.xml and a \*.java file.
 
 <div class="multicolumn">
-      <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
     {{ "In our *.xml file we will indicate the database table for which **DAO** belongs, the data source from which we collect the information (e.g. the database connection that contains this table) and the schema to which the table belongs." | markdownify }}
 
     {{ "**OCSettingsDao.xml**" | markdownify }}   
@@ -967,6 +970,7 @@ public class OCSettingsDao extends OntimizeJdbcDaoSupport {
 </ul>
   </div>
 </div>
+</div>
 
 ### Implementation in an existing service
 
@@ -977,10 +981,11 @@ To use this service in another service (e.g. to send a mail when a new record is
 
 
 <div class="multicolumn">
-      <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
 
 {% highlight java %}
 ...
@@ -1272,8 +1277,7 @@ return toRet;
 </ul>
   </div>
 </div>
-
-
+</div>
 
 ## Checking the sending of mails
 

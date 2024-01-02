@@ -18,7 +18,7 @@ You can follow this tutorial using your own application, although for this examp
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumn">
+<div class="multicolumncontent">
 <div class="multicolumnnopadding" >
   {{ "**Initial project**
 
@@ -69,10 +69,11 @@ In the *projectwiki-boot* module we will add the annotation `@EnableAspectJAutoP
 
 
 <div class="multicolumn">
-    <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
   {{ "**ServerApplication.java**"| markdownify }}
 
 {% highlight java %}
@@ -391,6 +392,7 @@ public class CandidateService implements ICandidateService {
   </ul>
   </li>
 </ul>
+</div>
 </div>
 </div>
 

@@ -1,4 +1,4 @@
-// Onitmize TOC
+// Ontimize TOC
 .sidebar__right {
   @include mq(md) {}
 
@@ -102,27 +102,36 @@
 //Multicolumn
 .multicolumn {
   display: flex;
+  flex-direction: column;
+}
+
+.toggle-tree-btn {
+  all: unset;
+  margin-bottom: 10px;
+  align-self: flex-end;
+}
+
+.multicolumncontent {
+  display: flex;
 }
 
 .multicolumnleft {
-  flex: 1; 
-  max-width: 100%; 
+  flex: 1;
+  max-width: 100%;
   overflow-x: auto;
   padding: 0 20px 0 0;
   box-sizing: border-box;
 }
 
 .multicolumnnopadding {
-  flex: 1; 
-  max-width: 100%; 
+  flex: 1;
+  max-width: 100%;
   overflow-x: auto;
   padding: 0 0 0 0;
   box-sizing: border-box;
 }
 
 .multicolumnright {
-  max-width: calc(100% - 136px);
-  padding-top: 36px;
   box-sizing: border-box;
   border-left: 1px solid #ccc;
   transition: width 0.3s ease;
@@ -142,10 +151,6 @@
   margin-left: 10px;
 }
 
-.unstyle {
-  all: unset;
-  margin-bottom: 10px;
-}
 
 // //jstree
 .jstreeloader ul>li::before {
