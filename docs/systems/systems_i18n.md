@@ -18,7 +18,7 @@ Ontimize Boot's remote internationalization service (**i18n**) allows you to man
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumn">
+<div class="multicolumncontent">
   <div class="multicolumnnopadding" >
   {{ "**Initial project**
  
@@ -163,10 +163,11 @@ It is necessary to create the **DAO**s that reflect the new DB tables we have cr
 
 
 <div class="multicolumn">
-      <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
   {{ "First we will create the \*.xml files." | markdownify }}
 
   {{ "**OCDatabaseBundleDao.xml**" | markdownify }}   
@@ -512,16 +513,18 @@ public class OCDatabaseBundleValueDao extends OntimizeJdbcDaoSupport {
 </ul>
   </div>
 </div>
+</div>
 
 
 ### Add I18n Rest Controller
 
 
 <div class="multicolumn">
-      <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
 
   {{"**I18nRestController.java**
     
@@ -848,6 +851,7 @@ public class I18nRestController {
 </ul>
   </div>
 </div>
+</div>
 
 ## Testing the i18n services
 
@@ -908,10 +912,11 @@ To update the bundle values we create a method that receieves the translations t
 **Code**
 
 <div class="multicolumn">
-      <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
 
   {{"**I18nRestController.java**" | markdownify}}
 
@@ -1211,6 +1216,7 @@ public class I18nRestController {
 </ul>
   </div>
 </div>
+</div>
 
 **REST request**
 
@@ -1282,10 +1288,11 @@ if (key != null) {
 To delete the bundle values we create a method that receives the bundle class and the key of the bundle values.
 
 <div class="multicolumn">
-      <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
 
   {{"**I18nRestController.java**" | markdownify}}
 
@@ -1579,6 +1586,7 @@ public class I18nRestController {
   </li>
 </ul>
   </div>
+</div>
 </div>
 
 The request to execute is the following: **localhost:33333/i18n/bundle/delete**

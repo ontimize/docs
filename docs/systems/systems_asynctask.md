@@ -26,7 +26,7 @@ You can follow this tutorial using your own application, although for this examp
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumn">
+<div class="multicolumncontent">
 <div class="multicolumnnopadding" >
   {{ "**Initial project**
 
@@ -68,10 +68,11 @@ CREATE TABLE TASKS(ID INTEGER IDENTITY NOT NULL PRIMARY KEY, UUID VARCHAR(255) N
 > The decoupled tasks system is integrated in the **Ontimize Core** module, so we need to declare it as a project dependency.
 
 <div class="multicolumn">
-    <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
   {{ "**boot/pom.xml**"| markdownify }}
 
 {% highlight xml %}
@@ -348,6 +349,7 @@ CREATE TABLE TASKS(ID INTEGER IDENTITY NOT NULL PRIMARY KEY, UUID VARCHAR(255) N
 </ul>
 </div>
 </div>
+</div>
 
 #### Modify application.yml
 
@@ -360,10 +362,11 @@ The **application.yml** file will be modified to enable the decoupled tasks modu
 > The asynchronous tasks system requires the **Ontimize** ***TaskExecutor*** to be configured, see [this link]({{ base_path }}/basics/autoconfigurators/#taskexecutor).
 
 <div class="multicolumn">
-    <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
         
 {{"**application.yml**" | markdownify}}
 {{"For *database* storage" | markdownify}}
@@ -633,15 +636,17 @@ ontimize:
 </ul>
 </div>
 </div>
+</div>
 
 #### Add Task DAO
 A specific DAO will be created for the tasks table, and it will implement the DAO interface in the tasks module.
 
 <div class="multicolumn">
-    <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
 
 {{ "**TaskDao.xml**" | markdownify}}
 {% highlight xml %}
@@ -937,6 +942,7 @@ public class TaskDao extends OntimizeJdbcDaoSupport implements IAsyncTaskDao {
 </ul>
 </div>
 </div>
+</div>
 
 #### Annotate controller method
 
@@ -946,10 +952,11 @@ In order to run some service method asynchronously, we need to annotate its resp
 > The service's method **MUST** return a *serializable* object with getters and setters, as well as the controller's method must return a *ResponseEntity* object. In this case, the `query()` method returns a Serializable object, the *EntityResult*.
 
 <div class="multicolumn">
-    <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
 
 {{ "We will override the `query()` method of the *ORestController* class." | markdownify}}
 
@@ -1246,16 +1253,18 @@ public class CandidateRestController extends ORestController<ICandidateService>{
 </ul>
 </div>
 </div>
+</div>
 
 #### Delay service method
 
 To know all the states through which the asynchronous request passes, we will add a delay in the `candidateQuery()` method.
 
 <div class="multicolumn">
-    <div class="multicolumnleft">
-        <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
-        </button>
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+        <div class="multicolumnleft">
 
 {{ "**CandidateService.java**" | markdownify}}
 {% highlight java %}
@@ -1536,6 +1545,7 @@ public class CandidateService implements ICandidateService {
   </ul>
   </li>
 </ul>
+</div>
 </div>
 </div>
 
