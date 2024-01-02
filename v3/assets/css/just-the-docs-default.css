@@ -9945,6 +9945,17 @@ blockquote.warning-title > p:last-child {
 }
 .multicolumn {
   display: flex;
+  flex-direction: column;
+}
+
+.toggle-tree-btn {
+  all: unset;
+  margin-bottom: 10px;
+  align-self: flex-end;
+}
+
+.multicolumncontent {
+  display: flex;
 }
 
 .multicolumnleft {
@@ -9964,8 +9975,6 @@ blockquote.warning-title > p:last-child {
 }
 
 .multicolumnright {
-  max-width: calc(100% - 136px);
-  padding-top: 36px;
   box-sizing: border-box;
   border-left: 1px solid #ccc;
   transition: width 0.3s ease;
@@ -9982,11 +9991,6 @@ blockquote.warning-title > p:last-child {
   border-left: 1px solid #F2F3F3;
   padding-right: 10px;
   margin-left: 10px;
-}
-
-.unstyle {
-  all: unset;
-  margin-bottom: 10px;
 }
 
 .jstreeloader ul > li::before {
