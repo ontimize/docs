@@ -31,6 +31,7 @@ The purpose of this page is to indicate the latest versions of Ontimize Boot pro
             <th>Ontimize EE Report</th>
             <th>Ontimize OpenAPI Generator</th>
             <th>Ontimize EE SMDS</th>
+            <th>Ontimize Boot Archetype</th>
         </tr>
     </thead>
     <tbody>
@@ -42,12 +43,14 @@ The purpose of this page is to indicate the latest versions of Ontimize Boot pro
             <td rowspan="2">3.3.0</td>
             <td>1.0.4</td>
             <td rowspan="2">1.3.1</td>
+            <td>1.0.10</td>
         </tr>
         <tr>
             <td>3.12.0</td>
             <td>3.12.0</td>
             <td>5.9.0</td>
             <td rowspan="2">1.0.2</td>
+            <td>1.0.9</td>
         </tr>
         <tr>
             <td>3.11.0</td>
@@ -55,6 +58,7 @@ The purpose of this page is to indicate the latest versions of Ontimize Boot pro
             <td>5.8.0</td>
             <td rowspan="4">3.2.0</td>
             <td>1.0.0</td>
+            <td>-</td>
         </tr>
         <tr>
             <td>3.10.1</td>
@@ -62,26 +66,31 @@ The purpose of this page is to indicate the latest versions of Ontimize Boot pro
             <td>5.7.0</td>
             <td rowspan="11">1.0.1</td>
             <td rowspan="12">-</td>
+            <td>1.0.8</td>
         </tr>
         <tr>
             <td>3.10.0</td>
             <td>3.10.0</td>
             <td>5.7.0-SNAPSHOT</td>
+            <td>-</td>
         </tr>
         <tr>
             <td>3.9.0</td>
             <td>3.9.0</td>
             <td>5.6.0</td>
+            <td>1.0.6</td>
         </tr>
         <tr>
             <td>3.8.1</td>
             <td>3.8.1</td>
             <td rowspan="8">5.5.0</td>
             <td rowspan="3">3.1.0</td>
+            <td>1.0.2</td>
         </tr>
         <tr>
             <td>3.8.0</td>
             <td>3.8.0</td>
+            <td rowspan="7">-</td>
         </tr>
         <tr>
             <td>3.7.0</td>
@@ -115,6 +124,7 @@ The purpose of this page is to indicate the latest versions of Ontimize Boot pro
             <td>5.4.0</td>
             <td>-</td>
             <td>-</td>
+            <td>1.0.1</td>
         </tr>
     </tbody>
 </table>
