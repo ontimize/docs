@@ -18,6 +18,7 @@ The purpose of this page is to indicate the latest versions of Ontimize Boot pro
 * [![Ontimize EE Report](https://img.shields.io/maven-central/v/com.ontimize.jee.report/ontimize-jee-report?label=Ontimize%20EE%20Report)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.jee.report/ontimize-jee-report)
 * [![Ontimize OpenApi Generator](https://img.shields.io/maven-central/v/com.ontimize/ontimize-openapi-generator?label=Ontimize%20OpenAPI%20Generator)](https://maven-badges.herokuapp.com/maven-central/com.ontimize/ontimize-openapi-generator)
 * [![Ontimize EE DMS](https://img.shields.io/maven-central/v/com.ontimize.jee.sdms/ontimize-jee-sdms?label=Ontimize%20EE%20SDMS)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.jee.sdms/ontimize-jee-sdms)
+* [![Ontimize Boot Archetype](https://img.shields.io/maven-central/v/com.ontimize/ontimize-boot-backend-archetype?label=Ontimize%20Boot%20archetype)](https://maven-badges.herokuapp.com/maven-central/com.ontimize/ontimize-boot-backend-archetype)
 
 ## 3.X.X - Ontimize Boot
 <table>
