@@ -25,3 +25,14 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+// Show trees on initial load with width bigger than 1260px
+window.onload = function() {
+    var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    if (windowWidth > 1260) {
+        var toggleButtons = document.getElementsByClassName('jstreeloader');
+        for (let div of toggleButtons){
+            div.classList.remove('collapsed');
+        }
+    }
+};
