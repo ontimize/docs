@@ -24,6 +24,6 @@ In this page you will find the necessary elements to start developing your backe
 | [Prerequisites]({{ base_path }}/prerequisites/) | Check you meet minimum requirements to start. |
 | [Getting started]({{base_path}}/getting_started/) | First contact with an Ontimize Boot app. Generate an app is easy with an archetype. |
 | [Basics]({{base_path}}/basics/) | Basic information about the configuration of an application. |
-| ***Page under construction*** [Tutorial]({{base_path}}/tutorial/) | Tutorial on how to create from scratch an application with Ontimize Boot (in Spanish) |
+| [Tutorial]({{base_path}}/tutorial/) | Tutorial on how to create from scratch an application with Ontimize Boot (in Spanish) |
 
 ---
