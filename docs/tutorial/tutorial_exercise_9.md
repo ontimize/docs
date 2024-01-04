@@ -118,7 +118,7 @@ parámetro, nos devuelva las ofertas de ese año en concreto.
 
 <div class="multicolumn">
     <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
+        <div class="btn">Alternar árbol</div>
     </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
