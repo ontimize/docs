@@ -9985,6 +9985,7 @@ blockquote.warning-title > p:last-child {
   overflow: hidden;
   padding: 0;
   border-left: none;
+  display: none;
 }
 
 .verticalDivider {
