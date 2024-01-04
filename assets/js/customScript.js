@@ -47,7 +47,11 @@ document.addEventListener('DOMContentLoaded', function() {
           const targetElement = document.getElementById(targetId);
 
           if (targetElement) {
-            const offset = targetElement.offsetTop - 72;
+            var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var offset = targetElement.offsetTop;
+            if (windowWidth > 800) {
+                var offset = offset - 72;
+            }
             window.scrollTo({
               top: offset,
               behavior: 'smooth'
