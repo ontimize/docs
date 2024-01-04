@@ -1,6 +1,17 @@
 // Load jsTree
 $(document).ready(function () { $('.jstreeloader').jstree(); });
 
+// Show trees on initial load with width bigger than 1260px
+window.onload = function() {
+    var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    if (windowWidth > 1260) {
+        var toggleButtons = document.getElementsByClassName('jstreeloader');
+        for (let div of toggleButtons){
+            div.classList.remove('collapsed');
+        }
+    }
+};
+
 // Toggle tree multicolumn
 document.addEventListener('DOMContentLoaded', function() {
     var toggleButtons = document.getElementsByClassName('toggle-tree-btn');
@@ -25,3 +36,4 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+

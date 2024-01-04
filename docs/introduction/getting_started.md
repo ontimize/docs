@@ -15,22 +15,25 @@ This page allows you to know how to start developing an application with Ontimiz
 
 Open a console and type the next command:
 
-    mvn archetype:generate -DgroupId=YOUR_GROUP_ID -DartifactId=YOUR_ARTIFACT_ID -Dversion=YOUR_VERSION -Dpackage=YOUR.GROUPID.ARTIFACTID -DarchetypeGroupId=com.ontimize -DarchetypeArtifactId=ontimize-boot-backend-archetype -DarchetypeVersion=99.9.9-SNAPSHOT -DinteractiveMode=false
+{: .note }
+> Check the argument ```-DarchetypeVersion``` argument points to the latest version of the archetype available, version [![Ontimize Boot Archetype](https://img.shields.io/maven-central/v/com.ontimize/ontimize-boot-backend-archetype?label=%20)](https://maven-badges.herokuapp.com/maven-central/com.ontimize/ontimize-boot-backend-archetype)
+
+    mvn archetype:generate -DgroupId=YOUR_GROUP_ID -DartifactId=YOUR_ARTIFACT_ID -Dversion=YOUR_VERSION -Dpackage=YOUR.GROUPID.ARTIFACTID -DarchetypeGroupId=com.ontimize -DarchetypeArtifactId=ontimize-boot-backend-archetype -DarchetypeVersion=1.0.10 -DinteractiveMode=false
 
 ### Command explanation
 
-| Argument                                              | Meaning                                                                                                            |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| mvn                                                   | Maven CLI                                                                                                          |
-| archetype:generate                                    | Use the Maven Archetype Plugin for create a new project from an archetype                                          |
-| -DgroupId=YOUR_GROUP_ID                               | Your project **groupId**                                                                                           |
-| -DartifactId=YOUR_ARTIFACT_ID                         | Your project **artifactId**                                                                                        |
-| -Dversion=YOUR_VERSION                                | Your project **version**                                                                                           |
-| -Dpackage=YOUR.GROUPID.ARTIFACTID                     | Sets the package on which the project will be based (e.g.: In our examples, this will be com.ontimize.projectwiki) |
-| -DarchetypeGroupId=com.ontimize                       | **groupId** of the Ontimize Boot archetype                                                                         |
-| -DarchetypeArtifactId=ontimize-boot-backend-archetype | **artifactId** of the Ontimize Boot archetype                                                                      |
-| -DarchetypeVersion=99.9.9-SNAPSHOT                    | **version** of the Ontimize Boot archetype. This SNAPSHOT indicates the ***latest*** version                       |
-| -DinteractiveMode=false                               | Forced to **skip interactive mode** and use the paramaters in the command                                          |
+| Argument                                              | Meaning                                                                                                                                                                                                                                                                                        |
+|-------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| mvn                                                   | Maven CLI                                                                                                                                                                                                                                                                                      |
+| archetype:generate                                    | Use the Maven Archetype Plugin for create a new project from an archetype                                                                                                                                                                                                                      |
+| -DgroupId=YOUR_GROUP_ID                               | Your project **groupId**                                                                                                                                                                                                                                                                       |
+| -DartifactId=YOUR_ARTIFACT_ID                         | Your project **artifactId**                                                                                                                                                                                                                                                                    |
+| -Dversion=YOUR_VERSION                                | Your project **version**                                                                                                                                                                                                                                                                       |
+| -Dpackage=YOUR.GROUPID.ARTIFACTID                     | Sets the package on which the project will be based (e.g.: In our examples, this will be com.ontimize.projectwiki)                                                                                                                                                                             |
+| -DarchetypeGroupId=com.ontimize                       | **groupId** of the Ontimize Boot archetype                                                                                                                                                                                                                                                     |
+| -DarchetypeArtifactId=ontimize-boot-backend-archetype | **artifactId** of the Ontimize Boot archetype                                                                                                                                                                                                                                                  |
+| -DarchetypeVersion=1.0.10                             | **version** of the Ontimize Boot archetype. The lastest version is: [![Ontimize Boot Archetype](https://img.shields.io/maven-central/v/com.ontimize/ontimize-boot-backend-archetype?label=%20)](https://maven-badges.herokuapp.com/maven-central/com.ontimize/ontimize-boot-backend-archetype) |
+| -DinteractiveMode=false                               | Forced to **skip interactive mode** and use the paramaters in the command                                                                                                                                                                                                                      |
 
 ## Start the project
 
