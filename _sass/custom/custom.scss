@@ -1,3 +1,12 @@
+// Sticky header
+@media (min-width: 50rem){
+  #main-header{
+    position: sticky;
+    top:0;
+    z-index:999
+  }
+}
+
 // Ontimize TOC
 .sidebar__right {
   @include mq(md) {}
