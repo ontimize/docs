@@ -9836,6 +9836,13 @@ blockquote.warning-title > p:last-child {
   margin-bottom: 0;
 }
 
+@media (min-width: 50rem) {
+  #main-header {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+}
 @media (min-width: 66.5rem) {
   .sidebar__right {
     position: fixed;
