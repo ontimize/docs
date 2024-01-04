@@ -1582,6 +1582,6 @@ public class OfferRestController extends ORestController<IOfferService> {
     </div>
 </div>
 
-[← Tutorial anterior]({{ base_path }}/tutorial/exercise6)
-[Próximo tutorial →]({{ base_path }}/tutorial/exercise8)
+[← Tutorial anterior]({{ base_path }}/tutorial/exercise7)
+[Próximo tutorial →]({{ base_path }}/tutorial/exercise9)
 
