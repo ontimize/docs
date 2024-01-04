@@ -33,7 +33,7 @@ En el módulo _boot_ añadiremos la anotación ```@EnableAspectJAutoProxy(proxyT
 
 <div class="multicolumn">
     <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
+        <div class="btn">Alternar árbol</div>
     </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
