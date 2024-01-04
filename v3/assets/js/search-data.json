@@ -568,7 +568,7 @@
   },"81": {
     "doc": "Introduction",
     "title": "Sections",
-    "content": "| Prerequisites | Check you meet minimum requirements to start. | . | Getting started | First contact with an Ontimize Boot app. Generate an app is easy with an archetype. | . | Basics | Basic information about the configuration of an application. | . | Page under construction Tutorial | Tutorial on how to create from scratch an application with Ontimize Boot (in Spanish) | . ",
+    "content": "| Prerequisites | Check you meet minimum requirements to start. | . | Getting started | First contact with an Ontimize Boot app. Generate an app is easy with an archetype. | . | Basics | Basic information about the configuration of an application. | . | Tutorial | Tutorial on how to create from scratch an application with Ontimize Boot (in Spanish) | . ",
     "url": "/docs/v3/introduction/#sections",
     
     "relUrl": "/introduction/#sections"
