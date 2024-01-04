@@ -555,40 +555,40 @@ import com.ontimize.jee.common.exceptions.OntimizeJEERuntimeException;
 public interface IOfferService {
 
     // OFFER
-    public EntityResult offerQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
+    EntityResult offerQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
+    EntityResult offerInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+    EntityResult offerUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+    EntityResult offerDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
 
     // OFFER STATUS
-    public EntityResult offerStatusQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
+    EntityResult offerStatusQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerStatusInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
+    EntityResult offerStatusInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerStatusUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+    EntityResult offerStatusUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerStatusDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+    EntityResult offerStatusDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
 
     // OFFER CANDIDATES
-    public EntityResult offerCandidateQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
+    EntityResult offerCandidateQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerCandidateInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
+    EntityResult offerCandidateInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerCandidateUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+    EntityResult offerCandidateUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerCandidateDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+    EntityResult offerCandidateDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
 
     // OFFER CANDIDATES STATUS
-    public EntityResult offerCandidateStatusQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
+    EntityResult offerCandidateStatusQuery(Map<String, Object> keyMap, List<String> attrList) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerCandidateStatusInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
+    EntityResult offerCandidateStatusInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerCandidateStatusUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+    EntityResult offerCandidateStatusUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
 
-    public EntityResult offerCandidateStatusDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
+    EntityResult offerCandidateStatusDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException;
 }
 {% endhighlight %}
         </div>
@@ -627,9 +627,9 @@ public interface IOfferService {
                                 <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
                                 service
                                 <ul>
-                                  <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ICandidateService.java</li>
+                                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ICandidateService.java</li>
                                   <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IMasterService.java</li>
-                                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IOfferService.java</li>
+                                  <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IOfferService.java</li>
                                   <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
                                 </ul>
                                 </li>
