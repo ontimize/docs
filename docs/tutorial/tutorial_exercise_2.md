@@ -20,9 +20,9 @@ Esta sección explicará la estructura de una aplicación basada en Ontimize Boo
         <div class="multicolumnleft">
         {{ "* **hr-api**: este módulo contiene las interfaces relacionadas con los servicios invocados por los controladores REST. Los servicios implementan todos los métodos 
 declarados en sus interfaces.
-* **hr-boot**: este módulo contiene el lanzador principal de la aplicación y un fichero de configuración *.yml, que se utiliza para configurar la aplicación, conexión, base de
+* **hr-boot**: este módulo contiene el lanzador principal de la aplicación y un fichero de configuración \*._yml_, que se utiliza para configurar la aplicación, conexión, base de
 datos, parámetros de lanzamiento, seguridad...
-* **hr-model**: este módulo contiene la base de datos en HSQLDB, los archivos del DAO de la aplicación (ambos, tanto *.xml como *.java) y la implementación de los servicios
+* **hr-model**: este módulo contiene la base de datos en HSQLDB, los archivos del DAO de la aplicación (ambos, tanto \*._xml_ como \*._java_) y la implementación de los servicios
 cuyas interfaces están definidas en el módulo **hr-api**.
 * **hr-ws**: este módulo contiene los controladores REST para los servicios implementados en el módulo **hr-model**.
 " | markdownify}}

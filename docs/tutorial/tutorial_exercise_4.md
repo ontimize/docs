@@ -18,7 +18,7 @@ ejercicio está centrado en la creación desde cero de una tabla de base de dato
 puedan ser consumidos a través de una petición REST.
 
 ## Lanzar la base de datos
-Para lanzar la base de datos, es necesario hacer un "**Maven Install**" en el proyecto, para que cree un fichero \*.jar
+Para lanzar la base de datos, es necesario hacer un "**Maven Install**" en el proyecto, para que cree un fichero \*._jar_
 con el contenido del módulo hr-model y el lanzador de la base de datos pueda ser ejecutado por un lanzador Maven. Para
 hacer esto, clic derecho sobre el icono de Maven <sup>1</sup>, clic en "_Execute Maven goal_" <sup>2</sup> y escribimos el
 comando ```mvn install``` <sup>3</sup>. El recuadro rojo tiene que indicar ***Project***, lo que indica que este comando
@@ -141,7 +141,7 @@ NULL, 'Kial', 'Titlow', '1980-05-06', '27680562Q', '591-499-8814', 'ktitlowe@tel
 
 Ahora que tenemos una tabla con datos de prueba en la base de datos, vamos a crear un DAO (Data Access Object) en el 
 módulo de _hr-model_ para que sirva como modelo de esta tabla de la base de datos. Los DAO están compuestos por 2 
-ficheros: un fichero con extensión *.xml y un fichero *.java.
+ficheros: un fichero con extensión *._xml_ y un fichero *._java_.
 
 <div class="multicolumn">
     <button class="unstyle toggle-tree-btn">
@@ -170,10 +170,10 @@ para la cual hacemos el DAO y el esquema al que pertenece la tabla." | markdowni
 </JdbcEntitySetup>
 {% endhighlight %}
 
-{{"En el fichero *.java indicamos que se trata de un repositorio cuyo nombre será CandidateDao, mediante la anotación 
+{{"En el fichero *._java_ indicamos que se trata de un repositorio cuyo nombre será CandidateDao, mediante la anotación 
 ```@Repository```. Con la anotación ```@Lazy```, indicaremos que la carga se retrase hasta que sea completamente 
 necesaria (mejorando de esa manera el rendimiento), y la anotación ```@ConfigurationFile``` nos permite configurar 
-este DAO usando el fichero *.xml y un fichero adicional donde pueden almacenarse algunas características comunes a 
+este DAO usando el fichero *._xml_ y un fichero adicional donde pueden almacenarse algunas características comunes a 
 varios DAO, como el esquema al que pertenecen." | markdownify }}
 
 {{"**CandidateDao.java**" | markdownify }}

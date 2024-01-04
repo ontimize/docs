@@ -11,4 +11,5 @@ parent: Tutorial
 
 # Entendiendo el *EntityResult*
 
-***Página en construcción***
+[← Tutorial anterior]({{ base_path }}/tutorial/exercise5)
+[Próximo tutorial →]({{ base_path }}/tutorial/exercise7)

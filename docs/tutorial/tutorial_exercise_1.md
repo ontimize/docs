@@ -14,7 +14,7 @@ parent: Tutorial
 Para poder desarrollar este tutorial, debemos tener instalados en nuestro ordenador los elementos que se detallan en la página de [prerrequisitos]({{ base_path }}/prerequisites/)
 ## ¿Qué es Ontimize Boot?
 Ontimize Boot es un framework que permite simplificar la configuración de un proyecto hecho con Ontimize EE, de una forma rápida y eficiente, reduciendo la necesidad de
-utilizar un Tomcat externo y centralizando toda la configuración de la aplicación en un solo fichero *.yml.
+utilizar un Tomcat externo y centralizando toda la configuración de la aplicación en un solo fichero \*._yml_.
 ## Crea una aplicación a partir del arquetipo
 * Para crear una aplicación a través el arquetipo, abrimos una terminal en nuestro equipo, en la ruta donde queramos ubicar el proyecto y ejecutamos el siguiente comando de Maven:
  
