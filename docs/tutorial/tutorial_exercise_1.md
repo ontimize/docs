@@ -19,7 +19,7 @@ utilizar un Tomcat externo y centralizando toda la configuración de la aplicaci
 * Para crear una aplicación a través el arquetipo, abrimos una terminal en nuestro equipo, en la ruta donde queramos ubicar el proyecto y ejecutamos el siguiente comando de Maven:
  
   ```bash
-    mvn archetype:generate -DgroupId=com.ontimize -DartifactId=hr -Dversion=1.0.0-SNAPSHOT -Dpackage=com.ontimize.hr -DarchetypeGroupId=com.ontimize -DarchetypeArtifactId=ontimize-boot-backend-archetype -DarchetypeVersion=1.0.9 -DinteractiveMode=false
+    mvn archetype:generate -DgroupId=com.ontimize -DartifactId=hr -Dversion=1.0.0-SNAPSHOT -Dpackage=com.ontimize.hr -DarchetypeGroupId=com.ontimize -DarchetypeArtifactId=ontimize-boot-backend-archetype -DarchetypeVersion=1.0.10 -DinteractiveMode=false
   ```
 
 {: .note}
