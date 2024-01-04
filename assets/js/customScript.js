@@ -39,25 +39,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // Anchor scroll behaviour for sticky header
 document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
         anchor.addEventListener('click', function(e) {
-          e.preventDefault();
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
 
-          const targetId = this.getAttribute('href').substring(1);
-          const targetElement = document.getElementById(targetId);
-
-          if (targetElement) {
-            var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-            var offset = targetElement.offsetTop;
-            if (windowWidth > 800) {
-                var offset = offset - 72;
+            if (targetElement) {
+                var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+                var offset = targetElement.offsetTop;
+                if (windowWidth > 800) {
+                    var offset = offset - 72;
+                }
+                window.scrollTo({
+                    top: offset,
+                    behavior: 'smooth'
+                });
             }
-            window.scrollTo({
-              top: offset,
-              behavior: 'smooth'
-            });
-          }
         });
-      });
     });
+});
 
