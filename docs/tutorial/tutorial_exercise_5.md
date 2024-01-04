@@ -1578,5 +1578,7 @@ public class MasterRestController extends ORestController<IMasterService> {
     </div>
 </div>
 
+Arrancamos la aplicación y ya podemos hacer nuevas peticiones desde [Postman](https://www.postman.com/){:target="_blank"}.
+
 [← Tutorial anterior]({{ base_path }}/tutorial/exercise4)
 [Próximo tutorial →]({{ base_path }}/tutorial/exercise6)
