@@ -70,11 +70,11 @@ We will add the following elements to the database:
 In the _projectwiki-boot_ module we will add the annotation `@EnableAspectJAutoProxy(proxyTargetClass = false)` to the **ServerApplication.java** class and to each service method the `@Secured({ PermissionsProviderSecured.SECURED })` annotation.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-<div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
   {{ "**ServerApplication.java**"| markdownify }}
 
 {% highlight java %}

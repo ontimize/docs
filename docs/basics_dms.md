@@ -98,11 +98,12 @@ ALTER TABLE CANDIDATE ADD CONSTRAINT CANDIDATE_FK FOREIGN KEY(ID_DMS_DOC) REFERE
 ### Add DMS dependencies
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-  <div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
+
   {{ "**model/pom.xml**"| markdownify }}
 
 {% highlight xml %}
@@ -395,11 +396,11 @@ ALTER TABLE CANDIDATE ADD CONSTRAINT CANDIDATE_FK FOREIGN KEY(ID_DMS_DOC) REFERE
 A specific DAO will be created for each table in the DMS system, and each of them will implement a different interface. In turn, the candidate DAO will be modified to reflect the new column it contains.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-<div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{ "**DMSCategoryDao.xml**" | markdownify}}
 {% highlight xml %}
@@ -909,11 +910,11 @@ datasource="mainDataSource" sqlhandler="dbSQLStatementHandler">
 </div>
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-<div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{ "**CandidateDao.java**" | markdownify}}
 {% highlight java%}
@@ -1347,11 +1348,11 @@ public static final String ATTR_ID_DMS_DOC_CHILD = "ID_DMS_DOC_CHILD";
 The method of inserting new candidates will be modified so that, when inserting them, they will have a workspace to maintain the files to be uploaded associated with the inserted candidate.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-<div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**CandidateService.java**" | markdownify }}
 {% highlight java %}
@@ -1658,11 +1659,11 @@ public EntityResult candidateInsert(Map<String, Object> attrMap) throws Ontimize
 ### Add File Manager Rest Controller
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-<div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**DMSNameConverter.java**" | markdownify }}
 {% highlight java %}
@@ -2041,11 +2042,11 @@ The **application.yml** file will be modified to indicate the path where the dms
 > The path specified in the _basePath_ variable must exist before the server is started.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-<div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**application.yml**" | markdownify}}
 {% highlight yaml%}

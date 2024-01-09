@@ -42,11 +42,11 @@ mvn org.apache.maven.plugins:maven-archetype-plugin:2.4:generate -DgroupId=YOUR_
 ## Start the project
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-<div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{ "To start the project, it is necessary to start both the database and the server.
 The first thing to do is to execute the `mvn install` command inside the project's root folder
 
@@ -257,11 +257,11 @@ The first thing to do is to execute the `mvn install` command inside the project
 ### Start the database
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-<div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
   {{ "Next, we navigate to the `model` folder to start the HSQLDB database
 
     /app$ cd model
@@ -471,11 +471,11 @@ The first thing to do is to execute the `mvn install` command inside the project
 ### Start the server
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-  <div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
   {{ "To start the server, open a new console in the root folder of the project, navigate to `boot` folder and type the following command
 
     /app$ cd boot
