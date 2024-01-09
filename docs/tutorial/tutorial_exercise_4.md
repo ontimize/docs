@@ -144,11 +144,11 @@ módulo de _hr-model_ para que sirva como modelo de esta tabla de la base de dat
 ficheros: un fichero con extensión *._xml_ y un fichero *._java_.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
             {{"En nuestro fichero *.xml indicaremos la tabla de la base de datos, desde donde recogemos la información, 
 para la cual hacemos el DAO y el esquema al que pertenece la tabla." | markdownify }}
             {{"**CandidateDao.xml**" | markdownify }}
@@ -470,11 +470,11 @@ que pertenezcan (en este caso, candidate) y un sufijo que dependerá de la acci�
 **Insert**, **Update**, **Delete**).
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"**ICandidateService.java**" | markdownify }}
 {% highlight java %}
 package com.ontimize.hr.api.core.service;
@@ -758,11 +758,11 @@ inicien cuando son requeridos y no durante el arranque. Para el empleo de los DA
 el uso de métodos _getter_ y _setter_.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"**CandidateService.java**" | markdownify }}
 {% highlight java %}
 package com.ontimize.hr.model.core.service;
@@ -1070,11 +1070,11 @@ Una vez tengamos el DAO creado, su interfaz y el servicio que implemente dicha i
 para que responda a las peticiones que reciba el servidor. Los controladores se ubicarán en el módulo _hr-ws_.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"La anotación ```@RestController``` indica que esta clase trabaja como un controlador, que responderá a las peticiones 
 cuya URL tenga el _path_ indicado en la anotación ```@RequestMapping``` (en este caso, _candidates_)." | markdownify }}
 {{"**CandidateRestController.java**" | markdownify }}
@@ -1380,11 +1380,11 @@ Para lanzar la aplicación, procederemos de la misma forma que para lanzar la ba
 
 ### Código de la aplicación (Recomendado)
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"Buscamos la clase **ServerApplication.java** que se encuentra dentro del módulo **hr-boot** y en el método _main_
 hacemos clic en el triángulo verde y a continuación, clic en _Debug 'ServerAplplicat....main()_. Esto permitirá lanzar
 el código en modo _Debug_, útil para seguir las instrucciones que se van ejecutando para poder detectar la solución de

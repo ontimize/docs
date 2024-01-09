@@ -8,6 +8,7 @@ window.onload = function() {
         var toggleButtons = document.getElementsByClassName('jstreeloader');
         for (let div of toggleButtons){
             div.classList.remove('collapsed');
+            div.parentElement.querySelector('.material-symbols-outlined').textContent = 'left_panel_open';
         }
     }
 };
@@ -17,7 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
     var toggleButtons = document.getElementsByClassName('toggle-tree-btn');
     for (let btn of toggleButtons) {
         btn.addEventListener('click', function() {
-            btn.closest('.multicolumn').querySelector('.jstreeloader').classList.toggle('collapsed');
+            var jstreeLoader = btn.closest('.multicolumn').querySelector('.jstreeloader');
+            jstreeLoader.classList.toggle('collapsed');
+            var isCollapsed = jstreeLoader.classList.contains('collapsed');
+            var spanElement = btn.querySelector('.material-symbols-outlined');
+            if (isCollapsed) {
+                spanElement.textContent = 'right_panel_open';
+            } else {
+                spanElement.textContent = 'left_panel_open';
+            }
         });
     }
 });

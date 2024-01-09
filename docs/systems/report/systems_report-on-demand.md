@@ -62,11 +62,11 @@ CREATE TABLE PREFERENCES(ID INTEGER NOT NULL PRIMARY KEY,NAME VARCHAR(255),DESCR
 #### Add Ontimize Report dependencies
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
   {{ "**projectwiki-boot/pom.xml**"| markdownify }}
 
 {% highlight xml %}
@@ -354,11 +354,11 @@ CREATE TABLE PREFERENCES(ID INTEGER NOT NULL PRIMARY KEY,NAME VARCHAR(255),DESCR
 A specific DAO will be created for each of both tables in the system, and each of them will implement a different interface.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{ "**PreferencesDao.xml**" | markdownify}}
 {% highlight xml %}
@@ -671,11 +671,11 @@ The **application.yml** file will be modified to enable the reports module, indi
 > You can only choose **ONE** of the two options listed below.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**application.yml**" | markdownify}}
 {{"For ***database*** engine" | markdownify}}

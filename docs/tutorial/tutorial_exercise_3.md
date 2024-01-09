@@ -18,11 +18,11 @@ estos elementos indentados correctamente, dado que de estar mal indentado, no se
 ## Descripción del fichero application.yml
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
         {{ "**application.yml**" | markdownify}}
         {% highlight yaml%}
 endpoints:

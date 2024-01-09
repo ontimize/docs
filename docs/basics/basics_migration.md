@@ -50,11 +50,11 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 First of all we need to update the version of Ontimize (ontimize-boot-parent) located in the parent of the project. Use always the latest version: [![Ontimize Boot Parent](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot-parent?label=Ontimize%20Boot%20Parent&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot-parent)
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
   {{"**pom.xml**" | markdownify}}
 
@@ -347,11 +347,11 @@ First of all we need to update the version of Ontimize (ontimize-boot-parent) lo
 In the project properties we will change the java version **from 1.8 to 11**, both for the main **pom.xml** and for the `hr-model` module **pom.xml**.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
   {{"**pom.xml**" | markdownify}}
 
@@ -734,11 +734,11 @@ The package name of **EntityResult** has been renamed from `com.ontimize.db.Enti
 In the `hr-api` module we need to change the name of the package of this class in all the interfaces that are using it.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
   {{"**ICandidateService.java**" | markdownify}}
 
@@ -1102,11 +1102,11 @@ public interface IUserService {
 Having changed the class in the interface, we also have to change it in the service. For this we go to the `hr-model` module and replace the import of all services.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
   {{"**CandidateService.java**" | markdownify}}
 
@@ -1465,11 +1465,11 @@ In this case it is not just about changing the name of the package, it must also
 Go to the `hr-ws` module and replace the import of the EntityResult class in the rest controllers and make the following changes:
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
   {{"**OfferRestController.java**" | markdownify}}
 

@@ -13,11 +13,11 @@ parent: Tutorial
 ## Estructura
 Esta sección explicará la estructura de una aplicación basada en Ontimize Boot.
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
         {{ "* **hr-api**: este módulo contiene las interfaces relacionadas con los servicios invocados por los controladores REST. Los servicios implementan todos los métodos 
 declarados en sus interfaces.
 * **hr-boot**: este módulo contiene el lanzador principal de la aplicación y un fichero de configuración \*._yml_, que se utiliza para configurar la aplicación, conexión, base de

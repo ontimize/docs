@@ -68,11 +68,11 @@ CREATE TABLE TASKS(ID INTEGER IDENTITY NOT NULL PRIMARY KEY, UUID VARCHAR(255) N
 > The decoupled tasks system is integrated in the **Ontimize Core** module, so we need to declare it as a project dependency.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
   {{ "**boot/pom.xml**"| markdownify }}
 
 {% highlight xml %}
@@ -362,11 +362,11 @@ The **application.yml** file will be modified to enable the decoupled tasks modu
 > The asynchronous tasks system requires the **Ontimize** ***TaskExecutor*** to be configured, see [this link]({{ base_path }}/basics/autoconfigurators/#taskexecutor).
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
         
 {{"**application.yml**" | markdownify}}
 {{"For *database* storage" | markdownify}}
@@ -642,11 +642,11 @@ ontimize:
 A specific DAO will be created for the tasks table, and it will implement the DAO interface in the tasks module.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{ "**TaskDao.xml**" | markdownify}}
 {% highlight xml %}
@@ -952,11 +952,11 @@ In order to run some service method asynchronously, we need to annotate its resp
 > The service's method **MUST** return a *serializable* object with getters and setters, as well as the controller's method must return a *ResponseEntity* object. In this case, the `query()` method returns a Serializable object, the *EntityResult*.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{ "We will override the `query()` method of the *ORestController* class." | markdownify}}
 
@@ -1260,11 +1260,11 @@ public class CandidateRestController extends ORestController<ICandidateService>{
 To know all the states through which the asynchronous request passes, we will add a delay in the `candidateQuery()` method.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{ "**CandidateService.java**" | markdownify}}
 {% highlight java %}

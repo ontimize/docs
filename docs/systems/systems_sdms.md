@@ -57,11 +57,11 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 #### Add SDMS dependencies
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
   {{ "**/pom.xml**"| markdownify }}
 
 {% highlight xml %}
@@ -386,11 +386,11 @@ The **application.yml** file will be modified the engine to be used by the SDMS,
 > Currently only the S3 engine using the Amazon AWS S3 service API is available.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**application.yml**" | markdownify}}
 
@@ -689,11 +689,11 @@ The SDMS methods available are:
 - **SdmsDelete**: _It allows us to delete several SDMS elements in the system from a filter._
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**ICandidateService.java**" | markdownify }}
 {% highlight java %}
@@ -994,11 +994,11 @@ We will also **establish the workspace** where the entity will store and manage 
 The annotation can be set at **class level** by enabling the workspace for all SDMS methods, and/or at **method level** by setting its scope to the annotated method. It can also be set as many workspaces as required.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**CandidateService.java**" | markdownify }}
 {% highlight java %}
@@ -1348,11 +1348,11 @@ public class CandidateService implements ICandidateService {
 We modify the Rest controller of our entity so that instead of inheriting from the `ORestController` class, it inherits from the `OSdmsRestController` class. This class adds all the endpoints of the `ORestController` class and the SDMS endpoints, linking them with the corresponding SDMS methods that we have established in the service of our entity.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**ICandidateService.java**" | markdownify }}
 {% highlight java %}

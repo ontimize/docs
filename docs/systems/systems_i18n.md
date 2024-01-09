@@ -163,11 +163,11 @@ It is necessary to create the **DAO**s that reflect the new DB tables we have cr
 
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
   {{ "First we will create the \*.xml files." | markdownify }}
 
   {{ "**OCDatabaseBundleDao.xml**" | markdownify }}   
@@ -520,11 +520,11 @@ public class OCDatabaseBundleValueDao extends OntimizeJdbcDaoSupport {
 
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
   {{"**I18nRestController.java**
     
@@ -912,11 +912,11 @@ To update the bundle values we create a method that receieves the translations t
 **Code**
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
   {{"**I18nRestController.java**" | markdownify}}
 
@@ -1288,11 +1288,11 @@ if (key != null) {
 To delete the bundle values we create a method that receives the bundle class and the key of the bundle values.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
   {{"**I18nRestController.java**" | markdownify}}
 

@@ -117,11 +117,11 @@ controlador REST de las ofertas. Uno que envíe todas las ofertas del presente a
 parámetro, nos devuelva las ofertas de ese año en concreto.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"La anotacion ```@RequestMapping``` permite indicar la ruta para la que responderá este método, junto con el tipo
 de petición que se haga e indicar el tipo de respuesta a devolver.
 

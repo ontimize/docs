@@ -59,11 +59,11 @@ INSERT INTO PROFILE (DESCRIPTION) VALUES ('Technician');
 Ahora se crearán los DAO correspondientes a esas tablas, tanto los elementos las clases en _Java_ como los ficheros \*._xml_
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**EducationDao.xml**" | markdownify }}
 {% highlight xml %}
@@ -524,11 +524,11 @@ public class StatusDao  extends OntimizeJdbcDaoSupport{
 Crearemos una interfaz para el servicio de maestros, pensando en que se usarán los DAO creados en el punto anterior.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"**IMasterService.java**" | markdownify }}
 {% highlight java %}
 package com.ontimize.hr.api.core.service;
@@ -857,11 +857,11 @@ que implementará la recién creada interfaz _IMasterService_. Es necesario anot
 _MasterService_) y con ```@Lazy```
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"**MasterService.java**" | markdownify }}
 {% highlight java %}
 package com.ontimize.hr.model.core.service;
@@ -1283,11 +1283,11 @@ las anotaciones ```@RestController```, que indicará que esta clase servirá de 
 ```@RequestMapping("/master")``` que establecerá la url del controlador.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"**MasterRestController**" | markdownify }}
 {% highlight java %}
 package com.ontimize.hr.ws.core.rest;
