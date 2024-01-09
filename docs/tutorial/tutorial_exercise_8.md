@@ -89,11 +89,11 @@ INSERT INTO OFFER_CANDIDATES (ID, OFFER_ID, CANDIDATE_ID, OFFER_CANDIDATE_STATUS
 Crearemos los DAO asociados a las tablas recién añadidas a la BD.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**OfferCandidatesDao.xml**" | markdownify }}
 {% highlight xml %}
@@ -537,11 +537,11 @@ public class OfferStatusDao extends OntimizeJdbcDaoSupport {
 Creamos la interfaz del servicio de ofertas para el cual hemos creado los DAO.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"**IOfferService.java**" | markdownify }}
 {% highlight java %}
 package com.ontimize.hr.api.core.service;
@@ -869,11 +869,11 @@ public interface IOfferService {
 Creamos una clase como servicio e implementamos la interfaz anterior.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"**OfferService.java**" | markdownify }}
 {% highlight java %}
 package com.ontimize.hr.model.core.service;
@@ -1278,11 +1278,11 @@ public class OfferService implements IOfferService {
 Esta clase servirá para responder a las peticiones REST del servicio _OfferService_.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"**OfferRestController.java**" | markdownify }}
 {% highlight java %}
 package com.ontimize.hr.ws.core.rest;

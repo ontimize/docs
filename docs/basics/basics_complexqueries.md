@@ -148,11 +148,11 @@ The use of the `<AmbiguousColumn>` tag will indicate which are the ambiguous col
 ### Complete example
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
   {{ "**OfferCandidatesDao.xml**"| markdownify }}
 
 {% highlight xml %}
@@ -649,11 +649,11 @@ public class OfferCandidatesDao extends OntimizeJdbcDaoSupport {
 We will update the IOfferService interface to add the new method that will perform the query. In case of being the default query, it would not be necessary to do any of the steps indicated below.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
   {{ "**IOfferService.java**"| markdownify }}
 
 {% highlight java %}

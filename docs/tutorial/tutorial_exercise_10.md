@@ -34,11 +34,11 @@ defecto, pondremos otro identificador.
 
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**OfferCandidatesDao.xml**" | markdownify }}
 {% highlight xml %}
@@ -396,11 +396,11 @@ la consulta por defecto, no sería necesario hacer ninguno de los pasos indicado
 > Para simplificar el código que se está escribiendo, pueden aparecer tres puntos (...) en algunas partes del código. Esto indica que puede haber código anterior antes y después de esos puntos.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Alternar árbol</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 {{"**IOfferService.java**" | markdownify }}
 {% highlight java %}
 ...

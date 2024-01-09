@@ -69,11 +69,11 @@ In the *projectwiki-boot* module we will add the annotation `@EnableAspectJAutoP
 
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
   {{ "**ServerApplication.java**"| markdownify }}
 
 {% highlight java %}

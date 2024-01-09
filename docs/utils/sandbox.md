@@ -36,29 +36,28 @@ nav_order: X
 Los highlight y endhighlight llevan un % en vez de un -
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
-        {- highlight java%}
-            // Aquí el código o lo que sea
-        {- endhighlight %}
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
+            {- highlight java%}
+                // Aquí el código o lo que sea
+            {- endhighlight %}
         </div>
         <div class="multicolumnright jstreeloader collapsed">
-        // <ul> </ul> de jstree
+            // <ul> </ul> de jstree
         </div>
     </div>
 </div>
 ```
 
-
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
             {{ "**EjemploDeClase.java**"  | markdownify }}
             {% highlight java%}
                 // Aquí el código o lo que sea

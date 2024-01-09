@@ -77,11 +77,11 @@ ALTER TABLE REPORT_PARAMETERS ADD CONSTRAINT REPORT_PARAMETERS_FK FOREIGN KEY(RE
 ### Add Ontimize Report dependencies
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
   {{ "**projectwiki-boot/pom.xml**"| markdownify }}
 
 {% highlight xml %}
@@ -369,11 +369,11 @@ ALTER TABLE REPORT_PARAMETERS ADD CONSTRAINT REPORT_PARAMETERS_FK FOREIGN KEY(RE
 A specific DAO will be created for each of both tables in the reports system, and each of them will implement a different interface.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{ "**ReportDao.xml**" | markdownify}}
 {% highlight xml %}
@@ -737,11 +737,11 @@ The **application.yml** file will be modified to enable the reports module, indi
 > You can only choose **ONE** of the two options listed below.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**application.yml**" | markdownify}}
 {{"For ***database*** engine" | markdownify}}

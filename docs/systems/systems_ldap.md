@@ -63,11 +63,11 @@ INSERT INTO TUSER_ROLE (ID_ROLENAME,USER_) VALUES (0,'domain.username');
 #### Add LDAP autoconfigurators
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
   {{ "**LdapError.java**"| markdownify }}
 
@@ -607,11 +607,11 @@ public class CustomSecurityAutoConfiguration extends DefaultSecurityAutoConfigur
 In the *application.yml* we need to change the ontimize security mode to **ldap** and add the following properties (More information in [this link]({{ base_path }}/basics/autoconfigurators/#ldap)):
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
   {{ "**application.yml**"| markdownify }}
 

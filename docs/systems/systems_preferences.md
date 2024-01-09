@@ -67,11 +67,11 @@ CREATE TABLE TCONFIGS ( ID_CONFIG INTEGER NOT NULL IDENTITY, USER_CONFIG VARCHAR
 A specific DAO will be created for the table in the Preferences system, and it will implement a interface.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**ConfigsDao.java**" | markdownify}}
 {% highlight java%}
@@ -375,11 +375,11 @@ public class ConfigsDao extends OntimizeJdbcDaoSupport {
 As has already been explained previously (in this [link]({{ base_path }}/basics/autoconfigurators/#preferences)) we add the following parameters to the `application.yml` to define the name of the DAO of the preferences system and to activate autoconfiguration.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
         <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**application.yml**" | markdownify}}
 {% highlight yaml%}
