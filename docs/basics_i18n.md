@@ -152,11 +152,12 @@ This configuration indicates the keys and values to be stored in the database. T
 It is necessary to create the **DAO**s that reflect the new DB tables we have created.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-  <div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
+
   {{ "First we will create the \*.xml files." | markdownify }}
 
 {{ "**OCDatabaseBundleDao.xml**" | markdownify }}  
@@ -508,14 +509,15 @@ public class OCDatabaseBundleValueDao extends OntimizeJdbcDaoSupport {
   </div>
 </div>
 </div>
+
 ### Add I18n Rest Controller
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
-    <div class="multicolumncontent">
+<div class="multicolumncontent">
 <div class="multicolumnleft">
+	<button class="unstyle toggle-tree-btn">
+		<span class="material-symbols-outlined">right_panel_open</span>
+	</button>
 
 {{"**I18nRestController.java**" | markdownify}}
 
@@ -584,7 +586,7 @@ public class I18nRestController {
 {% endhighlight %}
 
 </div>
-  <div class="multicolumnright jstreeloader collapsed" >
+<div class="multicolumnright jstreeloader collapsed" >
   <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -909,11 +911,11 @@ To update the bundle values we create a method that receieves the translations t
 **Code**
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-  <div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**I18nRestController.java**" | markdownify}}
 
@@ -1285,11 +1287,11 @@ this.daoBundleValues.insert(hValues);
 To delete the bundle values we create a method that receives the bundle class and the key of the bundle values.
 
 <div class="multicolumn">
-    <button class="unstyle toggle-tree-btn">
-        <div class="btn">Toggle Tree</div>
-    </button>
     <div class="multicolumncontent">
-<div class="multicolumnleft">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
 
 {{"**I18nRestController.java**" | markdownify}}
 
