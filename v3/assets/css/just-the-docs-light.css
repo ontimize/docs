@@ -9959,6 +9959,10 @@ blockquote.warning-title > p:last-child {
   all: unset;
   margin-bottom: 10px;
   align-self: flex-end;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
 }
 
 .multicolumncontent {
@@ -9969,8 +9973,9 @@ blockquote.warning-title > p:last-child {
   flex: 1;
   max-width: 100%;
   overflow-x: auto;
-  padding: 0 20px 0 0;
+  padding: 0 40px 0 0;
   box-sizing: border-box;
+  position: relative;
 }
 
 .multicolumnnopadding {
