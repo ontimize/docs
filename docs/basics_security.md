@@ -18,8 +18,8 @@ You can follow this tutorial using your own application, although for this examp
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multiColumnRow multiColumnRowJustify">
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumncontent">
+<div class="multicolumnnopadding" >
   {{ "**Initial project**
 
     /$ git clone https://github.com/ontimize/ontimize-examples
@@ -29,7 +29,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
 </div>
 <div class="verticalDivider"></div>
-<div class="multiColumn multiColumnGrow" >
+<div class="multicolumnnopadding" >
 
 {{ "**Final example**
 
@@ -69,8 +69,82 @@ We will add the following elements to the database:
 
 In the _projectwiki-boot_ module we will add the annotation `@EnableAspectJAutoProxy(proxyTargetClass = false)` to the **ServerApplication.java** class and to each service method the `@Secured({ PermissionsProviderSecured.SECURED })` annotation.
 
-<div class="multiColumnRow">
-<div class="multiColumn jstreeloader">
+<div class="multicolumn">
+    <button class="unstyle toggle-tree-btn">
+        <div class="btn">Toggle Tree</div>
+    </button>
+    <div class="multicolumncontent">
+<div class="multicolumnleft">
+  {{ "**ServerApplication.java**"| markdownify }}
+
+{% highlight java %}
+package com.ontimize.projectwiki;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+@SpringBootApplication
+@EnableAspectJAutoProxy(proxyTargetClass = false)
+public class ServerApplication {
+
+    public static void main(String[] args) {
+    	SpringApplication.run(ServerApplication.class, args);
+    }
+
+}
+{% endhighlight %}
+
+{{ "**CustomerService.java**"| markdownify }}
+
+{% highlight java %}
+package com.ontimize.projectwiki.model.core.service;
+
+. . .
+import org.springframework.security.access.annotation.Secured;
+
+. . .
+import com.ontimize.jee.common.security.PermissionsProviderSecured;
+
+. . .
+
+public class CandidateService implements ICandidateService {
+
+. . .
+
+    @Override
+    @Secured({ PermissionsProviderSecured.SECURED })
+    public EntityResult candidateQuery(Map<String, Object> keyMap, List<String> attrList)
+    		throws OntimizeJEERuntimeException {
+    	return this.daoHelper.query(this.candidateDao, keyMap, attrList);
+    }
+
+    @Override
+    @Secured({ PermissionsProviderSecured.SECURED })
+    @Transactional(rollbackFor = Exception.class)
+    public EntityResult candidateInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException {
+    	return this.daoHelper.insert(this.candidateDao, attrMap);
+    }
+
+    @Override
+    @Secured({ PermissionsProviderSecured.SECURED })
+    @Transactional(rollbackFor = Exception.class)
+    public EntityResult candidateUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap)
+    		throws OntimizeJEERuntimeException {
+    	return this.daoHelper.update(this.candidateDao, attrMap, keyMap);
+    }
+
+    @Override
+    @Secured({ PermissionsProviderSecured.SECURED })
+    public EntityResult candidateDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException {
+    	return this.daoHelper.delete(this.candidateDao, keyMap);
+    }
+
+}
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
   ontimize-examples
@@ -317,75 +391,6 @@ In the _projectwiki-boot_ module we will add the annotation `@EnableAspectJAutoP
   </li>
 </ul>
 </div>
-<div class="multiColumn multiColumnGrow">
-  {{ "**ServerApplication.java**"| markdownify }}
-
-{% highlight java %}
-package com.ontimize.projectwiki;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-
-@SpringBootApplication
-@EnableAspectJAutoProxy(proxyTargetClass = false)
-public class ServerApplication {
-
-    public static void main(String[] args) {
-    	SpringApplication.run(ServerApplication.class, args);
-    }
-
-}
-{% endhighlight %}
-
-{{ "**CustomerService.java**"| markdownify }}
-
-{% highlight java %}
-package com.ontimize.projectwiki.model.core.service;
-
-. . .
-import org.springframework.security.access.annotation.Secured;
-
-. . .
-import com.ontimize.jee.common.security.PermissionsProviderSecured;
-
-. . .
-
-public class CandidateService implements ICandidateService {
-
-. . .
-
-    @Override
-    @Secured({ PermissionsProviderSecured.SECURED })
-    public EntityResult candidateQuery(Map<String, Object> keyMap, List<String> attrList)
-    		throws OntimizeJEERuntimeException {
-    	return this.daoHelper.query(this.candidateDao, keyMap, attrList);
-    }
-
-    @Override
-    @Secured({ PermissionsProviderSecured.SECURED })
-    @Transactional(rollbackFor = Exception.class)
-    public EntityResult candidateInsert(Map<String, Object> attrMap) throws OntimizeJEERuntimeException {
-    	return this.daoHelper.insert(this.candidateDao, attrMap);
-    }
-
-    @Override
-    @Secured({ PermissionsProviderSecured.SECURED })
-    @Transactional(rollbackFor = Exception.class)
-    public EntityResult candidateUpdate(Map<String, Object> attrMap, Map<String, Object> keyMap)
-    		throws OntimizeJEERuntimeException {
-    	return this.daoHelper.update(this.candidateDao, attrMap, keyMap);
-    }
-
-    @Override
-    @Secured({ PermissionsProviderSecured.SECURED })
-    public EntityResult candidateDelete(Map<String, Object> keyMap) throws OntimizeJEERuntimeException {
-    	return this.daoHelper.delete(this.candidateDao, keyMap);
-    }
-
-}
-{% endhighlight %}
-
 </div>
 </div>
 
