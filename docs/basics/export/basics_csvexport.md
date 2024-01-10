@@ -23,7 +23,7 @@ Ontimize provides a system to export the DAO data of a service and dump it direc
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumncontent">
+<div class="multicolumn">
   <div class="multicolumnnopadding" >
   {{ "**Initial project**
 
@@ -56,11 +56,11 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
 Two dependencies need to be added, one to the ws module containing the controllers (so that it can respond to the export request) and one to the boot module to be able to load the autoconfigurator in the application.yml file for export.
 
-<div class="multicolumn">
 
-      <div class="multicolumnleft">
+<div class="multicolumn">
+    <div class="multicolumnleft">
         <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
+            <span class="material-symbols-outlined">right_panel_open</span>
         </button>
 
 {{ "**projectwiki-boot/pom.xml**" | markdownify }}
@@ -348,10 +348,9 @@ Two dependencies need to be added, one to the ws module containing the controlle
 In the application.yml file, a configuration will be added to allow indicating the export URL and the extension used.
 
 <div class="multicolumn">
-
-      <div class="multicolumnleft">
+    <div class="multicolumnleft">
         <button class="unstyle toggle-tree-btn">
-            <div class="btn">Toggle Tree</div>
+            <span class="material-symbols-outlined">right_panel_open</span>
         </button>
 
 {{ "**ontimize:export:**
@@ -733,4 +732,4 @@ This is the list of values accepted by the JSON request to generate the export f
 | advQuery | *Boolean* | Determines whether the DAO query method is *Query* or *PaginationQuery*. |
 | columns | *JSON Object* |Determines the order of the columns in the export|
 | columnTitles | *JSON Object* |Translates the name of the column to be exported, replacing it with the value of the key.|
-| columnTypes | *JSON Object* |Key-value pairs that indicate how the data will be treated within the cell, e.g.: String, Date, Integer, etc. These data types are those corresponding to the database data type, which can be found at this [link](https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/Types.html)|.
+| columnTypes | *JSON Object* |Key-value pairs that indicate how the data will be treated within the cell, e.g.: String, Date, Integer, etc. These data types are those corresponding to the database data type, which can be found at this [link](https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/Types.html)|

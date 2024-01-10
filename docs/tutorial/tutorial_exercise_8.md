@@ -89,7 +89,6 @@ INSERT INTO OFFER_CANDIDATES (ID, OFFER_ID, CANDIDATE_ID, OFFER_CANDIDATE_STATUS
 Crearemos los DAO asociados a las tablas recién añadidas a la BD.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -530,14 +529,12 @@ public class OfferStatusDao extends OntimizeJdbcDaoSupport {
               </li>
             </ul>
         </div>
-    </div>
 </div>
 
 ## Creación de la interfaz del servicio
 Creamos la interfaz del servicio de ofertas para el cual hemos creado los DAO.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -862,14 +859,12 @@ public interface IOfferService {
             </li>
           </ul>
         </div>
-    </div>
 </div>
 
 ## Creación del servicio
 Creamos una clase como servicio e implementamos la interfaz anterior.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1271,14 +1266,12 @@ public class OfferService implements IOfferService {
             </li>
           </ul>
         </div>
-    </div>
 </div>
 
 ## Creación del controlador
 Esta clase servirá para responder a las peticiones REST del servicio _OfferService_.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1579,7 +1572,6 @@ public class OfferRestController extends ORestController<IOfferService> {
             </li>
           </ul>
         </div>
-    </div>
 </div>
 
 [← Tutorial anterior]({{ base_path }}/tutorial/exercise7)

@@ -147,8 +147,8 @@ The use of the `<AmbiguousColumn>` tag will indicate which are the ambiguous col
 
 ### Complete example
 
+
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -641,7 +641,7 @@ public class OfferCandidatesDao extends OntimizeJdbcDaoSupport {
 </ul>
 </div>
 </div>
-</div>
+
 
 
 ## Modify the interface and the service to add the new method
@@ -649,7 +649,6 @@ public class OfferCandidatesDao extends OntimizeJdbcDaoSupport {
 We will update the IOfferService interface to add the new method that will perform the query. In case of being the default query, it would not be necessary to do any of the steps indicated below.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1102,6 +1101,5 @@ public class OfferService implements IOfferService {
   </ul>
   </li>
 </ul>
-</div>
 </div>
 </div>

@@ -21,7 +21,7 @@ nav_order: 2
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumncontent">
+<div class="multicolumn">
 <div class="multicolumnnopadding" >
   {{ "**Initial project**
 
@@ -60,9 +60,9 @@ CREATE TABLE PREFERENCES(ID INTEGER NOT NULL PRIMARY KEY,NAME VARCHAR(255),DESCR
 #### Add Preferences DAOs
 A specific DAO will be created for each of both tables in the system, and each of them will implement a different interface.
 
+
 <div class="multicolumn">
-    <div class="multicolumncontent">
-        <div class="multicolumnleft">
+<div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
             </button>
@@ -365,7 +365,7 @@ public class PreferencesDao extends OntimizeJdbcDaoSupport implements IPreferenc
 </ul>
 </div>
 </div>
-</div>
+
 
 
 ## Testing the preferences system

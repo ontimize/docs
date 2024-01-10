@@ -27,7 +27,7 @@ A **D**ocument **M**anagement **S**ystem (**DMS**) is a system that allows you t
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumncontent">
+<div class="multicolumn">
 <div class="multicolumnnopadding" >
   {{ "**Initial project**
 
@@ -94,7 +94,6 @@ ALTER TABLE CANDIDATE ADD CONSTRAINT CANDIDATE_FK FOREIGN KEY(ID_DMS_DOC) REFERE
 #### Add DMS dependencies
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -383,17 +382,16 @@ ALTER TABLE CANDIDATE ADD CONSTRAINT CANDIDATE_FK FOREIGN KEY(ID_DMS_DOC) REFERE
 </ul>
 </div>
 </div>
-</div>
 
 #### Add DMS DAO and modify Candidate DAO
 A specific DAO will be created for each table in the DMS system, and each of them will implement a different interface. In turn, the candidate DAO will be modified to reflect the new column it contains.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
             </button>
+
 {{ "**DMSCategoryDao.xml**" | markdownify}}
 {% highlight xml %}
 <?xml version="1.0" encoding="UTF-8"?>
@@ -875,10 +873,8 @@ A specific DAO will be created for each table in the DMS system, and each of the
 </ul>
 </div>
 </div>
-</div>
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1307,13 +1303,11 @@ public class DMSRelatedDocumentDao extends OntimizeJdbcDaoSupport implements IDM
 </ul>
 </div>
 </div>
-</div>
 
 #### Modify CandidateService insert method
 The method of inserting new candidates will be modified so that, when inserting them, they will have a workspace to maintain the files to be uploaded associated with the inserted candidate.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1617,12 +1611,10 @@ public class CandidateService implements ICandidateService {
 </ul>
 </div>
 </div>
-</div>
 
 #### Add File Manager Rest Controller
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1993,7 +1985,6 @@ public class FileManagerRestController extends DMSRestController<IDMSService, ID
 </ul>
 </div>
 </div>
-</div>
 
 #### Modify application.yml
 
@@ -2003,7 +1994,6 @@ The **application.yml** file will be modified to indicate the path where the dms
 > The path specified in the *basePath* variable must exist before the server is started.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -2278,7 +2268,6 @@ ontimize:
   </ul>
   </li>
 </ul>
-</div>
 </div>
 </div>
 

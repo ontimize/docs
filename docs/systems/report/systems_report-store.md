@@ -28,7 +28,7 @@ You can follow this tutorial using your own application, although for this examp
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumncontent">
+<div class="multicolumn">
 <div class="multicolumnnopadding" >
   {{ "**Initial project**
 
@@ -77,7 +77,6 @@ ALTER TABLE REPORT_PARAMETERS ADD CONSTRAINT REPORT_PARAMETERS_FK FOREIGN KEY(RE
 ### Add Ontimize Report dependencies
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -363,13 +362,11 @@ ALTER TABLE REPORT_PARAMETERS ADD CONSTRAINT REPORT_PARAMETERS_FK FOREIGN KEY(RE
 </ul>
 </div>
 </div>
-</div>
 
 ### Add Report DAOs
 A specific DAO will be created for each of both tables in the reports system, and each of them will implement a different interface.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -724,7 +721,6 @@ public class ReportParameterDao extends OntimizeJdbcDaoSupport implements IRepor
 </ul>
 </div>
 </div>
-</div>
 
 ### Modify application.yml
 
@@ -737,7 +733,6 @@ The **application.yml** file will be modified to enable the reports module, indi
 > You can only choose **ONE** of the two options listed below.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1013,7 +1008,6 @@ ontimize:
   </ul>
   </li>
 </ul>
-</div>
 </div>
 </div>
 

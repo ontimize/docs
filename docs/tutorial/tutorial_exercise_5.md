@@ -59,7 +59,6 @@ INSERT INTO PROFILE (DESCRIPTION) VALUES ('Technician');
 Ahora se crearán los DAO correspondientes a esas tablas, tanto los elementos las clases en _Java_ como los ficheros \*._xml_
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -517,14 +516,12 @@ public class StatusDao  extends OntimizeJdbcDaoSupport{
               </li>
             </ul>
         </div>
-    </div>
 </div>
 
 ## Crear la interfaz del servicio de maestros
 Crearemos una interfaz para el servicio de maestros, pensando en que se usarán los DAO creados en el punto anterior.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -848,7 +845,6 @@ public interface IMasterService {
               </li>
             </ul>
         </div>
-    </div>
 </div>
 
 ## Creación del servicio de maestros
@@ -857,7 +853,6 @@ que implementará la recién creada interfaz _IMasterService_. Es necesario anot
 _MasterService_) y con ```@Lazy```
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1273,7 +1268,6 @@ public class MasterService implements IMasterService {
               </li>
             </ul>
         </div>
-    </div>
 </div>
 
 ## Creación del controlador de maestros
@@ -1283,7 +1277,6 @@ las anotaciones ```@RestController```, que indicará que esta clase servirá de 
 ```@RequestMapping("/master")``` que establecerá la url del controlador.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1575,7 +1568,6 @@ public class MasterRestController extends ORestController<IMasterService> {
               </li>
             </ul>
         </div>
-    </div>
 </div>
 
 Arrancamos la aplicación y ya podemos hacer nuevas peticiones desde [Postman](https://www.postman.com/){:target="_blank"}.
