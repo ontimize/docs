@@ -9952,7 +9952,6 @@ blockquote.warning-title > p:last-child {
 }
 .multicolumn {
   display: flex;
-  flex-direction: column;
 }
 
 .toggle-tree-btn {
@@ -9963,10 +9962,6 @@ blockquote.warning-title > p:last-child {
   top: 8px;
   right: 8px;
   cursor: pointer;
-}
-
-.multicolumncontent {
-  display: flex;
 }
 
 .multicolumnleft {
