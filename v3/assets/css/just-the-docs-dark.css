@@ -10216,7 +10216,6 @@ blockquote.warning-title > p:last-child {
 }
 .multicolumn {
   display: flex;
-  flex-direction: column;
 }
 
 .toggle-tree-btn {
