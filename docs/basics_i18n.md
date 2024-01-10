@@ -152,7 +152,6 @@ This configuration indicates the keys and values to be stored in the database. T
 It is necessary to create the **DAO**s that reflect the new DB tables we have created.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -508,12 +507,10 @@ public class OCDatabaseBundleValueDao extends OntimizeJdbcDaoSupport {
 </ul>
   </div>
 </div>
-</div>
 
 ### Add I18n Rest Controller
 
 <div class="multicolumn">
-<div class="multicolumncontent">
 <div class="multicolumnleft">
 	<button class="unstyle toggle-tree-btn">
 		<span class="material-symbols-outlined">right_panel_open</span>
@@ -848,7 +845,6 @@ public class I18nRestController {
 </ul>
   </div>
 </div>
-</div>
 
 ## Testing the i18n services
 
@@ -911,7 +907,6 @@ To update the bundle values we create a method that receieves the translations t
 **Code**
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1216,7 +1211,6 @@ public class I18nRestController {
 </ul>
   </div>
 </div>
-</div>
 
 **REST request**
 
@@ -1287,7 +1281,6 @@ this.daoBundleValues.insert(hValues);
 To delete the bundle values we create a method that receives the bundle class and the key of the bundle values.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1585,7 +1578,6 @@ public class I18nRestController {
   </li>
 </ul>
   </div>
-</div>
 </div>
 
 The request to execute is the following: **localhost:33333/i18n/bundle/delete**

@@ -42,7 +42,6 @@ mvn org.apache.maven.plugins:maven-archetype-plugin:2.4:generate -DgroupId=YOUR_
 ## Start the project
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -252,12 +251,10 @@ The first thing to do is to execute the `mvn install` command inside the project
 </ul>
   </div>
 </div>
-</div>
 
 ### Start the database
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -466,12 +463,10 @@ The first thing to do is to execute the `mvn install` command inside the project
 </ul>
   </div>
 </div>
-</div>
 
 ### Start the server
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -679,7 +674,6 @@ The first thing to do is to execute the `mvn install` command inside the project
   </li>
 </ul>
   </div>
-</div>
 </div>
 
 ## Test the application
