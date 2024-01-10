@@ -100,7 +100,6 @@ INSERT INTO TROLE_SERVER_PERMISSION (ID_ROLENAME, ID_SERVER_PERMISSION) VALUES((
 Now we need to add the correct dependency in the correct **pom.xml**:
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -369,7 +368,6 @@ Now we need to add the correct dependency in the correct **pom.xml**:
 </ul>
   </div>
 </div>
-</div>
 
 ### Server Configuration
 
@@ -401,7 +399,6 @@ In addition, the packet that will be scanned to look for the implementation of t
 Let's create a **DAO** (**D**ata **A**ccess **O**bject) in the `projectwiki-model` module to use as a model of this database table. The **DAO** is composed by 2 files, a file with extension \*.xml and a \*.java file.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -705,14 +702,12 @@ super();
 </ul>
   </div>
 </div>
-</div>
 
 ### Implementation in an existing service
 
 To use this service in another service (e.g. to send a mail when a new record is created), just add a variable of type **com.ontimize.jee.common.services.mail.IMailService** and annotate it with `@Autowired`.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1008,7 +1003,6 @@ return toRet;
   </li>
 </ul>
   </div>
-</div>
 </div>
 
 {: .note}

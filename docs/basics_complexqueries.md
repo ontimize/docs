@@ -144,7 +144,6 @@ The use of the `<AmbiguousColumn>` tag will indicate which are the ambiguous col
 ### Complete example
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -640,14 +639,12 @@ public static final String QUERY_OFFER_DETAILS = "details";
 </ul>
 </div>
 </div>
-</div>
 
 ## Modify the interface and the service to add the new method
 
 We will update the IOfferService interface to add the new method that will perform the query. In case of being the default query, it would not be necessary to do any of the steps indicated below.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1103,6 +1100,5 @@ return this.daoHelper.query(this.offerCandidatesDao, keyMap, attrList, OfferCand
   </ul>
   </li>
 </ul>
-</div>
 </div>
 </div>

@@ -62,7 +62,6 @@ INSERT INTO TUSER_ROLE (ID_ROLENAME,USER_) VALUES (0,'domain.username');
 ### Add LDAP autoconfigurators
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -592,7 +591,6 @@ public class CustomSecurityAutoConfiguration extends DefaultSecurityAutoConfigur
 </ul>
 </div>
 </div>
-</div>
 
 ## Modify application.yml
 
@@ -601,7 +599,6 @@ public class CustomSecurityAutoConfiguration extends DefaultSecurityAutoConfigur
 In the _application.yml_ we need to change the ontimize security mode to **ldap** and add the following properties (More information in [this link]({{base_path}}/basics/autoconfigurators/#ldap)):
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -873,6 +870,5 @@ domain: yourdomain.com
   </ul>
   </li>
 </ul>
-</div>
 </div>
 </div>

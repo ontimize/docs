@@ -111,7 +111,6 @@
 //Multicolumn
 .multicolumn {
   display: flex;
-  flex-direction: column;
 }
 
 .toggle-tree-btn {
@@ -122,10 +121,6 @@
   top: 8px;
   right: 8px;
   cursor: pointer;
-}
-
-.multicolumncontent {
-  display: flex;
 }
 
 .multicolumnleft {
