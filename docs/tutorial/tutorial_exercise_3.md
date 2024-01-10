@@ -18,7 +18,6 @@ estos elementos indentados correctamente, dado que de estar mal indentado, no se
 ## Descripción del fichero application.yml
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -393,7 +392,6 @@ spring:
               </li>
             </ul>
         </div>
-    </div>
 </div>
 
 [← Tutorial anterior]({{ base_path }}/tutorial/exercise2)

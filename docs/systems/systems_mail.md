@@ -19,7 +19,7 @@ Ontimize Boot is a framework that allows you to simplify the configuration of a 
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumncontent">
+<div class="multicolumn">
   <div class="multicolumnnopadding" >
   {{ "**Initial project**
  
@@ -107,7 +107,6 @@ INSERT INTO TROLE_SERVER_PERMISSION (ID_ROLENAME, ID_SERVER_PERMISSION) VALUES((
 Now we need to add the correct dependency in the correct **pom.xml**: 
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -375,13 +374,11 @@ Now we need to add the correct dependency in the correct **pom.xml**:
 </ul>
   </div>
 </div>
-</div>
 
 
 ### Server Configuration
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -661,14 +658,12 @@ In addition, the packet that will be scanned to look for the implementation of t
 </ul>
   </div>
 </div>
-</div>
 
 ### Creation of DAO files
 
 Let's create a **DAO** (**D**ata **A**ccess **O**bject) in the `projectwiki-model` module to use as a model of this database table. The **DAO** is composed by 2 files, a file with extension \*.xml and a \*.java file.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -970,7 +965,6 @@ public class OCSettingsDao extends OntimizeJdbcDaoSupport {
 </ul>
   </div>
 </div>
-</div>
 
 ### Implementation in an existing service
 
@@ -981,7 +975,6 @@ To use this service in another service (e.g. to send a mail when a new record is
 
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1276,7 +1269,6 @@ return toRet;
   </li>
 </ul>
   </div>
-</div>
 </div>
 
 ## Checking the sending of mails

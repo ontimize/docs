@@ -25,7 +25,7 @@ Ontimize Boot allows a single application to query multiple data sources, thus a
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumncontent">
+<div class="multicolumn">
   <div class="multicolumnnopadding" >
   {{ "**Initial project**
  
@@ -55,7 +55,6 @@ Although you can keep the data source already indicated in the file, you can del
 
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -336,13 +335,11 @@ ontimize:
 </ul>
   </div>
 </div>
-</div>
 **Modify DAO's datasource**
 
 In the DAOs the data source must be modified to indicate the correct data source, and the database table that belongs to that data source. In the case of this example, as indicated in the *.yml file, that would be `dbone` and `dbtwo`.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -675,7 +672,6 @@ In the DAOs the data source must be modified to indicate the correct data source
 </ul>
   </div>
 </div>
-</div>
 ### Modify SQL handler
 At this point more data sources can be queried, as shown in the example, but they all have the same SQL handler. It is quite possible that, when multiple data sources are queried, unlike the example, they are databases of different technologies. To do this, in the same way as it is allowed to do with the data sources, the SQL handlers of each of the DAOs are changed. There is a SQL handler that is configured by the `ontimize.jdbc.sqlhandler` and `ontimize.jdbc.sql-condition-processor.*` properties, called by default **dbSQLStatementHandler**. From this version, it is no longer necessary to indicate which SQL handler we will use in the `ontimize.jdbc.sqlhandler` property, but we will indicate its name, listed below. By default, they already have some pre-established configurations, although they can be modified without any problem in the `application.yml` file.
 
@@ -779,7 +775,6 @@ At this point more data sources can be queried, as shown in the example, but the
 </table>
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1117,5 +1112,4 @@ ontimize:
   </li>
 </ul>
   </div>
-</div>
 </div>

@@ -22,7 +22,6 @@ y evitando que se guarden datos en caso de que ocurra un fallo.
 > Para simplificar el código que se está escribiendo, pueden aparecer tres puntos (...) en algunas partes del código. Esto indica que puede haber código anterior antes y después de esos puntos.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -475,7 +474,6 @@ public class CandidateService implements ICandidateService {
               </li>
             </ul>
         </div>
-    </div>
 </div>
 
 [← Tutorial anterior]({{ base_path }}/tutorial/exercise6)

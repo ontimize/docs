@@ -13,7 +13,6 @@ parent: Tutorial
 ## Estructura
 Esta sección explicará la estructura de una aplicación basada en Ontimize Boot.
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -270,7 +269,6 @@ cuyas interfaces están definidas en el módulo **hr-api**.
               </li>
             </ul>
         </div>
-    </div>
 </div>
 
 [← Tutorial anterior]({{ base_path }}/tutorial/exercise1)

@@ -32,7 +32,6 @@ En el módulo _boot_ añadiremos la anotación ```@EnableAspectJAutoProxy(proxyT
 ```@Secured({ PermissionsProviderSecured.SECURED })```
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -477,7 +476,6 @@ public class OfferService implements IOfferService {
               </li>
             </ul>
         </div>
-    </div>
 </div>
 
 ## Añadir los permisos para los métodos

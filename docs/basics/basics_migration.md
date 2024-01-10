@@ -20,7 +20,7 @@ You can follow this tutorial using your own application, although for this examp
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumncontent">
+<div class="multicolumn">
 <div class="multicolumnnopadding" >
   {{ "**Initial project**
 
@@ -49,8 +49,8 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 ### Ontimize version
 First of all we need to update the version of Ontimize (ontimize-boot-parent) located in the parent of the project. Use always the latest version: [![Ontimize Boot Parent](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot-parent?label=Ontimize%20Boot%20Parent&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot-parent)
 
+
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -340,14 +340,13 @@ First of all we need to update the version of Ontimize (ontimize-boot-parent) lo
 </ul>
   </div>
 </div>
-</div>
+
 
 ### Java version
 
 In the project properties we will change the java version **from 1.8 to 11**, both for the main **pom.xml** and for the `hr-model` module **pom.xml**.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -637,7 +636,7 @@ In the project properties we will change the java version **from 1.8 to 11**, bo
 </ul>
   </div>
 </div>
-</div>
+
 
 ### Modifying application.yml
 
@@ -734,7 +733,6 @@ The package name of **EntityResult** has been renamed from `com.ontimize.db.Enti
 In the `hr-api` module we need to change the name of the package of this class in all the interfaces that are using it.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1095,14 +1093,12 @@ public interface IUserService {
 </ul>
   </div>
 </div>
-</div>
 
 #### Model module
 
 Having changed the class in the interface, we also have to change it in the service. For this we go to the `hr-model` module and replace the import of all services.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1457,7 +1453,7 @@ public class UserService implements IUserService {
 </ul>
   </div>
 </div>
-</div>
+
 #### Ws module
 
 In this case it is not just about changing the name of the package, it must also be taken into account that the `EntityResult` class is now an **Interface**, so an object cannot be instantiated from it. To do this, we will use the `EntityResultMapImpl` class. 
@@ -1465,7 +1461,6 @@ In this case it is not just about changing the name of the package, it must also
 Go to the `hr-ws` module and replace the import of the EntityResult class in the rest controllers and make the following changes:
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1827,5 +1822,4 @@ public class UserRestController extends ORestController<IUserService> {
   </li>
 </ul> 
   </div>
-</div>
 </div>

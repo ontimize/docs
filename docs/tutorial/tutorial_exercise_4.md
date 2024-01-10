@@ -144,7 +144,6 @@ módulo de _hr-model_ para que sirva como modelo de esta tabla de la base de dat
 ficheros: un fichero con extensión *._xml_ y un fichero *._java_.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -458,7 +457,6 @@ public class CandidateDao extends OntimizeJdbcDaoSupport {
               </li>
             </ul>
         </div>
-    </div>
 </div>
 
 ## Creación de la interfaz del servicio
@@ -470,7 +468,6 @@ que pertenezcan (en este caso, candidate) y un sufijo que dependerá de la acci�
 **Insert**, **Update**, **Delete**).
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -745,7 +742,6 @@ public interface ICandidateService {
             </li>
           </ul>
         </div>
-    </div>
 </div>
 
 ## Creación del servicio
@@ -758,7 +754,6 @@ inicien cuando son requeridos y no durante el arranque. Para el empleo de los DA
 el uso de métodos _getter_ y _setter_.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1061,7 +1056,6 @@ public class CandidateService implements ICandidateService {
             </li>
           </ul>
         </div>
-    </div>
 </div>
 
 ## Creación del controlador
@@ -1070,7 +1064,6 @@ Una vez tengamos el DAO creado, su interfaz y el servicio que implemente dicha i
 para que responda a las peticiones que reciba el servidor. Los controladores se ubicarán en el módulo _hr-ws_.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1352,7 +1345,6 @@ rest
 </ul>
 </div>
 </div>
-</div>
 
 Ahora ya podemos utilizar una aplicación como [Postman](https://www.postman.com/){:target="_blank"} para ejecutar diferentes peticiones REST a nuestro proyecto.
 
@@ -1380,7 +1372,6 @@ Para lanzar la aplicación, procederemos de la misma forma que para lanzar la ba
 
 ### Código de la aplicación (Recomendado)
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -1640,7 +1631,6 @@ posibles errores que se produzcan." | markdownify }}
             </li>
           </ul>
         </div>
-    </div>
 </div>
 
 

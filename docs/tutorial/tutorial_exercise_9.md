@@ -117,7 +117,6 @@ controlador REST de las ofertas. Uno que envíe todas las ofertas del presente a
 parámetro, nos devuelva las ofertas de ese año en concreto.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -500,7 +499,6 @@ public class OfferRestController extends ORestController<IOfferService> {
               </li>
             </ul>
         </div>
-    </div>
 </div>
 
 [← Tutorial anterior]({{ base_path }}/tutorial/exercise8)

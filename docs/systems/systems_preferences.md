@@ -22,7 +22,7 @@ You can follow this tutorial using your own application, although for this examp
 
 There are 2 options to follow this tutorial, clone the repository with the initial state and follow the tutorial step by step, or download the final example and see which files are new and which have been updated.
 
-<div class="multicolumncontent">
+<div class="multicolumn">
 <div class="multicolumnnopadding" >
   {{ "**Initial project**
 
@@ -67,7 +67,6 @@ CREATE TABLE TCONFIGS ( ID_CONFIG INTEGER NOT NULL IDENTITY, USER_CONFIG VARCHAR
 A specific DAO will be created for the table in the Preferences system, and it will implement a interface.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -368,14 +367,12 @@ public class ConfigsDao extends OntimizeJdbcDaoSupport {
 </ul>
 </div>
 </div>
-</div>
 
 ### Add parameters to Application YML
 
 As has already been explained previously (in this [link]({{ base_path }}/basics/autoconfigurators/#preferences)) we add the following parameters to the `application.yml` to define the name of the DAO of the preferences system and to activate autoconfiguration.
 
 <div class="multicolumn">
-    <div class="multicolumncontent">
         <div class="multicolumnleft">
             <button class="unstyle toggle-tree-btn">
                 <span class="material-symbols-outlined">right_panel_open</span>
@@ -638,7 +635,6 @@ ontimize:
   </ul>
   </li>
 </ul>
-</div>
 </div>
 </div>
 
