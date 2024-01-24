@@ -42,7 +42,7 @@ terminar, tendremos una carpeta llamada customers-detail, que contendrá los arc
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-web-tutorial
+  bankmanager-web
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e
@@ -287,7 +287,7 @@ export class CustomersRoutingModule { }
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-web-tutorial
+  bankmanager-web
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e
@@ -930,7 +930,7 @@ aplicación **styles.scss** (de esa manera, es posible usarlos en otros componen
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-web-tutorial
+  bankmanager-web
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e
@@ -1133,7 +1133,7 @@ npx ng g component --skip-tests customers-new
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-web-tutorial
+  bankmanager-web
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e
@@ -1429,7 +1429,7 @@ export class CustomersRoutingModule { }
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-web-tutorial
+  bankmanager-web
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e

@@ -26,6 +26,10 @@ página de [prerrequisitos]({{ base_path }}/guide/prerequisites/)
 El backend que nosotros emplearemos está realizado con Ontimize Boot y se puede obtener al clonar el
 [repositorio de Github](https://github.com/ontimize/ontimize-web-boot-backend-tutorial){:target="_blank"}.
 
+Tenemos que seguir las instrucciones del fichero 
+[README.md](https://github.com/ontimize/ontimize-web-boot-backend-tutorial/blob/main/README.md){:target="_blank"} para 
+lanzar el backed y que permita consultar datos a la aplicación web
+
 ## Descargar la seed de Ontimize Web
 Una vez descargados e instalados todos los programas que necesitamos en la sección anterior, tendremos que descargar la
 seed del proyecto de Ontimize Web que está preparado para funcionar junto con un servidor de Ontimize Boot. Podremos 
@@ -110,7 +114,7 @@ configuraciones para proyectos TypeScript
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-web-tutorial
+  bankmanager-web
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e
@@ -327,7 +331,7 @@ export const CONFIG: Config = {
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-web-tutorial
+  bankmanager-web
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e
@@ -558,7 +562,7 @@ automáticamente, (la opción ```-o```), y estableciendo la dirección del host 
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-web-tutorial
+  bankmanager-web
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e
@@ -772,7 +776,7 @@ automáticamente.
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  ontimize-web-tutorial
+  bankmanager-web
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e
