@@ -483,16 +483,14 @@ nueva. Para ello, en el componente <strong>customers-home.component.html</strong
 {{"**customers-home.component.html**" | markdownify }}
 {% highlight xml %}
 <o-form-layout-manager title="{{'CUSTOMERS' | oTranslate }}" separator=" " mode="tab" label-columns="NAME;SURNAME">
-    <div fxFill>
-        <o-table attr="customersTable" service="customers" entity="customer" keys="CUSTOMERID"
-            columns="CUSTOMERID;ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL"
-            visible-columns="ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL" query-rows="20">
-            <o-table-column attr="PHOTO" title="PHOTO" orderable="no" searchable="no" type="image" avatar="yes"
-                empty-image="assets/images/no-image.png" image-type="base64"></o-table-column>
-            <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
-            <o-table-column attr="ID" title="ID" width="100px"></o-table-column>
-        </o-table>
-    </div>
+    <o-table attr="customersTable" service="customers" entity="customer" keys="CUSTOMERID"
+        columns="CUSTOMERID;ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL"
+        visible-columns="ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL" query-rows="20">
+        <o-table-column attr="PHOTO" title="PHOTO" orderable="no" searchable="no" type="image" avatar="yes"
+            empty-image="assets/images/no-image.png" image-type="base64"></o-table-column>
+        <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
+        <o-table-column attr="ID" title="ID" width="100px"></o-table-column>
+    </o-table>
 </o-form-layout-manager>
 {% endhighlight %}
 <table>
@@ -536,44 +534,38 @@ definida en el atributo <strong>separator</strong></td>
 {{"Ahora, en el fichero **customers-detail.component.html**, construiremos el formulario de detalle" | markdownify }}
 {{"**customers-detail.component.html**" | markdownify }}
 {% highlight xml %}
-<o-form service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D" show-header-navigation="no">
+<o-form attr="customerDetail" service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D"
+    show-header-navigation="no">
     <o-text-input attr="CUSTOMERID" sql-type="INTEGER" enabled="no"></o-text-input>
-    <o-row>
-        <o-column>
+    <div fxLayout="row">
+        <div>
             <o-image id="CUSTOMER_PHOTO" attr="PHOTO" empty-image="assets/images/no-image.png"
                 sql-type="OTHER"></o-image>
+        </div>
+        <o-column fxFlex title="CUSTOMER_PERSONAL_INFORMATION">
+            <div fxLayout="row" fxLayoutGap="8px">
+                <o-text-input fxFlex="40" attr="NAME" required="yes"></o-text-input>
+                <o-text-input fxFlex="40" attr="SURNAME" required="yes"></o-text-input>
+                <o-date-input fxFlex="20" attr="STARTDATE"></o-date-input>
+            </div>
+            <div fxLayout="row" fxLayoutGap="8px">
+                <o-nif-input fxFlex="40" attr="ID" required="yes"></o-nif-input>
+                <o-integer-input fxFlex="40" attr="PHONE" step="0" thousand-separator=" "></o-integer-input>
+                <o-combo fxFlex="20" attr="CUSTOMERTYPEID" service="customers" entity="customerType"
+                    keys="CUSTOMERTYPEID" columns="CUSTOMERTYPEID;DESCRIPTION" visible-columns="DESCRIPTION"
+                    value-column="CUSTOMERTYPEID"></o-combo>
+            </div>
+            <o-email-input attr="EMAIL"></o-email-input>
+            <o-text-input attr="ADDRESS"></o-text-input>
+            <div fxLayout="row" fxLayoutGap="8px">
+                <o-real-input fxFlex="50" attr="LONGITUDE" decimal-separator="," max-decimal-digits="10"
+                    min-decimal-digits="0"></o-real-input>
+                <o-real-input fxFlex="50" attr="LATITUDE" decimal-separator="," max-decimal-digits="10"
+                    min-decimal-digits="0"></o-real-input>
+            </div>
+            <o-textarea-input attr="COMMENTS"></o-textarea-input>
         </o-column>
-        <o-column title="CUSTOMER_PERSONAL_INFORMATION" fxFlex>
-            <o-row>
-                <o-text-input class="input-padding" attr="NAME" fxFlex="40" required="yes"></o-text-input>
-                <o-text-input class="input-padding" attr="SURNAME" fxFlex="40" required="yes"></o-text-input>
-                <o-date-input attr="STARTDATE" fxFlex="20"></o-date-input>
-            </o-row>
-            <o-row>
-                <o-nif-input attr="ID" class="input-padding" fxFlex="40" required="yes"></o-nif-input>
-                <o-integer-input attr="PHONE" class="input-padding" step="0" grouping="no"
-                    fxFlex="40"></o-integer-input>
-                <o-combo attr="CUSTOMERTYPEID" class="input-padding" fxFlex="20" service="customers"
-                    entity="customerType" keys="CUSTOMERTYPEID" columns="CUSTOMERTYPEID;DESCRIPTION"
-                    visible-columns="DESCRIPTION" value-column="CUSTOMERTYPEID"></o-combo>
-            </o-row>
-            <o-row>
-                <o-email-input attr="EMAIL" fxFlex></o-email-input>
-            </o-row>
-            <o-row>
-                <o-text-input attr="ADDRESS" fxFlex></o-text-input>
-            </o-row>
-            <o-row>
-                <o-real-input attr="LONGITUDE" decimal-separator="," max-decimal-digits="10" min-decimal-digits="0"
-                    class="input-padding" fxFlex="50"></o-real-input>
-                <o-real-input attr="LATITUDE" decimal-separator="," max-decimal-digits="10" min-decimal-digits="0"
-                    fxFlex="50"></o-real-input>
-            </o-row>
-            <o-row>
-                <o-textarea-input attr="COMMENTS" fxFlex></o-textarea-input>
-            </o-row>
-        </o-column>
-    </o-row>
+    </div>
 </o-form>
 {% endhighlight %}
 <table>
@@ -621,7 +613,8 @@ definida en el atributo <strong>separator</strong></td>
 <table>
     <thead>
         <tr>
-            <th colspan="3">o-text-input (atributos de <a href="{{ base_path }}/components/input/text/api">o-text-input</a>)</th>
+            <th colspan="3">o-text-input (atributos de 
+<a href="{{ base_path }}/components/input/text/api">o-text-input</a>)</th>
         </tr>
         <tr>
             <th>Atributo</th>
@@ -638,7 +631,8 @@ definida en el atributo <strong>separator</strong></td>
         <tr>
             <td>sql-type</td>
             <td>INTEGER</td>
-            <td>Indica el tipo de dato que contiene este campo. Se debe especificar la cadena del tipo de dato de esta lista</td>
+            <td>Indica el tipo de dato que contiene este campo. Se debe especificar la cadena del tipo de dato de esta 
+lista</td>
         </tr>
         <tr>
             <td>enabled</td>
@@ -655,7 +649,40 @@ definida en el atributo <strong>separator</strong></td>
 <table>
     <thead>
         <tr>
-            <th colspan="3">o-row y o-column (atributos de <a href="{{ base_path }}/components/containers/api">containers</a>)</th>
+            <th colspan="3">Directivas de maquetación <a href="https://material.angularjs.org/latest/layout" 
+target="_blank">Angular Layout</a> - <a href="https://tburleson-layouts-demos.firebaseapp.com" 
+target="_blank">Demo interactiva</a></th>
+        </tr>
+        <tr>
+            <th>Atributo</th>
+            <th>Valor</th>
+            <th>Significado</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>fxLayout</td>
+            <td>row</td>
+            <td>Los componentes internos se colocan en forma de fila</td>
+        </tr>
+        <tr>
+            <td>fxFlex</td>
+            <td>50/40/20</td>
+            <td>Ocupa el 50 / 40 / 20 % del ancho disponible del contenedor padre. Si no tiene valor, trata de ocupar todo
+el esté disponible</td>
+        </tr>
+        <tr>
+            <td>fxLayoutGap</td>
+            <td>8px</td>
+            <td>Mantiene una separación de 8px entre los elementos de este contenedor</td>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            <th colspan="3">o-row y o-column (atributos de 
+<a href="{{ base_path }}/components/containers/api">containers</a>)</th>
         </tr>
         <tr>
             <th>Atributo</th>
@@ -698,7 +725,8 @@ definida en el atributo <strong>separator</strong></td>
 <table>
     <thead>
         <tr>
-            <th colspan="3">o-date-input (atributos de <a href="{{ base_path }}/components/input/date/api">o-date-input</a>)</th>
+            <th colspan="3">o-date-input (atributos de 
+<a href="{{ base_path }}/components/input/date/api">o-date-input</a>)</th>
         </tr>
         <tr>
             <th>Atributo</th>
@@ -717,7 +745,8 @@ definida en el atributo <strong>separator</strong></td>
 <table>
     <thead>
         <tr>
-            <th colspan="3">o-nif-input (atributos de <a href="{{ base_path }}/components/input/nif/api">o-nif-input</a>)</th>
+            <th colspan="3">o-nif-input (atributos de 
+<a href="{{ base_path }}/components/input/nif/api">o-nif-input</a>)</th>
         </tr>
         <tr>
             <th>Atributo</th>
@@ -815,7 +844,8 @@ definida en el atributo <strong>separator</strong></td>
 <table>
     <thead>
         <tr>
-            <th colspan="3">o-email-input (atributos de <a href="{{ base_path }}/components/input/email/api">o-email-input</a>)</th>
+            <th colspan="3">o-email-input (atributos de 
+<a href="{{ base_path }}/components/input/email/api">o-email-input</a>)</th>
         </tr>
         <tr>
             <th>Atributo</th>
@@ -913,17 +943,6 @@ definida en el atributo <strong>separator</strong></td>
   "LONGITUDE": "Longitud",
   "LATITUDE": "Latitud",
   "COMMENTS": "Comentarios"
-}
-{% endhighlight %}
-{{"Podemos observar que en el formulario de detalle, aparte de las diretivas de ```fxFlex```, podemos observar que 
-algunos elementos tienen una clase llamada ```.input-padding```. Esta clase la queremos usar para separar 
-horizontalmente. Como es una clase que sabemos que utilizaremos en más compenentes además de en este, en vez de declarar
-la clase en el fichero **customers-detail.component.scss**, la declaramos en el fichero de estilos general para toda la
-aplicación **styles.scss** (de esa manera, es posible usarlos en otros componentes)" | markdownify }}
-{% highlight css %}
-.input-padding {
-    padding-right: 14px;
-    margin-bottom: 6px;
 }
 {% endhighlight %}
     </div>
@@ -1087,7 +1106,7 @@ aplicación **styles.scss** (de esa manera, es posible usarlos en otros componen
       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main.ts</li>
       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>manifest.webmanifest</li>
       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>polyfills.ts</li>
-      <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>styles.scss</li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>styles.scss</li>
       <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>test.ts</li>
     </ul>
     </li>
@@ -1109,7 +1128,7 @@ aplicación **styles.scss** (de esa manera, es posible usarlos en otros componen
 </ul>
     </div>
 </div>
-Este será el aspecto final del formularios:
+Este será el aspecto final del formulario:
 
 ![tutorial_o_web_13.png]({{ base_path }}/assets/images/tutorial_o_web_13.png)
 
@@ -1330,43 +1349,37 @@ npx ng g component --skip-tests customers-new
 
 {{"**customers-new.component.html**" | markdownify }}
 {% highlight xml %}
-<o-form service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D" show-header-navigation="no">
-    <o-row>
-        <o-column>
+<o-form attr="customerDetail" service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D"
+    show-header-navigation="no">
+    <div fxLayout="row">
+        <div>
             <o-image id="CUSTOMER_PHOTO" attr="PHOTO" empty-image="assets/images/no-image.png"
                 sql-type="OTHER"></o-image>
+        </div>
+        <o-column fxFlex title="CUSTOMER_PERSONAL_INFORMATION">
+            <div fxLayout="row" fxLayoutGap="8px">
+                <o-text-input fxFlex="40" attr="NAME" required="yes"></o-text-input>
+                <o-text-input fxFlex="40" attr="SURNAME" required="yes"></o-text-input>
+                <o-date-input fxFlex="20" attr="STARTDATE"></o-date-input>
+            </div>
+            <div fxLayout="row" fxLayoutGap="8px">
+                <o-nif-input fxFlex="40" attr="ID" required="yes"></o-nif-input>
+                <o-integer-input fxFlex="40" attr="PHONE" step="0" thousand-separator=" "></o-integer-input>
+                <o-combo fxFlex="20" attr="CUSTOMERTYPEID" service="customers" entity="customerType"
+                    keys="CUSTOMERTYPEID" columns="CUSTOMERTYPEID;DESCRIPTION" visible-columns="DESCRIPTION"
+                    value-column="CUSTOMERTYPEID"></o-combo>
+            </div>
+            <o-email-input attr="EMAIL"></o-email-input>
+            <o-text-input attr="ADDRESS"></o-text-input>
+            <div fxLayout="row" fxLayoutGap="8px">
+                <o-real-input fxFlex="50" attr="LONGITUDE" decimal-separator="," max-decimal-digits="10"
+                    min-decimal-digits="0"></o-real-input>
+                <o-real-input fxFlex="50" attr="LATITUDE" decimal-separator="," max-decimal-digits="10"
+                    min-decimal-digits="0"></o-real-input>
+            </div>
+            <o-textarea-input attr="COMMENTS"></o-textarea-input>
         </o-column>
-        <o-column title="CUSTOMER_PERSONAL_INFORMATION" fxFlex>
-            <o-row>
-                <o-text-input class="input-padding" attr="NAME" fxFlex="40" required="yes"></o-text-input>
-                <o-text-input class="input-padding" attr="SURNAME" fxFlex="40" required="yes"></o-text-input>
-                <o-date-input attr="STARTDATE" fxFlex="20"></o-date-input>
-            </o-row>
-            <o-row>
-                <o-nif-input attr="ID" class="input-padding" fxFlex="40" required="yes"></o-nif-input>
-                <o-integer-input attr="PHONE" class="input-padding" step="0" grouping="no"
-                    fxFlex="40"></o-integer-input>
-                <o-combo attr="CUSTOMERTYPEID" class="input-padding" fxFlex="20" service="customers"
-                    entity="customerType" keys="CUSTOMERTYPEID" columns="CUSTOMERTYPEID;DESCRIPTION"
-                    visible-columns="DESCRIPTION" value-column="CUSTOMERTYPEID"></o-combo>
-            </o-row>
-            <o-row>
-                <o-email-input attr="EMAIL" fxFlex></o-email-input>
-            </o-row>
-            <o-row>
-                <o-text-input attr="ADDRESS" fxFlex></o-text-input>
-            </o-row>
-            <o-row>
-                <o-real-input attr="LONGITUDE" decimal-separator="," max-decimal-digits="10" min-decimal-digits="0"
-                    class="input-padding" fxFlex="50"></o-real-input>
-                <o-real-input attr="LATITUDE" decimal-separator="," max-decimal-digits="10" min-decimal-digits="0"
-                    fxFlex="50"></o-real-input>
-            </o-row>
-            <o-row>
-                <o-textarea-input attr="COMMENTS" fxFlex></o-textarea-input>
-            </o-row>
-        </o-column>
-    </o-row>
+    </div>
 </o-form>
 {% endhighlight %}
 

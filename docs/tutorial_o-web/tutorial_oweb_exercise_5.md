@@ -318,12 +318,10 @@ npx ng g component --skip-tests branches-home
 {{"**branches-home.component.html**" | markdownify }}
 {% highlight xml %}
 <o-form-layout-manager title="{{'BRANCHES' | oTranslate }}" separator=" " mode="dialog" label-columns="NAME">
-    <div fxFill>
-        <o-table attr="branchesTable" service="branches" entity="branch" keys="OFFICEID"
-            columns="NAME;ADDRESS;STARTDATE;PHONE" visible-columns="NAME;ADDRESS;STARTDATE;PHONE" query-rows="15">
-            <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
-        </o-table>
-    </div>
+    <o-table attr="branchesTable" service="branches" entity="branch" keys="OFFICEID"
+        columns="NAME;ADDRESS;STARTDATE;PHONE" visible-columns="NAME;ADDRESS;STARTDATE;PHONE" query-rows="15">
+        <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
+    </o-table>
 </o-form-layout-manager>
 {% endhighlight %}
 
@@ -950,21 +948,19 @@ Adaptaremos el componente para realizar un formulario similar a este mockup
 {{"**accounts-home.component.html**" | markdownify }}
 {% highlight xml %}
 <o-form-layout-manager title="{{'ACCOUNTS' | oTranslate }}" separator=" " mode="dialog" label-columns="ANID">
-    <div fxFill>
-        <o-table attr="accountsTable" service="branches" entity="account" keys="ACCOUNTID"
-            columns="ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
-            visible-columns="ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
-            query-rows="20">
-            <o-table-column attr="ACCOUNTID" title="ACCOUNTID" width="120px"></o-table-column>
-            <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
-            <o-table-column attr="ENDDATE" title="ENDDATE" type="date" format="LL"></o-table-column>
-            <o-table-column attr="INTERESRATE" title="INTERESRATE" type="percentage" width="150px"
-                decimal-separator=","></o-table-column>
-            <o-table-column attr="ENTITYID" title="ENTITYID" width="120px"></o-table-column>
-            <o-table-column attr="OFFICEID" title="OFFICEID" width="120px"></o-table-column>
-            <o-table-column attr="CDID" title="CDID" width="75px"></o-table-column>
-        </o-table>
-    </div>
+    <o-table attr="accountsTable" service="branches" entity="account" keys="ACCOUNTID"
+        columns="ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
+        visible-columns="ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
+        query-rows="20">
+        <o-table-column attr="ACCOUNTID" title="ACCOUNTID" width="120px"></o-table-column>
+        <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
+        <o-table-column attr="ENDDATE" title="ENDDATE" type="date" format="LL"></o-table-column>
+        <o-table-column attr="INTERESRATE" title="INTERESRATE" type="percentage" width="150px"
+            decimal-separator=","></o-table-column>
+        <o-table-column attr="ENTITYID" title="ENTITYID" width="120px"></o-table-column>
+        <o-table-column attr="OFFICEID" title="OFFICEID" width="120px"></o-table-column>
+        <o-table-column attr="CDID" title="CDID" width="75px"></o-table-column>
+    </o-table>
 </o-form-layout-manager>
 {% endhighlight %}
 

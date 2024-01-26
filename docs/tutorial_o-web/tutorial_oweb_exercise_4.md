@@ -717,18 +717,16 @@ crearlo y añadirlo al menú lateral.
 {% highlight xml %}
 <o-form-layout-manager title="{{'EMPLOYEES' | oTranslate }}" separator=" " mode="dialog"
     label-columns="EMPLOYEENAME;EMPLOYEESURNAME">
-    <div fxFill>
-        <o-table attr="employeesTable" service="employees" entity="employee" keys="EMPLOYEEID"
-            columns="EMPLOYEEID;EMPLOYEENAME;EMPLOYEESURNAME;EMPLOYEEPHOTO;EMPLOYEEADDRESS;EMPLOYEESTARTDATE;EMPLOYEEEMAIL;OFFICEID;EMPLOYEETYPEID"
-            visible-columns="EMPLOYEEPHOTO;EMPLOYEENAME;EMPLOYEESURNAME;EMPLOYEEEMAIL;EMPLOYEEADDRESS;EMPLOYEESTARTDATE"
-            query-rows="15">
-            <o-table-column attr="EMPLOYEEPHOTO" title="EMPLOYEEPHOTO" orderable="no" searchable="no" type="image"
-                avatar="no" empty-image="assets/images/no-image.png" image-type="base64" width="150px"></o-table-column>
-            <o-table-column attr="EMPLOYEESTARTDATE" title="EMPLOYEESTARTDATE" type="date" format="LL"></o-table-column>
-            <o-table-column attr="EMPLOYEENAME" title="EMPLOYEENAME" width="150px"></o-table-column>
-            <o-table-column attr="EMPLOYEESURNAME" title="EMPLOYEESURNAME" width="150px"></o-table-column>
-        </o-table>
-    </div>
+    <o-table attr="employeesTable" service="employees" entity="employee" keys="EMPLOYEEID"
+        columns="EMPLOYEEID;EMPLOYEENAME;EMPLOYEESURNAME;EMPLOYEEPHOTO;EMPLOYEEADDRESS;EMPLOYEESTARTDATE;EMPLOYEEEMAIL;OFFICEID;EMPLOYEETYPEID"
+        visible-columns="EMPLOYEEPHOTO;EMPLOYEENAME;EMPLOYEESURNAME;EMPLOYEEEMAIL;EMPLOYEEADDRESS;EMPLOYEESTARTDATE"
+        query-rows="15">
+        <o-table-column attr="EMPLOYEEPHOTO" title="EMPLOYEEPHOTO" orderable="no" searchable="no" type="image"
+            avatar="no" empty-image="assets/images/no-image.png" image-type="base64" width="150px"></o-table-column>
+        <o-table-column attr="EMPLOYEESTARTDATE" title="EMPLOYEESTARTDATE" type="date" format="LL"></o-table-column>
+        <o-table-column attr="EMPLOYEENAME" title="EMPLOYEENAME" width="150px"></o-table-column>
+        <o-table-column attr="EMPLOYEESURNAME" title="EMPLOYEESURNAME" width="150px"></o-table-column>
+    </o-table>
 </o-form-layout-manager>
 {% endhighlight %}
 
@@ -1560,41 +1558,40 @@ el siguiente mockup.
         </button>
 
 {{"**employees-detail.component.html**" | markdownify }}
-{% highlight typescript %}
-<o-form service="employees" entity="employee" keys="EMPLOYEEID" header-actions="R;U;D" show-header-navigation="yes">
+{% highlight xml %}
+<o-form attr="employeesDetail" service="employees" entity="employee" keys="EMPLOYEEID" header-actions="R;U;D"
+    show-header-navigation="yes">
     <o-integer-input attr="EMPLOYEEID" sql-type="INTEGER" enabled="no"></o-integer-input>
-    <o-row>
-        <o-column>
-            <o-image attr="EMPLOYEEPHOTO" empty-image="assets/images/no-image.png" sql-type="OTHER"
-                class="input-padding"></o-image>
+    <div fxLayout="row">
+        <div>
+            <o-image attr="EMPLOYEEPHOTO" empty-image="assets/images/no-image.png" sql-type="OTHER"></o-image>
+        </div>
+        <o-column fxFlex title="EMPLOYEE_PERSONAL_INFORMATION">
+            <div fxLayout="row" fxLayoutGap="8px">
+                <o-text-input fxFlex="40" attr="EMPLOYEENAME" required="yes"></o-text-input>
+                <o-text-input fxFlex="40" attr="EMPLOYEESURNAME" required="yes"></o-text-input>
+                <o-date-input fxFlex="20" attr="EMPLOYEESTARTDATE"></o-date-input>
+            </div>
+            <div fxLayout="row" fxLayoutGap="8px">
+                <o-text-input fxFlex="40" attr="EMPLOYEEPHONE"></o-text-input>
+                <o-text-input fxFlex="40" attr="EMPLOYEEEMAIL"></o-text-input>
+                <o-list-picker fxFlex="20" attr="EMPLOYEETYPEID" service="employees" entity="employeeType"
+                    keys="EMPLOYEETYPEID" columns="EMPLOYEETYPEID;EMPLOYEETYPENAME" visible-columns="EMPLOYEETYPENAME"
+                    value-column="EMPLOYEETYPEID"></o-list-picker>
+            </div>
+            <div fxLayout="row" fxLayoutGap="8px">
+                <o-text-input fxFlex="65" attr="EMPLOYEEADDRESS"></o-text-input>
+                <o-combo fxFlex="35" attr="OFFICEID" required="yes" service="branches" entity="branch" keys="OFFICEID"
+                    columns="OFFICEID;NAME" visible-columns="NAME" value-column="OFFICEID"></o-combo>
+            </div>
+            <div fxLayout="row" fxLayoutGap="8px">
+                <o-real-input fxFlex="50" attr="LONGITUDE" decimal-separator="," max-decimal-digits="10"
+                    min-decimal-digits="0"></o-real-input>
+                <o-real-input fxFlex="50" attr="LATITUDE" decimal-separator="," max-decimal-digits="10"
+                    min-decimal-digits="0"></o-real-input>
+            </div>
         </o-column>
-        <o-column title="EMPLOYEE_PERSONAL_INFORMATION" fxFlex>
-            <o-row>
-                <o-text-input class="input-padding" attr="EMPLOYEENAME" required="yes" fxFlex="40"></o-text-input>
-                <o-text-input class="input-padding" attr="EMPLOYEESURNAME" required="yes" fxFlex="40"></o-text-input>
-                <o-date-input attr="EMPLOYEESTARTDATE" fxFlex="20" class="input-padding"></o-date-input>
-            </o-row>
-            <o-row>
-                <o-text-input class="input-padding" attr="EMPLOYEEPHONE" fxFlex="40"></o-text-input>
-                <o-text-input class="input-padding" attr="EMPLOYEEEMAIL" fxFlex="40"></o-text-input>
-                <o-list-picker attr="EMPLOYEETYPEID" class="input-padding" fxFlex="20" service="employees"
-                    entity="employeeType" keys="EMPLOYEETYPEID" columns="EMPLOYEETYPEID;EMPLOYEETYPENAME"
-                    visible-columns="EMPLOYEETYPENAME" value-column="EMPLOYEETYPEID"></o-list-picker>
-            </o-row>
-            <o-row>
-                <o-text-input class="input-padding" attr="EMPLOYEEADDRESS" fxFlex="65"></o-text-input>
-                <o-combo attr="OFFICEID" required="yes" class="input-padding" fxFlex="35" service="branches"
-                    entity="branch" keys="OFFICEID" columns="OFFICEID;NAME" visible-columns="NAME"
-                    value-column="OFFICEID"></o-combo>
-            </o-row>
-            <o-row>
-                <o-real-input attr="LONGITUDE" decimal-separator="," max-decimal-digits="10" min-decimal-digits="0"
-                    class="input-padding" fxFlex="50"></o-real-input>
-                <o-real-input attr="LATITUDE" decimal-separator="," max-decimal-digits="10" min-decimal-digits="0"
-                    fxFlex="50" class="input-padding"></o-real-input>
-            </o-row>
-        </o-column>
-    </o-row>
+    </div>
 </o-form>
 {% endhighlight %}
 

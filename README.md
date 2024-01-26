@@ -22,7 +22,7 @@
 - Run the following command to launch a local Jekyll server and check the documentation
 
   ```
-  bundle exec jekyll serve --config _config.yml,_config.deploy.yml
+  bundle exec jekyll serve --baseurl /docs/v3 --config _config.yml,_config.deploy.yml
   ```
 
 ### Deploy v3.X.X documentation:

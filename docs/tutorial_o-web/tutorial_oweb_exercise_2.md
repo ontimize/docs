@@ -1330,16 +1330,14 @@ Para conseguir esta pantalla, pegaremos el siguiente código en el fichero **cus
         </button>
 {{"**customers-home.component.html**" | markdownify }}
 {% highlight xml %}
-<div fxFill>
-    <o-table attr="customersTable" service="customers" entity="customer" keys="CUSTOMERID"
-        columns="CUSTOMERID;ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL"
-        visible-columns="ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL" query-rows="20">
-        <o-table-column attr="PHOTO" title="PHOTO" orderable="no" searchable="no" type="image" avatar="yes"
-            empty-image="assets/images/no-image.png" image-type="base64"></o-table-column>
-        <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
-        <o-table-column attr="ID" title="ID" width="100px"></o-table-column>
-    </o-table>
-</div>
+<o-table attr="customersTable" service="customers" entity="customer" keys="CUSTOMERID"
+    columns="CUSTOMERID;ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL"
+    visible-columns="ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL" query-rows="20">
+    <o-table-column attr="PHOTO" title="PHOTO" orderable="no" searchable="no" type="image" avatar="yes"
+        empty-image="assets/images/no-image.png" image-type="base64"></o-table-column>
+    <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
+    <o-table-column attr="ID" title="ID" width="100px"></o-table-column>
+</o-table>
 {% endhighlight %}
 <table>
     <thead>
@@ -1354,14 +1352,6 @@ Para conseguir esta pantalla, pegaremos el siguiente código en el fichero **cus
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>fxFill</td>
-            <td>(Este elemento se usa en el <em>div</em> contenedor de o-table )</td>
-            <td>Directiva en Angular que se usa en contenedores con una disposición de espacio de tipo <em>flex</em>.
-                Esta librería para Angular se usará más veces en el tutorial. Más información de la directiva en el
-                <a href="https://github.com/angular/flex-layout/wiki" target="_blank">siguiente enlace</a>
-            </td>
-        </tr>
         <tr>
             <td>attr</td>
             <td>customersTable</td>

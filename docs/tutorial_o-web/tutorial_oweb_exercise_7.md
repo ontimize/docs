@@ -56,44 +56,37 @@ export class CustomersModule { }
 
 {{"**customers-detail.component.html**" | markdownify }}
 {% highlight xml %}
-<o-form service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D" show-header-navigation="no"
-    class="fill-form">
+<o-form attr="customerDetail" service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D"
+    show-header-navigation="no" class="fill-form">
     <o-text-input attr="CUSTOMERID" sql-type="INTEGER" enabled="no" class="input-padding"></o-text-input>
-    <div fxFlex>
-        <o-column>
-            <o-image id="CUSTOMER_PHOTO" attr="PHOTO" empty-image="assets/images/no-image.png" sql-type="OTHER"
-                class="input-padding"></o-image>
-        </o-column>
+    <div fxFlex fxLayout="row" fxLayoutGap="8px">
+        <div>
+            <o-image id="CUSTOMER_PHOTO" attr="PHOTO" empty-image="assets/images/no-image.png"
+                sql-type="OTHER"></o-image>
+        </div>
         <mat-tab-group fxFlex>
             <mat-tab label="{{ 'CUSTOMER_PERSONAL_INFORMATION' | oTranslate }}">
-                <o-row>
-                    <o-text-input class="input-padding" attr="NAME" fxFlex="40" required="yes"></o-text-input>
-                    <o-text-input class="input-padding" attr="SURNAME" fxFlex="40" required="yes"></o-text-input>
-                    <o-date-input attr="STARTDATE" fxFlex="20" class="input-padding"></o-date-input>
-                </o-row>
-                <o-row>
-                    <o-nif-input attr="ID" class="input-padding" fxFlex="40" required="yes"></o-nif-input>
-                    <o-integer-input attr="PHONE" class="input-padding" step="0" grouping="no"
-                        fxFlex="40"></o-integer-input>
-                    <o-combo attr="CUSTOMERTYPEID" class="input-padding" fxFlex="20" service="customers"
-                        entity="customerType" keys="CUSTOMERTYPEID" columns="CUSTOMERTYPEID;DESCRIPTION"
-                        visible-columns="DESCRIPTION" value-column="CUSTOMERTYPEID"></o-combo>
-                </o-row>
-                <o-row>
-                    <o-email-input attr="EMAIL" class="input-padding" fxFlex></o-email-input>
-                </o-row>
-                <o-row>
-                    <o-text-input attr="ADDRESS" class="input-padding" fxFlex></o-text-input>
-                </o-row>
-                <o-row>
-                    <o-real-input attr="LONGITUDE" decimal-separator="," max-decimal-digits="10" min-decimal-digits="0"
-                        class="input-padding" fxFlex="50"></o-real-input>
-                    <o-real-input attr="LATITUDE" decimal-separator="," max-decimal-digits="10" min-decimal-digits="0"
-                        fxFlex="50" class="input-padding"></o-real-input>
-                </o-row>
-                <o-row>
-                    <o-textarea-input attr="COMMENTS" class="input-padding" fxFlex></o-textarea-input>
-                </o-row>
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-text-input fxFlex="40" attr="NAME" required="yes"></o-text-input>
+                    <o-text-input fxFlex="40" attr="SURNAME" required="yes"></o-text-input>
+                    <o-date-input fxFlex="20" attr="STARTDATE"></o-date-input>
+                </div>
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-nif-input fxFlex="40" attr="ID" required="yes"></o-nif-input>
+                    <o-integer-input fxFlex="40" attr="PHONE" step="0" thousand-separator=" "></o-integer-input>
+                    <o-combo fxFlex="20" attr="CUSTOMERTYPEID" service="customers" entity="customerType"
+                        keys="CUSTOMERTYPEID" columns="CUSTOMERTYPEID;DESCRIPTION" visible-columns="DESCRIPTION"
+                        value-column="CUSTOMERTYPEID"></o-combo>
+                </div>
+                <o-email-input attr="EMAIL"></o-email-input>
+                <o-text-input attr="ADDRESS"></o-text-input>
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-real-input fxFlex="50" attr="LONGITUDE" decimal-separator="," max-decimal-digits="10"
+                        min-decimal-digits="0"></o-real-input>
+                    <o-real-input fxFlex="50" attr="LATITUDE" decimal-separator="," max-decimal-digits="10"
+                        min-decimal-digits="0"></o-real-input>
+                </div>
+                <o-textarea-input attr="COMMENTS"></o-textarea-input>
             </mat-tab>
             <mat-tab label="{{ 'ACCOUNTS' | oTranslate }}">
                 <o-table attr="accountsTable" service="customers" entity="vCustomerAccount" keys="ACCOUNTID"
