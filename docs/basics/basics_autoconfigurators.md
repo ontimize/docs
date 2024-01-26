@@ -182,17 +182,17 @@ ontimize:
 |--|--|--|
 | mode | *ldap* | Change the system security from *default* to *ldap* |
 
-- **ldap:**
+- **ontimize:security:ldap:**
 
-| Attribute | Values | Meaning |
-|--|--|--|
-| active | *true, false* | Enable or disable ldap security |
-| host | *IP* | Ip host for ldap security |
-| port | *Number* | Port of the host for ldap security |
-| login-type | *DN, simple* | The login type indicates whether a full LDAP string with *DN* value or will be used or if the username will simply be provided with *simple* value |
-| bind.dn | *String* | File to populate the LDAP server using a *.ldif* file |
-| base.dn | *String* | List of base DNs. |
-| domain | *String* | The domain name |
+| Attribute   | Values         | Meaning                                                                                                                                            |
+|-------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| active      | _true, false_  | Enable or disable ldap security                                                                                                                    |
+| host        | _IP_           | Ip host for ldap security                                                                                                                          |
+| port        | _Number_       | Port of the host for ldap security                                                                                                                 |
+| login-type  | _DN, simple_   | The login type indicates whether a full LDAP string with *DN* value or will be used or if the username will simply be provided with *simple* value |
+| binddn      | _String_       | credential you are using to authenticate against an LDAP with DN (_Distinguished Name_)                                                                                      |
+| basedn      | _String_       | Search starting point for LDAP with DN (_Distinguished Name_)                                                                                      |
+| domain      | _String_       | The domain name                                                                                                                                    |
 
 The LDAP security configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/ldap).
 
@@ -200,15 +200,15 @@ The LDAP security configuration is done through autoconfigurators. To see the se
 ```yaml
 ontimize:
    security:
-   mode: ldap
-ldap: 
-   active: true 
-   host: 10.0.0.1
-   port: 389
-   login-type: simple
-   bind.dn: 
-   base.dn: 
-   domain: yourdomain.com
+      mode: ldap
+      ldap: 
+         active: true 
+         host: 10.0.0.1
+         port: 389
+         login-type: simple
+         binddn: ou=XXXX,dc=YYY,dc=ZZZ
+         basedn: dc=MMMM,dc,NNN
+         domain: yourdomain.com
 ```
 
 ## Mail
