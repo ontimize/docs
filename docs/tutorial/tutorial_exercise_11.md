@@ -524,4 +524,4 @@ Si tratamos de realizar mediante [Postman](https://www.postman.com/){:target="_b
 _OfferService_ cambiando la autenticación por el usuario _candidate_ y contraseña _candidate_, dará un error, ya que 
 el usuario _candidate_ no pertenece al rol _admin_ que es el único rol que tiene permisos para realizar esas consultas.
 
-[← Tutorial anterior]({{ base_path }}/tutorial/exercise10)
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial/exercise10){: .btn}

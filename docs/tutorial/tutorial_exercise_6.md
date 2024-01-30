@@ -88,5 +88,5 @@ Además de los métodos heredados de la clase Hashtable, la clase EntityResult c
     </tbody>
 </table>
 
-[← Tutorial anterior]({{ base_path }}/tutorial/exercise5)
-[Próximo tutorial →]({{ base_path }}/tutorial/exercise7)
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial/exercise5){: .btn}
+[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial/exercise7){: .btn}
