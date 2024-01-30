@@ -36,4 +36,4 @@ Una vez que la importación haya sido completada, el proyecto está listo para e
 
 ![tutorial_2.png]({{ base_path }}/assets/images/tutorial_2.png)
 
-[Próximo tutorial →]({{ base_path }}/tutorial/exercise2)
+[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial/exercise2){: .btn}

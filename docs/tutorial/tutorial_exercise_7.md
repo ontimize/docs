@@ -476,5 +476,5 @@ public class CandidateService implements ICandidateService {
         </div>
 </div>
 
-[← Tutorial anterior]({{ base_path }}/tutorial/exercise6)
-[Próximo tutorial →]({{ base_path }}/tutorial/exercise8)
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial/exercise6){: .btn}
+[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial/exercise8){: .btn}

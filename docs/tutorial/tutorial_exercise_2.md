@@ -271,5 +271,5 @@ cuyas interfaces están definidas en el módulo **hr-api**.
         </div>
 </div>
 
-[← Tutorial anterior]({{ base_path }}/tutorial/exercise1)
-[Próximo tutorial →]({{ base_path }}/tutorial/exercise3)
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial/exercise1){: .btn}
+[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial/exercise3){: .btn}

@@ -716,5 +716,5 @@ public class OfferService implements IOfferService {
 
 Podemos probar esta nueva consulta con la ayuda de [Postman](https://www.postman.com/){:target="_blank"}
 
-[← Tutorial anterior]({{ base_path }}/tutorial/exercise9)
-[Próximo tutorial →]({{ base_path }}/tutorial/exercise11)
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial/exercise9){: .btn}
+[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial/exercise11){: .btn}
