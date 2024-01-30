@@ -20,7 +20,7 @@ The **Report Store** system will allow you to store, manage and export all kinds
 
 # Previous concepts
 - **Report**: It is the generic representation of a report. One report can have one or multiple custom report parameters, or have none.
-- Main report file: The file containing all the information regarding the report layout, along with the data sources, connections and other configuration directives. Written in ***.jrxml*** format.
+- **Main report file**: The file containing all the information regarding the report layout, along with the data sources, connections and other configuration directives. Written in ***.jrxml*** format.
 - **Report parameter**: It is the generic representation of a custom report parameter. They are used for defining filters, implementing pagination, or even specifying the report data source.
 
 # Prerequisites
@@ -1026,7 +1026,7 @@ Our template is located in the main folder of the project, it is called **candid
 > Do not unzip the compressed file because the request explained below requires it compressed.
 
 ## Add report to the reports system
-To add the template we will have to execute the following REST request: **http://localhost:33333/reportstore/addReport**
+To add the template we will have to execute the following **POST** REST request: **http://localhost:33333/reportstore/addReport**
 
 | Element | Meaning |
 |--|--|
@@ -1043,17 +1043,17 @@ With the [Postman](https://www.postman.com/){:target="_blank"} program, you will
 
 ## Generate report
 
-When you run the above request, if the value of the **engine** set in the `application.yml` is *filesystem*, you have to copy the **uuid** that comes in the response data and execute the following request: **http://localhost:33333/reportstore/fillReport/{{UUID}}**.
+When you run the above request, if the value of the **engine** set in the `application.yml` is *filesystem*, you have to copy the **uuid** that comes in the response data and execute the following request: **http://localhost:33333/reportstore/fillReport/{% raw %}{{UUID}}{% endraw %}**.
 
 | Element | Meaning |
 |--|--|
 | localhost:33333 | Indicates the host |
 | /reportstore | Indicates the service to be queried |
 | /fillReport | Indicates the method of the service that is going to be executed |
-| {{UUID}} | Indicates the uuid that you receives of the previous request |
+| {% raw %}{{UUID}}{% endraw %} | Indicates the uuid that you receives of the previous request |
 
 
-But if the value of the **engine** set in the `application.yml` is *database*, you have to execute the following request to know the **uuid** of the report template: **http://localhost:33333/reportstore/listReports**.
+But if the value of the **engine** set in the `application.yml` is *database*, you have to execute the following **GET** REST request to know the **uuid** of the report template: **http://localhost:33333/reportstore/listReports**.
 
 | Element | Meaning |
 |--|--|
@@ -1062,9 +1062,14 @@ But if the value of the **engine** set in the `application.yml` is *database*, y
 | /listReports | Indicates the method of the service that is going to be executed |
 
 {: .note-title}
-> Example
+> Example POST Request
 >
-> http://localhost:33333/reportstore/fillReport/fd656189-2158-4e84-ac5c-8379960fddbd
+> **URL**: http://localhost:33333/reportstore/fillReport/fd656189-2158-4e84-ac5c-8379960fddbd<br/>
+> **Body**: <br/>
+> {<br/>
+> &nbsp;&nbsp;"params": "",<br/>
+> &nbsp;&nbsp;"filter": {}<br/>
+> }
 
 The authorization used for these requests is authorization of the type **BASIC**.
 
