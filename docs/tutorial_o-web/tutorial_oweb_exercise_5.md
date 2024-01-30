@@ -317,9 +317,9 @@ npx ng g component --skip-tests branches-home
         
 {{"**branches-home.component.html**" | markdownify }}
 {% highlight xml %}
-<o-form-layout-manager title="{{'BRANCHES' | oTranslate }}" separator=" " mode="dialog" label-columns="NAME">
+<o-form-layout-manager attr="branchesHome" title="{{'BRANCHES' | oTranslate }}" separator=" " mode="dialog" label-columns="NAME">
     <o-table attr="branchesTable" service="branches" entity="branch" keys="OFFICEID"
-        columns="NAME;ADDRESS;STARTDATE;PHONE" visible-columns="NAME;ADDRESS;STARTDATE;PHONE" query-rows="15">
+        columns="NAME;ADDRESS;STARTDATE;PHONE;OFFICEID" visible-columns="NAME;ADDRESS;STARTDATE;PHONE" query-rows="15">
         <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
     </o-table>
 </o-form-layout-manager>
@@ -947,7 +947,7 @@ Adaptaremos el componente para realizar un formulario similar a este mockup
         
 {{"**accounts-home.component.html**" | markdownify }}
 {% highlight xml %}
-<o-form-layout-manager title="{{'ACCOUNTS' | oTranslate }}" separator=" " mode="dialog" label-columns="ANID">
+<o-form-layout-manager attr="accountsHome" title="{{'ACCOUNTS' | oTranslate }}" separator=" " mode="dialog" label-columns="ANID">
     <o-table attr="accountsTable" service="branches" entity="account" keys="ACCOUNTID"
         columns="ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
         visible-columns="ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
@@ -1293,5 +1293,5 @@ export const MENU_CONFIG: MenuRootItem[] = [
 
 ![tutorial_o_web_23.png]({{ base_path }}/assets/images/tutorial_o_web_23.png)
 
-[← Tutorial anterior]({{ base_path }}/tutorial-web/exercise4)
-[Próximo tutorial →]({{ base_path }}/tutorial-web/exercise6)
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial-web/exercise4){: .btn}
+[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial-web/exercise6){: .btn}

@@ -116,7 +116,7 @@ detalles de la cuenta.</p>
 
 {{"**accounts-home.component.html**" | markdownify }}
 {% highlight xml %}
-<!-- <o-form-layout-manager title="{{'ACCOUNTS' | oTranslate }}" separator=" " mode="dialog" label-columns="ANID"> -->
+<!-- <o-form-layout-manager attr="accountsHome" title="{{'ACCOUNTS' | oTranslate }}" separator=" " mode="dialog" label-columns="ANID"> -->
 <o-table attr="accountsTable" service="branches" entity="account" keys="ACCOUNTID"
     columns="ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
     visible-columns="ACCOUNTNUMBER;STARTDATE;ENDDATE;INTERESRATE;INTERESRATE_MONTHLY;ACCOUNTTYP" query-rows="20">
@@ -1331,5 +1331,5 @@ export class AccountsRoutingModule { }
     </div>
 </div>
 
-[← Tutorial anterior]({{ base_path }}/tutorial-web/exercise8)
-[Próximo tutorial →]({{ base_path }}/tutorial-web/exercise10)
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial-web/exercise8){: .btn}
+[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial-web/exercise10){: .btn}

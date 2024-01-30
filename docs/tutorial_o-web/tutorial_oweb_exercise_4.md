@@ -715,7 +715,7 @@ crearlo y añadirlo al menú lateral.
         
 {{"**employees-home.component.html**" | markdownify }}
 {% highlight xml %}
-<o-form-layout-manager title="{{'EMPLOYEES' | oTranslate }}" separator=" " mode="dialog"
+<o-form-layout-manager attr="employeesHome" title="{{'EMPLOYEES' | oTranslate }}" separator=" " mode="dialog"
     label-columns="EMPLOYEENAME;EMPLOYEESURNAME">
     <o-table attr="employeesTable" service="employees" entity="employee" keys="EMPLOYEEID"
         columns="EMPLOYEEID;EMPLOYEENAME;EMPLOYEESURNAME;EMPLOYEEPHOTO;EMPLOYEEADDRESS;EMPLOYEESTARTDATE;EMPLOYEEEMAIL;OFFICEID;EMPLOYEETYPEID"
@@ -1829,5 +1829,5 @@ export const SERVICE_CONFIG: Object = {
     </div>
 </div>
 
-[← Tutorial anterior]({{ base_path }}/tutorial-web/exercise3)
-[Próximo tutorial →]({{ base_path }}/tutorial-web/exercise5)
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial-web/exercise3){: .btn}
+[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial-web/exercise5){: .btn}

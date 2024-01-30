@@ -482,7 +482,7 @@ nueva. Para ello, en el componente <strong>customers-home.component.html</strong
 <a href="{{ base_path }}/components/formlayoutmanager/overview" target="_blank">o-form-layout-manager</a></p>
 {{"**customers-home.component.html**" | markdownify }}
 {% highlight xml %}
-<o-form-layout-manager title="{{'CUSTOMERS' | oTranslate }}" separator=" " mode="tab" label-columns="NAME;SURNAME">
+<o-form-layout-manager attr="customersHome" title="{{'CUSTOMERS' | oTranslate }}" separator=" " mode="tab" label-columns="NAME;SURNAME">
     <o-table attr="customersTable" service="customers" entity="customer" keys="CUSTOMERID"
         columns="CUSTOMERID;ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL"
         visible-columns="ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL" query-rows="20">
@@ -506,6 +506,11 @@ nueva. Para ello, en el componente <strong>customers-home.component.html</strong
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td>attr</td>
+            <td>customersHome</td>
+            <td>Establece un identificador al layout manager</td>
+        </tr>
         <tr>
             <td>title</td>
             <td>{% raw %}{{'CUSTOMERS' | oTranslate }}{% endraw %}</td>
@@ -1630,5 +1635,5 @@ export class CustomersRoutingModule { }
     </div>
 </div>
 
-[← Tutorial anterior]({{ base_path }}/tutorial-web/exercise2)
-[Próximo tutorial →]({{ base_path }}/tutorial-web/exercise4)
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial-web/exercise2){: .btn}
+[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial-web/exercise4){: .btn}
