@@ -2355,13 +2355,13 @@ export class AccountCardComponent implements OnInit {
 {% highlight xml %}
 <div fxLayout="column">
     <div fxLayoutAlign="space-between center" fxLayoutGap="8px">
-        <p class="home-card-title" fxFlex>{{ 'TOTAL_ACCOUNT' | oTranslate }}</p>
-        <p class="home-card-home-amount" fxFlex>{{ accountAmount }}</p>
+        <p class="home-card-title" fxFlex>{% raw %}{{ 'TOTAL_ACCOUNT' | oTranslate }}{% endraw %}</p>
+        <p class="home-card-home-amount" fxFlex>{% raw %}{{ accountAmount }}{% endraw %}</p>
     </div>
     <o-chart class="donutChart" type="donutChart" x-label="Axis x" y-label="Axis Y" [data]="graphData"
         [chart-parameters]="chartParameters"></o-chart>
     <div fxLayout="row" fxLayoutAlign="center center">
-        <span>{{ 'CRITERIA_VALUE' | oTranslate }}: {{ criteriaValue }} €</span>
+        <span>{% raw %}{{ 'CRITERIA_VALUE' | oTranslate }}{% endraw %}: {% raw %}{{ criteriaValue }}{% endraw %} €</span>
     </div>
 </div>
 {% endhighlight %}
