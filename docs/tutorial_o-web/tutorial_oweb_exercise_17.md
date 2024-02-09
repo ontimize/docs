@@ -1,8 +1,8 @@
 ---
-title: "Creating a column renderer and a calculated column"
+title: "Open detail form from a button"
 layout: default
-permalink: /tutorial-web/exercise6/
-nav_order: 6
+permalink: /tutorial-web/exercise17/
+nav_order: 17
 # has_children: false
 # has_toc: false
 # nav_exclude: true
@@ -13,160 +13,122 @@ parent: Tutorial OWeb
 {% include base_path %}
 {% include toc %}
 
-# Crear un renderer de columna y una columna calculada
+# Abrir formulario detalle desde un botón
 ## Introducción
+En este ejercicio se mostrará como, seleccionando una fila de una tabla, podremos abrir el formulario detalle.
 
-En este tutorial se mostrará como crear un renderer para una columna y una columna calculada para las tablas. Usaremos 
-el formulario de las cuentas 
-
-## Crear un renderer de una columna
-
-Un renderer de una columna nos permite modificar la visualización de los datos de esa columna. Hasta ahora, se han visto
-2 tipos de renderers, el de las imágenes y el de las fechas, que cambian su visualización. En esta parte del tutorial, 
-crearemos nuestro propio renderer para una columna. Para crear un renderer, crearemos un componente nuevo, en ese caso, 
-le llamaremos **account-render**. Para crear este nuevo componente, podemos situarnos dentro de la carpeta de 
-**account-home**, y ejecutar el comando: 
-
-```
-npx ng g component --skip-tests account-number-render
-``` 
-
-Se habrá creado una carpeta con el componente que usaremos para usar el renderer. Dado que este no es un renderer 
-predefinido, y lo estamos creando desde cero, es necesario seguir algunos pasos, para obtener algo similar al siguiente 
-mockup.
-
-![tutorial_o_web_24.png]({{ base_path }}/assets/images/tutorial_o_web_24.png)
+## Crear el botón y redirigir el formulario
+En primer lugar, añadiremos un nuevo botón a la pestaña de las cuentas de un cliente
 
 <div class="multicolumn">
     <div class="multicolumnleft">
         <button class="unstyle toggle-tree-btn">
             <span class="material-symbols-outlined">right_panel_open</span>
         </button>
-        <p>Lo primero que debemos hacer es importar el nuevo componente y añadirlo al array de declaraciones.</p>
-{{"**accounts.module.ts**" | markdownify }}
-{% highlight typescript %}
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { OntimizeWebModule } from 'ontimize-web-ngx';
-import { AccountsRoutingModule } from './accounts-routing.module';
-import { AccountsHomeComponent } from './accounts-home/accounts-home.component';
-import { AccountNumberRenderComponent } from './accounts-home/account-number-render/account-number-render.component';
 
-
-@NgModule({
-  declarations: [
-    AccountsHomeComponent,
-    AccountNumberRenderComponent
-  ],
-  imports: [
-    CommonModule,
-    OntimizeWebModule,
-    AccountsRoutingModule
-  ]
-})
-export class AccountsModule { }
+{{"**customers-detail.component.html**" | markdownify }}
+{% highlight xml %}
+<o-form attr="customerDetail" service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D"
+    show-header-navigation="no" class="fill-form">
+    <o-text-input attr="CUSTOMERID" sql-type="INTEGER" enabled="no"></o-text-input>
+    <div fxFlex fxLayout="row" fxLayoutGap="8px">
+        <div>
+            <o-image id="CUSTOMER_PHOTO" attr="PHOTO" empty-image="assets/images/no-image.png"
+                sql-type="OTHER"></o-image>
+        </div>
+        <mat-tab-group fxFlex>
+            <mat-tab label="{% raw %}{{ 'CUSTOMER_PERSONAL_INFORMATION' | oTranslate }}{% endraw %}">
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-text-input fxFlex="40" attr="NAME" required="yes"></o-text-input>
+                    <o-text-input fxFlex="40" attr="SURNAME" required="yes"></o-text-input>
+                    <o-date-input fxFlex="20" attr="STARTDATE"></o-date-input>
+                </div>
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-nif-input fxFlex="40" attr="ID" required="yes"></o-nif-input>
+                    <o-integer-input fxFlex="40" attr="PHONE" step="0" thousand-separator=" "></o-integer-input>
+                    <o-combo fxFlex="20" attr="CUSTOMERTYPEID" service="customers" entity="customerType"
+                        keys="CUSTOMERTYPEID" columns="CUSTOMERTYPEID;DESCRIPTION" visible-columns="DESCRIPTION"
+                        value-column="CUSTOMERTYPEID"></o-combo>
+                </div>
+                <o-email-input attr="EMAIL"></o-email-input>
+                <o-text-input attr="ADDRESS"></o-text-input>
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-real-input fxFlex="50" attr="LONGITUDE" decimal-separator="," max-decimal-digits="10"
+                        min-decimal-digits="0"></o-real-input>
+                    <o-real-input fxFlex="50" attr="LATITUDE" decimal-separator="," max-decimal-digits="10"
+                        min-decimal-digits="0"></o-real-input>
+                </div>
+                <o-textarea-input attr="COMMENTS"></o-textarea-input>
+            </mat-tab>
+            <mat-tab label="{% raw %}{{ 'ACCOUNTS' | oTranslate }}{% endraw %}">
+                <o-table #accountCustomerTable attr="accountsTable" service="customers" entity="vCustomerAccount"
+                    keys="ACCOUNTID" parent-keys="CUSTOMERID" insert-button="no" refresh-button="no" detail-mode="none"
+                    delete-button="no" query-rows="20"
+                    columns="CUSTOMERID;ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
+                    visible-columns="ACCOUNTNUMBER;STARTDATE;ENDDATE;INTERESRATE;INTERESRATE_MONTHLY;ACCOUNTTYP">
+                    <o-table-button attr="openAccount" (onClick)="openAccountDetailSelected()"
+                        label="{% raw %}{{ 'OPEN_ACCOUNT_SELECTED' | oTranslate }}{% endraw %}" icon="credit_card"></o-table-button>
+                    <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
+                    <o-table-column attr="ENDDATE" title="ENDDATE" type="date" format="LL"></o-table-column>
+                    <o-table-column attr="INTERESRATE" title="INTERESRATE" type="percentage" width="150px"
+                        decimal-separator="," content-align="center"></o-table-column>
+                    <o-table-column attr="ACCOUNTNUMBER" title="ACCOUNTNUMBER" content-align="center">
+                        <app-account-number-render></app-account-number-render>
+                    </o-table-column>
+                    <o-table-column-calculated attr="INTERESRATE_MONTHLY" title="INTERESRATE_MONTHLY"
+                        [operation-function]="intRateMonthly" type="percentage" decimal-separator=","
+                        content-align="center">
+                    </o-table-column-calculated>
+                </o-table>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</o-form>
 {% endhighlight %}
-<p>Nuestro componente debe extender de la clase <code>OBaseTableCellRenderer</code> e insertamos la siguiente línea 
-<code>@ViewChild('templateref', { read: TemplateRef, static: false }) public templateref: TemplateRef&lt;any>;</code> para
-adquirir el contenido según una plantilla y acceder a la vista. En el constructor tenemos que añadir el siguiente 
-código.</p>
 
-{% highlight console %}
-constructor(protected injector: Injector) {
-  super(injector);
-}
-{% endhighlight %}
+<p>En el fichero <strong>*.ts</strong>, creamos una nueva función que se invocará desde el botón del 
+<strong>html</strong> y al hacer <em>click</em>, obtendrá el valor del identificador de la cuenta, y navegará hasta el 
+elemento correspondiente en el módulo de <strong>accounts</strong></p>
 
-<p>y sobrecargar el método <code>getCellData(cellvalue: any, rowvalue?: any): string</code> para que podamos modificar 
-el valor que muestra la columna de la tabla.</p>
-<p>La idea de este renderer es visualizar una única columna que contenga los valores de la entidad, la oficina, el 
-dígito de control y el identificador de la cuenta para obtener el número de cuenta total, separado por espacios. 
-Como el método recibe por parámetros el valor de la celda y los valores de toda la fila, podemos concatenar todos los
-datos que queremos y devolverlo todo junto.</p>
-
-{{"**account-number-render.component.ts**" | markdownify }}
+{{"**customers-detail.component.ts**" | markdownify }}
 {% highlight typescript %}
-import { ViewChild, TemplateRef, Injector, Component, OnInit } from '@angular/core';
-import { OBaseTableCellRenderer } from 'ontimize-web-ngx';
+import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { OTableComponent } from 'ontimize-web-ngx';
+import { intRateMonthlyFunction } from 'src/app/shared/shared.module';
 
 @Component({
-  selector: 'app-account-number-render',
-  templateUrl: './account-number-render.component.html',
-  styleUrls: ['./account-number-render.component.css']
+  selector: 'app-customers-detail',
+  templateUrl: './customers-detail.component.html',
+  styleUrls: ['./customers-detail.component.css']
 })
-export class AccountNumberRenderComponent extends OBaseTableCellRenderer {
+export class CustomersDetailComponent {
 
-  @ViewChild('templateref', { read: TemplateRef, static: false }) public templateref: TemplateRef<any>;
+  @ViewChild('accountCustomerTable') accountTable: OTableComponent;
+  public intRateMonthly = intRateMonthlyFunction;
 
-  constructor(protected injector: Injector) {
-    super(injector);
+  constructor(
+    private router: Router
+  ) { }
+
+  public openAccountDetailSelected() {
+    let selected = this.accountTable.getSelectedItems();
+    if (selected.length === 1) {
+      let accountId = selected[0]['ACCOUNTID']
+      this.router.navigate(['main/accounts/' + accountId]);
+    }
   }
 
-  getCellData(cellvalue: any, rowvalue?: any): string {
-    return rowvalue["ENTITYID"] + " " + rowvalue["OFFICEID"] + " " + rowvalue["CDID"] + " " + rowvalue["ANID"];
-  }
 }
 {% endhighlight %}
-<p>El componente del render, en su fichero <strong>account-number-render.component.html</strong> tiene que comenzar por
-<code><ng-template #templateref let-cellvalue="cellvalue" let-rowvalue="rowvalue"></code> y acabar por 
-<code></ng-template></code>. La palabra <em>let</em> declara la variable de la plantilla que será referenciada desde 
-esta. Las variables de entrada en este caso son <em>cellvalue</em> y <em>rowvalue</em>. El parseador traduce las 
-variables y se las pasa al método <em>getCellValue()</em>.</p>
 
-{{"**account-number-render.component.html**" | markdownify }}
-{% highlight xml %}
-<ng-template #templateref let-cellvalue="cellvalue" let-rowvalue="rowvalue">
-    {% raw %}{{getCellData(cellvalue, rowvalue)}}{% endraw %}
-</ng-template>
-{% endhighlight %}
-
-<p>Ahora, en el formulario, definimos una nueva columna en las <code>visible-columns</code>, por ejemplo, 
-<code>ACCOUNTNUMBER</code>. A continuación, definimos una nueva columna llamada de la misma manera y eleminamos las
-<code>o-table-column</code> que ya no son necesarias.</p>
-
-{{"**accounts-home.component.html**" | markdownify }}
-{% highlight xml %}
-<o-form-layout-manager title="{% raw %}{{'ACCOUNTS' | oTranslate }}{% endraw %}" separator=" " mode="dialog" label-columns="ANID">
-    <o-table attr="accountsTable" service="branches" entity="account" keys="ACCOUNTID"
-        columns="ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
-        visible-columns="ACCOUNTNUMBER;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP" query-rows="20">
-        <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
-        <o-table-column attr="ENDDATE" title="ENDDATE" type="date" format="LL"></o-table-column>
-        <o-table-column attr="INTERESRATE" title="INTERESRATE" type="percentage" width="150px" decimal-separator=","
-            content-align="center"></o-table-column>
-        <o-table-column attr="ACCOUNTNUMBER" title="ACCOUNTNUMBER" content-align="center">
-            <app-account-number-render></app-account-number-render>
-        </o-table-column>
-    </o-table>
-</o-form-layout-manager>
-{% endhighlight %}
-
-<table>
-    <thead>
-        <tr>
-            <th colspan="3">o-table-column (atributos de <a href="{{ base_path }}/components/table/api#o-table-column" 
-target="_blank">o-table-column</a>)</th>
-        </tr>
-        <tr>
-            <th>Atributo</th>
-            <th>Valor</th>
-            <th>Significado</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>content-align</td>
-            <td>center</td>
-            <td>Centra el contenido de la columna</td>
-        </tr>
-    </tbody>
-</table>
+<p>Añadimos las traducciones del botón:</p>
 
 {{"**en.json**" | markdownify }}
 {% highlight json %}
 {
   ...
-  "ACCOUNTNUMBER": "Account number"
+  "OPEN_ACCOUNT_SELECTED": "Open Account Selected"
 }
 {% endhighlight %}
 
@@ -174,34 +136,14 @@ target="_blank">o-table-column</a>)</th>
 {% highlight json %}
 {
   ...
-  "ACCOUNTNUMBER": "Nº cuenta"
+  "OPEN_ACCOUNT_SELECTED": "Abrir cuenta seleccionada"
 }
 {% endhighlight %}
-
-<p>Si hemos abierto antes este formulario (en el tutorial anterior, por ejemplo), es posible que no nos aparezca el render 
-que acabamos de crear, ya que la tabla guarda las preferencias de las columnas mostradas al usuario actual. Podemos 
-reestablecer las preferencias por defecto haciendo clic en el menú 
-<span class="material-symbols-outlined">more_vert</span> de la tabla y haciedo clic en <em>Configuración > Aplicar 
-configuración > Configuración por defecto</em></p>
-
-<div class="multicolumn">
-    <div class="multicolumnnopadding" style="text-align:center">
-        <img src="{{ base_path }}/assets/images/tutorial_o_web_25.png">
-    </div>
-    <div class="verticalDivider"></div>
-    <div class="multicolumnnopadding" style="text-align:center">
-        <img src="{{ base_path }}/assets/images/tutorial_o_web_26.png">
-    </div>
-</div>
-
-<p>También podemos eliminar todas las preferencias que ha guardado la web abriendo las 
-<em>Herramientas de desarrollo</em> y eliminar los datos almacenados de la página desde la pestaña de 
-<em>Aplicación</em></p>
     </div>
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  bankmanager-web
+  ontimize-web-tutorial
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e
@@ -241,14 +183,30 @@ configuración > Configuración por defecto</em></p>
           accounts
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            accounts-detail
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              movement-column-renderer
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.css</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.html</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.ts</li>
+              </ul>
+              </li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             accounts-home
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
               account-number-render
               <ul>
                 <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-number-render.component.css</li>
-                <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-number-render.component.html</li>
-                <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-number-render.component.ts</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-number-render.component.html</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-number-render.component.ts</li>
               </ul>
               </li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-home.component.css</li>
@@ -256,19 +214,59 @@ configuración > Configuración por defecto</em></p>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-home.component.ts</li>
             </ul>
             </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            accounts-new
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            add-customer
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            add-movement
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.ts</li>
+            </ul>
+            </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-routing.module.ts</li>
-            <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts.module.ts</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts.module.ts</li>
           </ul>
           </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
           branches
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            branches-detail
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             branches-home
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.css</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.html</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            branches-new
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.ts</li>
             </ul>
             </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-routing.module.ts</li>
@@ -282,13 +280,21 @@ configuración > Configuración por defecto</em></p>
             customers-detail
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.css</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.html</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.ts</li>
+              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.html</li>
+              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.ts</li>
             </ul>
             </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             customers-home
             <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              customertype-column-renderer
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.css</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.html</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.ts</li>
+              </ul>
+              </li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.css</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.html</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.ts</li>
@@ -339,6 +345,29 @@ configuración > Configuración por defecto</em></p>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>home.module.ts</li>
           </ul>
           </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          service-ex
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            service-ex-details
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            service-ex-home
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-routing.module.ts</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex.module.ts</li>
+          </ul>
+          </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main-routing.module.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main.component.html</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main.component.scss</li>
@@ -349,9 +378,51 @@ configuración > Configuración por defecto</em></p>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
         shared
         <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          account-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          branch-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          customer-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          employee-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          service-ex-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.ts</li>
+          </ul>
+          </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.menu.config.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.services.config.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>shared.module.ts</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>star-wars-response-adapter.ts</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>star-wars.service.ts</li>
         </ul>
         </li>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app-routing.module.ts</li>
@@ -398,11 +469,14 @@ configuración > Configuración por defecto</em></p>
         <ul>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>login_bg.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>no-image.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>normal_24.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ontimize.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ontimize_web_log.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>other_24.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>sidenav-closed.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>sidenav-opened.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>user_profile.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>vip_24.png</li>
         </ul>
         </li>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -450,47 +524,163 @@ configuración > Configuración por defecto</em></p>
     </div>
 </div>
 
-## Permitir el uso del render en otros módulos
+## Abrir el nuevo componente sin cambiar de módulo
+
 <div class="multicolumn">
     <div class="multicolumnleft">
         <button class="unstyle toggle-tree-btn">
             <span class="material-symbols-outlined">right_panel_open</span>
         </button>
-<p>Aunque lo ideal sería que hubiésemos definido el render anterior dentro del módulo <strong>shared</strong>, 
-realizamos este paso para demostrar que se puede usar desde múltiples sitio, sin importar la ubicación del componente. 
-Importamos el componente <strong>AccountNumberRenderComponent</strong> desde el módulo shared y lo añadimos al array de
-declaraciones y de exportación</p>        
+        <p>En primer lugar, dado que vamos a reutilizar el componente detalle de cuentas cuentas para abrirlo dentro del
+módulo de clientes, es necesario que lo quitemos de la declaración del modulo de <strong>accounts</strong>, y los 
+pasemos al módulo <strong>shared</strong></p>
+
+{{"**accounts.module.ts**" | markdownify }}
+{% highlight typescript %}
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { OntimizeWebModule } from 'ontimize-web-ngx';
+import { AccountsRoutingModule } from './accounts-routing.module';
+import { AccountsHomeComponent } from './accounts-home/accounts-home.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { AccountsNewComponent } from './accounts-new/accounts-new.component';
+import { AddCustomerComponent } from './add-customer/add-customer.component';
+import { AddMovementComponent } from './add-movement/add-movement.component';
+
+
+@NgModule({
+  declarations: [
+    AccountsHomeComponent,
+    AccountsNewComponent,
+    AddCustomerComponent,
+    AddMovementComponent
+  ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    OntimizeWebModule,
+    AccountsRoutingModule
+  ]
+})
+export class AccountsModule { }
+{% endhighlight %}
 
 {{"**shared.module.ts**" | markdownify }}
 {% highlight typescript %}
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { OntimizeWebModule } from 'ontimize-web-ngx';
-import { CommonModule } from '@angular/common';
 import { AccountNumberRenderComponent } from '../main/accounts/accounts-home/account-number-render/account-number-render.component';
+import { CustomertypeColumnRendererComponent } from '../main/customers/customers-home/customertype-column-renderer/customertype-column-renderer.component';
+import { MovementColumnRendererComponent } from '../main/accounts/accounts-detail/movement-column-renderer/movement-column-renderer.component';
+import { MENU_COMPONENTS } from './app.menu.config';
+import { OChartModule } from 'ontimize-web-ngx-charts';
+import { AccountsDetailComponent } from '../main/accounts/accounts-detail/accounts-detail.component';
+
+export function intRateMonthlyFunction(rowData: Array<any>): number {
+  return rowData["INTERESRATE"] / 12;
+}
 
 @NgModule({
   imports: [
-    OntimizeWebModule
+    OntimizeWebModule,
+    OChartModule
   ],
   declarations: [
-    AccountNumberRenderComponent
+    AccountNumberRenderComponent,
+    CustomertypeColumnRendererComponent,
+    MovementColumnRendererComponent,
+    ...MENU_COMPONENTS,
+    AccountsDetailComponent
   ],
   exports: [
     CommonModule,
-    AccountNumberRenderComponent
+    AccountNumberRenderComponent,
+    CustomertypeColumnRendererComponent,
+    MovementColumnRendererComponent,
+    ...MENU_COMPONENTS,
+    OChartModule,
+    AccountsDetailComponent
   ]
 })
 export class SharedModule { }
 {% endhighlight %}
 
-<p>Ahora, cambiaremos la importación del componente en el módulo de cuentas, sustituyéndolo por la importación del 
-módulo <strong>shared</strong>, pero retirándolo del array de declaraciones y añadiéndolo al array de importaciones. 
-Haremos lo mismo para cada módulo en el que queramos usar el render</p>
+<p>Indicaremos cual es la nueva ruta que se usará para el componente</p>
+
+{{"**customers-routing.module.ts**" | markdownify }}
+{% highlight typescript %}
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { CustomersHomeComponent } from './customers-home/customers-home.component';
+import { CustomersDetailComponent } from './customers-detail/customers-detail.component';
+import { CustomersNewComponent } from './customers-new/customers-new.component';
+import { AccountsDetailComponent } from '../accounts/accounts-detail/accounts-detail.component';
+
+const routes: Routes = [{
+  path: '',
+  component: CustomersHomeComponent
+},
+{
+  path: "new",
+  component: CustomersNewComponent
+},
+{
+  path: ':CUSTOMERID',
+  component: CustomersDetailComponent
+},
+{
+  path: ":CUSTOMERID/:ACCOUNTID",
+  component: AccountsDetailComponent
+}];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class CustomersRoutingModule { }
+{% endhighlight %}
+
+<p>Modificamos la funciona para que añada los elementos que faltan y que se modifique la ruta para navegar al nuevo 
+componente</p>
+
+{{"**customers-detail.component.ts**" | markdownify }}
+{% highlight typescript %}
+import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { OTableComponent } from 'ontimize-web-ngx';
+import { intRateMonthlyFunction } from 'src/app/shared/shared.module';
+
+@Component({
+  selector: 'app-customers-detail',
+  templateUrl: './customers-detail.component.html',
+  styleUrls: ['./customers-detail.component.css']
+})
+export class CustomersDetailComponent {
+
+  @ViewChild('accountCustomerTable') accountTable: OTableComponent;
+  public intRateMonthly = intRateMonthlyFunction;
+
+  constructor(
+    private router: Router
+  ) { }
+
+  public openAccountDetailSelected() {
+    let selected = this.accountTable.getSelectedItems();
+    if (selected.length === 1) {
+      let accountId = selected[0]['ACCOUNTID'];
+      let customerId = selected[0]['CUSTOMERID'];
+      this.router.navigate(['main/customers/' + customerId + '/' + accountId], { queryParams: { isdetail: true } });
+    }
+  }
+
+}
+{% endhighlight %}
     </div>
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  bankmanager-web
+  ontimize-web-tutorial
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e
@@ -530,6 +720,22 @@ Haremos lo mismo para cada módulo en el que queramos usar el render</p>
           accounts
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            accounts-detail
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              movement-column-renderer
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.css</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.html</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.ts</li>
+              </ul>
+              </li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             accounts-home
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -545,6 +751,30 @@ Haremos lo mismo para cada módulo en el que queramos usar el render</p>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-home.component.ts</li>
             </ul>
             </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            accounts-new
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            add-customer
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            add-movement
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.ts</li>
+            </ul>
+            </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-routing.module.ts</li>
             <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts.module.ts</li>
           </ul>
@@ -553,11 +783,27 @@ Haremos lo mismo para cada módulo en el que queramos usar el render</p>
           branches
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            branches-detail
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             branches-home
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.css</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.html</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            branches-new
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.ts</li>
             </ul>
             </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-routing.module.ts</li>
@@ -572,12 +818,20 @@ Haremos lo mismo para cada módulo en el que queramos usar el render</p>
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.css</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.html</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.ts</li>
+              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.ts</li>
             </ul>
             </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             customers-home
             <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              customertype-column-renderer
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.css</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.html</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.ts</li>
+              </ul>
+              </li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.css</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.html</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.ts</li>
@@ -591,7 +845,7 @@ Haremos lo mismo para cada módulo en el que queramos usar el render</p>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-new.component.ts</li>
             </ul>
             </li>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-routing.module.ts</li>
+            <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-routing.module.ts</li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers.module.ts</li>
           </ul>
           </li>
@@ -628,6 +882,29 @@ Haremos lo mismo para cada módulo en el que queramos usar el render</p>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>home.module.ts</li>
           </ul>
           </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          service-ex
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            service-ex-details
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            service-ex-home
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-routing.module.ts</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex.module.ts</li>
+          </ul>
+          </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main-routing.module.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main.component.html</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main.component.scss</li>
@@ -638,9 +915,51 @@ Haremos lo mismo para cada módulo en el que queramos usar el render</p>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
         shared
         <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          account-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          branch-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          customer-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          employee-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          service-ex-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.ts</li>
+          </ul>
+          </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.menu.config.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.services.config.ts</li>
           <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>shared.module.ts</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>star-wars-response-adapter.ts</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>star-wars.service.ts</li>
         </ul>
         </li>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app-routing.module.ts</li>
@@ -687,11 +1006,14 @@ Haremos lo mismo para cada módulo en el que queramos usar el render</p>
         <ul>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>login_bg.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>no-image.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>normal_24.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ontimize.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ontimize_web_log.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>other_24.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>sidenav-closed.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>sidenav-opened.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>user_profile.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>vip_24.png</li>
         </ul>
         </li>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -739,121 +1061,82 @@ Haremos lo mismo para cada módulo en el que queramos usar el render</p>
     </div>
 </div>
 
-## Crear una nueva columna calculada
+## Abrir el formulario sin necesidad de botón
 
-Las columnas calculadas son columnas cuyo valor se calculan en base a operaciones sobre otras columnas. En este ejemplo,
-crearemos una nueva columna calculada, que mostrará el porcentaje de _interés mensual_, esto es, dividiendo entre 12 el
-valor del porcentaje de interés. Esta función para obtener la columna del interés mensual la usaremos en múltiples 
-sitios, por lo que la definiremos en el módulo de **shared**. Obtendremos un resultado similar al siguiente mockup.
-
-![tutorial_o_web_27.png]({{ base_path }}/assets/images/tutorial_o_web_27.png)
+Únicamente es necesario cambiar el evento de de detalle  de la tabla de cuentas, y pasar de **none** a **dblclick** para 
+que también funcione la navegación en la tabla. Aprovecharemos para añadir al formulario el atributo **#form**
 
 <div class="multicolumn">
     <div class="multicolumnleft">
         <button class="unstyle toggle-tree-btn">
             <span class="material-symbols-outlined">right_panel_open</span>
         </button>
-        <p>Debemos declarar una nueva columna en las columnas visibles, por lo que la denominaremos 
-<em>INTERESRATE_MONTHLY</em>. Ahora, definimos una columna calculada <code>&lt;o-table-column-calculated&gt;</code>. Este tag 
-tiene un atributo <code>[operation-function]</code> al que añadimos un nombre, que será el nombre del método que 
-invocaremos. Luego se establece el centrado de los elementos en el espacio de las columnas y un renderer por defecto</p>
 
-{{"**accounts-home.component.html**" | markdownify }}
+
+{{"**customers-detail.component.html**" | markdownify }}
 {% highlight xml %}
-<o-form-layout-manager title="{% raw %}{{'ACCOUNTS' | oTranslate }}{% endraw %}" separator=" " mode="dialog" label-columns="ANID">
-    <o-table attr="accountsTable" service="branches" entity="account" keys="ACCOUNTID"
-        columns="ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
-        visible-columns="ACCOUNTNUMBER;STARTDATE;ENDDATE;INTERESRATE;INTERESRATE_MONTHLY;ACCOUNTTYP"
-        query-rows="20">
-        <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
-        <o-table-column attr="ENDDATE" title="ENDDATE" type="date" format="LL"></o-table-column>
-        <o-table-column attr="INTERESRATE" title="INTERESRATE" type="percentage" width="150px" decimal-separator=","
-            content-align="center"></o-table-column>
-        <o-table-column attr="ACCOUNTNUMBER" title="ACCOUNTNUMBER" content-align="center">
-            <app-account-number-render></app-account-number-render>
-        </o-table-column>
-        <o-table-column-calculated attr="INTERESRATE_MONTHLY" title="INTERESRATE_MONTHLY"
-            [operation-function]="intRateMonthly" type="percentage" decimal-separator="," content-align="center">
-        </o-table-column-calculated>
-    </o-table>
-</o-form-layout-manager>
-{% endhighlight %}
-
-<p>Creamos una función en el fichero <strong>shared.module.ts</strong> que llamaremos igual que el nombre de la función 
-que hemos estabablecido en el *<strong>.html</strong>, acabado en Function (por comodidad). Exportamos esta función, que
-<strong>DEBE</strong> devolver un <strong>número</strong> y y ser <strong>pública</strong> y tener como parámetros de 
-entrada un array con los datos de la fila (<em>rowData: Array&lt;any&gt;</em>)</p>
-
-{{"**shared.module.ts**" | markdownify }}
-{% highlight typescript %}
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { OntimizeWebModule } from 'ontimize-web-ngx';
-import { AccountNumberRenderComponent } from '../main/accounts/accounts-home/account-number-render/account-number-render.component';
-
-export function intRateMonthlyFunction(rowData: Array<any>): number {
-  return rowData["INTERESRATE"] / 12;
-}
-
-@NgModule({
-  imports: [
-    OntimizeWebModule
-  ],
-  declarations: [
-    AccountNumberRenderComponent
-  ],
-  exports: [
-    CommonModule,
-    AccountNumberRenderComponent
-  ]
-})
-export class SharedModule { }
-{% endhighlight %}
-
-<p>Ahora, desde el fichero <strong>typescript</strong> del componente donde queramos utilizarla, la importaremos (ya que
-la hemos marcado con el modificador <strong>export</strong>) y se establecerá como el valor de una variable con el mismo
-nombre que la función que hemos definido en el fichero *<strong>.html</strong></p>
-<p>Esto es, si la definimos en el fichero <strong>accounts-home.component.html</strong>, la importaremos en el fichero 
-<strong>accounts-home.component.ts</strong></p>
-
-{{"**accounts-home.component.ts**" | markdownify }}
-{% highlight typescript %}
-import { Component } from '@angular/core';
-import { intRateMonthlyFunction } from 'src/app/shared/shared.module';
-
-@Component({
-  selector: 'app-accounts-home',
-  templateUrl: './accounts-home.component.html',
-  styleUrls: ['./accounts-home.component.css']
-})
-export class AccountsHomeComponent {
-
-  public intRateMonthly = intRateMonthlyFunction
-
-}
-{% endhighlight %}
-<p>Y por último, añadimos nuevas traducciones a los bundle de traducción</p>
-
-{{"**en.json**" | markdownify }}
-{% highlight json %}
-{
-  ...
-  "INTERESRATE_MONTHLY": "Monthly interest rate"
-}
-{% endhighlight %}
-
-{{"**es.json**" | markdownify }}
-{% highlight json %}
-{
-  ...
-  "INTERESRATE_MONTHLY": "% interés mensual"
-}
+<o-form #form attr="customerDetail" service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D"
+    show-header-navigation="no" class="fill-form">
+    <o-text-input attr="CUSTOMERID" sql-type="INTEGER" enabled="no"></o-text-input>
+    <div fxFlex fxLayout="row" fxLayoutGap="8px">
+        <div>
+            <o-image id="CUSTOMER_PHOTO" attr="PHOTO" empty-image="assets/images/no-image.png"
+                sql-type="OTHER"></o-image>
+        </div>
+        <mat-tab-group fxFlex>
+            <mat-tab label="{% raw %}{{ 'CUSTOMER_PERSONAL_INFORMATION' | oTranslate }}{% endraw %}">
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-text-input fxFlex="40" attr="NAME" required="yes"></o-text-input>
+                    <o-text-input fxFlex="40" attr="SURNAME" required="yes"></o-text-input>
+                    <o-date-input fxFlex="20" attr="STARTDATE"></o-date-input>
+                </div>
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-nif-input fxFlex="40" attr="ID" required="yes"></o-nif-input>
+                    <o-integer-input fxFlex="40" attr="PHONE" step="0" thousand-separator=" "></o-integer-input>
+                    <o-combo fxFlex="20" attr="CUSTOMERTYPEID" service="customers" entity="customerType"
+                        keys="CUSTOMERTYPEID" columns="CUSTOMERTYPEID;DESCRIPTION" visible-columns="DESCRIPTION"
+                        value-column="CUSTOMERTYPEID"></o-combo>
+                </div>
+                <o-email-input attr="EMAIL"></o-email-input>
+                <o-text-input attr="ADDRESS"></o-text-input>
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-real-input fxFlex="50" attr="LONGITUDE" decimal-separator="," max-decimal-digits="10"
+                        min-decimal-digits="0"></o-real-input>
+                    <o-real-input fxFlex="50" attr="LATITUDE" decimal-separator="," max-decimal-digits="10"
+                        min-decimal-digits="0"></o-real-input>
+                </div>
+                <o-textarea-input attr="COMMENTS"></o-textarea-input>
+            </mat-tab>
+            <mat-tab label="{% raw %}{{ 'ACCOUNTS' | oTranslate }}{% endraw %}">
+                <o-table #accountCustomerTable attr="accountsTable" service="customers" entity="vCustomerAccount"
+                    keys="ACCOUNTID" parent-keys="CUSTOMERID" insert-button="no" refresh-button="no"
+                    detail-mode="dblclick" delete-button="no" query-rows="20"
+                    columns="CUSTOMERID;ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
+                    visible-columns="ACCOUNTNUMBER;STARTDATE;ENDDATE;INTERESRATE;INTERESRATE_MONTHLY;ACCOUNTTYP">
+                    <o-table-button attr="openAccount" (onClick)="openAccountDetailSelected()"
+                        label="{% raw %}{{ 'OPEN_ACCOUNT_SELECTED' | oTranslate }}{% endraw %}" icon="credit_card"></o-table-button>
+                    <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
+                    <o-table-column attr="ENDDATE" title="ENDDATE" type="date" format="LL"></o-table-column>
+                    <o-table-column attr="INTERESRATE" title="INTERESRATE" type="percentage" width="150px"
+                        decimal-separator="," content-align="center"></o-table-column>
+                    <o-table-column attr="ACCOUNTNUMBER" title="ACCOUNTNUMBER" content-align="center">
+                        <app-account-number-render></app-account-number-render>
+                    </o-table-column>
+                    <o-table-column-calculated attr="INTERESRATE_MONTHLY" title="INTERESRATE_MONTHLY"
+                        [operation-function]="intRateMonthly" type="percentage" decimal-separator=","
+                        content-align="center">
+                    </o-table-column-calculated>
+                </o-table>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</o-form>
 {% endhighlight %}
     </div>
     <div class="multicolumnright jstreeloader collapsed">
 <ul>
   <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
-  bankmanager-web
+  ontimize-web-tutorial
   <ul>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
     e2e
@@ -893,6 +1176,22 @@ export class AccountsHomeComponent {
           accounts
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            accounts-detail
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              movement-column-renderer
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.css</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.html</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.ts</li>
+              </ul>
+              </li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             accounts-home
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -904,23 +1203,63 @@ export class AccountsHomeComponent {
               </ul>
               </li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-home.component.css</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-home.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-home.component.html</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-home.component.ts</li>
             </ul>
             </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            accounts-new
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            add-customer
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            add-movement
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.ts</li>
+            </ul>
+            </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-routing.module.ts</li>
-            <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts.module.ts</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts.module.ts</li>
           </ul>
           </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
           branches
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            branches-detail
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             branches-home
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.css</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.html</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            branches-new
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.ts</li>
             </ul>
             </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-routing.module.ts</li>
@@ -934,13 +1273,21 @@ export class AccountsHomeComponent {
             customers-detail
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.css</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.html</li>
+              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.html</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.ts</li>
             </ul>
             </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             customers-home
             <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              customertype-column-renderer
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.css</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.html</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.ts</li>
+              </ul>
+              </li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.css</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.html</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.ts</li>
@@ -991,6 +1338,29 @@ export class AccountsHomeComponent {
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>home.module.ts</li>
           </ul>
           </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          service-ex
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            service-ex-details
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            service-ex-home
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-routing.module.ts</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex.module.ts</li>
+          </ul>
+          </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main-routing.module.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main.component.html</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main.component.scss</li>
@@ -1001,9 +1371,51 @@ export class AccountsHomeComponent {
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
         shared
         <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          account-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          branch-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          customer-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          employee-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          service-ex-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.ts</li>
+          </ul>
+          </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.menu.config.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.services.config.ts</li>
-          <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>shared.module.ts</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>shared.module.ts</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>star-wars-response-adapter.ts</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>star-wars.service.ts</li>
         </ul>
         </li>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app-routing.module.ts</li>
@@ -1028,8 +1440,8 @@ export class AccountsHomeComponent {
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
         i18n
         <ul>
-          <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>en.json</li>
-          <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>es.json</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>en.json</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>es.json</li>
         </ul>
         </li>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -1050,11 +1462,14 @@ export class AccountsHomeComponent {
         <ul>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>login_bg.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>no-image.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>normal_24.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ontimize.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ontimize_web_log.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>other_24.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>sidenav-closed.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>sidenav-opened.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>user_profile.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>vip_24.png</li>
         </ul>
         </li>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -1102,5 +1517,5 @@ export class AccountsHomeComponent {
     </div>
 </div>
 
-[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial-web/exercise5){: .btn}
-[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial-web/exercise7){: .btn}
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial-web/exercise16){: .btn }
+[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial-web/exercise18){: .btn }

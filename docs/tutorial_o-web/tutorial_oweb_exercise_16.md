@@ -33,7 +33,7 @@ quedará oculto.</p>
 
 {{"**customers-home.component.html**" | markdownify }}
 {% highlight xml %}
-<o-form-layout-manager attr="customersHome" title="{{'CUSTOMERS' | oTranslate }}" separator=" " mode="tab"
+<o-form-layout-manager attr="customersHome" title="{% raw %}{{'CUSTOMERS' | oTranslate }}{% endraw %}" separator=" " mode="tab"
     label-columns="NAME;SURNAME">
     <o-table attr="customersTable" service="customers" entity="customer" keys="CUSTOMERID"
         columns="CUSTOMERID;ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL;CUSTOMERTYPEID"

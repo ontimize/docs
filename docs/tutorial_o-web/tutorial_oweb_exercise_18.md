@@ -1,8 +1,8 @@
 ---
-title: "Filter elements in a table using a form key"
+title: "Create new account and insert a customer"
 layout: default
-permalink: /tutorial-web/exercise7/
-nav_order: 7
+permalink: /tutorial-web/exercise18/
+nav_order: 18
 # has_children: false
 # has_toc: false
 # nav_exclude: true
@@ -13,59 +13,33 @@ parent: Tutorial OWeb
 {% include base_path %}
 {% include toc %}
 
-# Filtrar elementos de una tabla a través de una clave del formulario
+# Crear una nueva cuenta e insertar un cliente
 ## Introducción
-En este ejercicio, modificaremos el formulario de detalle de un cliente, añadiendo pestañas dentro del formulario, y 
-dentro de esas pestañas mostraremos una lista de todas las cuentas relacionadas con el cliente.
-## Modificar el detalle de los clientes
-![tutorial_o_web_28.png]({{ base_path }}/assets/images/tutorial_o_web_28.png)
+En este tutorial, permitiremos que se pueda crear una nueva cuenta asociada al cliente actual.
+
+## Modificar el formulario para la nueva opción
+En este caso, modificaremos el formulario existente para incluir un botón que permita añadir una nueva cuenta e insertar
+ese cliente. Será necesario tanto modificar el html para el botón, como el ts para pasarle los datos a un nuevo 
+componente
 
 <div class="multicolumn">
     <div class="multicolumnleft">
         <button class="unstyle toggle-tree-btn">
             <span class="material-symbols-outlined">right_panel_open</span>
         </button>
-
-{{"**customers.module.ts**" | markdownify }}
-{% highlight typescript %}
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { OntimizeWebModule } from 'ontimize-web-ngx';
-import { CustomersRoutingModule } from './customers-routing.module';
-import { CustomersHomeComponent } from './customers-home/customers-home.component';
-import { CustomersDetailComponent } from './customers-detail/customers-detail.component';
-import { CustomersNewComponent } from './customers-new/customers-new.component';
-import { SharedModule } from 'src/app/shared/shared.module';
-
-
-@NgModule({
-  declarations: [
-    CustomersHomeComponent,
-    CustomersDetailComponent,
-    CustomersNewComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    OntimizeWebModule,
-    CustomersRoutingModule
-  ]
-})
-export class CustomersModule { }
-{% endhighlight %}
-
+        
 {{"**customers-detail.component.html**" | markdownify }}
 {% highlight xml %}
-<o-form attr="customerDetail" service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D"
+<o-form #form attr="customerDetail" service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D"
     show-header-navigation="no" class="fill-form">
-    <o-text-input attr="CUSTOMERID" sql-type="INTEGER" enabled="no" class="input-padding"></o-text-input>
+    <o-text-input attr="CUSTOMERID" sql-type="INTEGER" enabled="no"></o-text-input>
     <div fxFlex fxLayout="row" fxLayoutGap="8px">
         <div>
             <o-image id="CUSTOMER_PHOTO" attr="PHOTO" empty-image="assets/images/no-image.png"
                 sql-type="OTHER"></o-image>
         </div>
         <mat-tab-group fxFlex>
-            <mat-tab label="{% raw %}{{ 'CUSTOMER_PERSONAL_INFORMATION' | oTranslate }}{% endraw %}">
+            <mat-tab label="{% raw %}{{ 'CUSTOMER_PERSONAL_INFORMATION' | oTranslate }{% endraw %}}">
                 <div fxLayout="row" fxLayoutGap="8px">
                     <o-text-input fxFlex="40" attr="NAME" required="yes"></o-text-input>
                     <o-text-input fxFlex="40" attr="SURNAME" required="yes"></o-text-input>
@@ -89,11 +63,15 @@ export class CustomersModule { }
                 <o-textarea-input attr="COMMENTS"></o-textarea-input>
             </mat-tab>
             <mat-tab label="{% raw %}{{ 'ACCOUNTS' | oTranslate }}{% endraw %}">
-                <o-table attr="accountsTable" service="customers" entity="vCustomerAccount" keys="ACCOUNTID"
-                    parent-keys="CUSTOMERID" insert-button="no" refresh-button="no" detail-mode="none"
-                    delete-button="no" query-rows="20"
-                    columns="ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
+                <o-table #accountCustomerTable attr="accountsTable" service="customers" entity="vCustomerAccount"
+                    keys="ACCOUNTID" parent-keys="CUSTOMERID" insert-button="no" refresh-button="yes"
+                    detail-mode="dblclick" delete-button="no" query-rows="20"
+                    columns="CUSTOMERID;ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
                     visible-columns="ACCOUNTNUMBER;STARTDATE;ENDDATE;INTERESRATE;INTERESRATE_MONTHLY;ACCOUNTTYP">
+                    <o-table-button attr="openAccount" (onClick)="openAccountDetailSelected()"
+                        label="{% raw %}{{ 'OPEN_ACCOUNT_SELECTED' | oTranslate }}{% endraw %}" icon="credit_card"></o-table-button>
+                    <o-table-button attr="createAccount" (onClick)="createNewAccount()"
+                        label="{% raw %}{{ 'CREATE_ACCOUNT' | oTranslate }}{% endraw %}" icon="add_card"></o-table-button>
                     <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
                     <o-table-column attr="ENDDATE" title="ENDDATE" type="date" format="LL"></o-table-column>
                     <o-table-column attr="INTERESRATE" title="INTERESRATE" type="percentage" width="150px"
@@ -112,17 +90,14 @@ export class CustomersModule { }
 </o-form>
 {% endhighlight %}
 
-<p>Para añadir pestañas, debemos declarar un contenedor <code>&lt;mat-tab-group&gt;</code> (más información en la 
-siguiente <a href="https://material.angular.io/components/tabs/overview" target="_blank">documetación</a>) y añadir
-etiquetas <code>&lt;mat-tab&gt</code> para cada pestaña. El filtrado de las tablas se hace añadiendo el parámetro 
-<code>parent-keys="CUSTOMERID"</code> siendo esta columna una colummna presente en el formulario padre.</p>
-
-<p>Añadimos la siguiente configuración al archivo <strong>customer-detail.component.ts</strong></p>
-
-{{"**customer-detail.component.ts**" | markdownify }}
+{{"**customers-detail.component.ts**" | markdownify }}
 {% highlight typescript %}
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { OFormComponent, OTableComponent } from 'ontimize-web-ngx';
 import { intRateMonthlyFunction } from 'src/app/shared/shared.module';
+import { AddAccountComponent } from './add-account/add-account.component';
 
 @Component({
   selector: 'app-customers-detail',
@@ -131,7 +106,34 @@ import { intRateMonthlyFunction } from 'src/app/shared/shared.module';
 })
 export class CustomersDetailComponent {
 
+  @ViewChild('accountCustomerTable') accountTable: OTableComponent;
+  @ViewChild('form') form: OFormComponent;
   public intRateMonthly = intRateMonthlyFunction;
+
+  constructor(
+    private router: Router,
+    public dialog: MatDialog
+  ) { }
+
+  public openAccountDetailSelected() {
+    let selected = this.accountTable.getSelectedItems();
+    if (selected.length === 1) {
+      let accountId = selected[0]['ACCOUNTID'];
+      let customerId = selected[0]['CUSTOMERID'];
+      this.router.navigate(['main/customers/' + customerId + '/' + accountId], { queryParams: { isdetail: true } });
+    }
+  }
+
+  public createNewAccount() {
+    let customerId = this.form.getFieldValue('CUSTOMERID');
+    let date = new Date().getTime();
+    this.dialog.open(AddAccountComponent, {
+      data: {
+        CUSTOMERID: customerId,
+        STARTDATE: date
+      }, disableClose: false
+    })
+  }
 
 }
 {% endhighlight %}
@@ -179,6 +181,22 @@ export class CustomersDetailComponent {
           accounts
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            accounts-detail
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              movement-column-renderer
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.css</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.html</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>movement-column-renderer.component.ts</li>
+              </ul>
+              </li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-detail.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             accounts-home
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -194,6 +212,30 @@ export class CustomersDetailComponent {
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-home.component.ts</li>
             </ul>
             </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            accounts-new
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-new.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            add-customer
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-customer.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            add-movement
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-movement.component.ts</li>
+            </ul>
+            </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts-routing.module.ts</li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>accounts.module.ts</li>
           </ul>
@@ -202,11 +244,27 @@ export class CustomersDetailComponent {
           branches
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            branches-detail
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-detail.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             branches-home
             <ul>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.css</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.html</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-home.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            branches-new
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-new.component.ts</li>
             </ul>
             </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branches-routing.module.ts</li>
@@ -227,6 +285,14 @@ export class CustomersDetailComponent {
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             customers-home
             <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              customertype-column-renderer
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.css</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.html</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customertype-column-renderer.component.ts</li>
+              </ul>
+              </li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.css</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.html</li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-home.component.ts</li>
@@ -241,7 +307,7 @@ export class CustomersDetailComponent {
             </ul>
             </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-routing.module.ts</li>
-            <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers.module.ts</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers.module.ts</li>
           </ul>
           </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -277,6 +343,29 @@ export class CustomersDetailComponent {
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>home.module.ts</li>
           </ul>
           </li>
+          <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          service-ex
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            service-ex-details
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-details.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            service-ex-home
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.css</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-home.component.ts</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-routing.module.ts</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex.module.ts</li>
+          </ul>
+          </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main-routing.module.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main.component.html</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>main.component.scss</li>
@@ -287,9 +376,51 @@ export class CustomersDetailComponent {
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
         shared
         <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          account-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>account-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          branch-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>branch-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          customer-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customer-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          employee-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>employee-card.component.ts</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          service-ex-card
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.css</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.html</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>service-ex-card.component.ts</li>
+          </ul>
+          </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.menu.config.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.services.config.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>shared.module.ts</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>star-wars-response-adapter.ts</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>star-wars.service.ts</li>
         </ul>
         </li>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app-routing.module.ts</li>
@@ -336,11 +467,14 @@ export class CustomersDetailComponent {
         <ul>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>login_bg.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>no-image.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>normal_24.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ontimize.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ontimize_web_log.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>other_24.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>sidenav-closed.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>sidenav-opened.png</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>user_profile.png</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>vip_24.png</li>
         </ul>
         </li>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -388,7 +522,123 @@ export class CustomersDetailComponent {
     </div>
 </div>
 
-![tutorial_o_web_29.png]({{ base_path }}/assets/images/tutorial_o_web_29.png)
+## Creación del nuevo componente
+Crearemos el nuevo componente para crear una nueva cuenta. Para ello ejecutamos el siguiente comando dentro de la
+carpeta **customers-detail**
 
-[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial-web/exercise6){: .btn}
-[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial-web/exercise8){: .btn}
+```
+npx ng g c --skip-tests add-account
+```
+
+<div class="multicolumn">
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <span class="material-symbols-outlined">right_panel_open</span>
+        </button>
+        
+{{"**add-account.component.html**" | markdownify }}
+{% highlight xml %}
+<div mat-dialog-content>
+    <o-form #form (onFormModeChange)="forceInsertMode($event)" (onInsert)="closeDialog($event)" service="branches"
+        entity="account" show-header="yes" after-insert-mode="new" undo-button="no" ignore-default-navigation="yes">
+        <o-combo attr="OFFICEID" label="OFFICEID" service="branches" entity="branch" value-column="OFFICEID"
+            columns="OFFICEID;NAME" visible-columns="NAME" read-only="no" required="yes"></o-combo>
+        <o-integer-input oHidden attr="CUSTOMERID"></o-integer-input>
+        <o-date-input attr="STARTDATE"></o-date-input>
+    </o-form>
+</div>
+{% endhighlight %}
+
+{{"**add-account.component.ts**" | markdownify }}
+{% highlight typescript %}
+import { Component, Inject, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { OFormComponent } from 'ontimize-web-ngx';
+
+@Component({
+  selector: 'app-add-account',
+  templateUrl: './add-account.component.html',
+  styleUrls: ['./add-account.component.css']
+})
+export class AddAccountComponent {
+
+  @ViewChild('form') form: OFormComponent;
+  public dialog: MatDialogModule;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<AddAccountComponent>
+  ) { }
+
+  public forceInsertMode(event: any) {
+    if (event != OFormComponent.Mode().INSERT) {
+      this.form.setInsertMode();
+      this.form.setFieldValues(this.data)
+    }
+  }
+
+  public closeDialog(event: any) {
+    this.dialogRef.close();
+  }
+
+}
+{% endhighlight %}
+
+<p>Añadimos este nuevo componente al array de declaraciones del módulo de cliente.</p>
+
+{{"**customers.module.ts**" | markdownify }}
+{% highlight typescript %}
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { OntimizeWebModule } from 'ontimize-web-ngx';
+import { CustomersRoutingModule } from './customers-routing.module';
+import { CustomersHomeComponent } from './customers-home/customers-home.component';
+import { CustomersDetailComponent } from './customers-detail/customers-detail.component';
+import { CustomersNewComponent } from './customers-new/customers-new.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { AddAccountComponent } from './customers-detail/add-account/add-account.component';
+
+
+@NgModule({
+  declarations: [
+    CustomersHomeComponent,
+    CustomersDetailComponent,
+    CustomersNewComponent,
+    AddAccountComponent
+  ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    OntimizeWebModule,
+    CustomersRoutingModule
+  ]
+})
+export class CustomersModule { }
+{% endhighlight %}
+
+<p>Por último añadimos las nuevas traducciones</p>
+
+{{"**en.json**" | markdownify }}
+{% highlight json %}
+{
+  ...
+  "CREATE_ACCOUNT": "Create account"
+}
+{% endhighlight %}
+
+{{"**es.json**" | markdownify }}
+{% highlight json %}
+{
+  ...
+  "CREATE_ACCOUNT": "Crear cuenta"
+}
+{% endhighlight %}
+    </div>
+    <div class="multicolumnright jstreeloader collapsed">
+        // <ul> </ul> de jstree
+    </div>
+</div>
+
+
+
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial-web/exercise17){: .btn }
+[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial-web/exercise19){: .btn }
