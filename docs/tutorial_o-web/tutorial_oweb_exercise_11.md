@@ -143,19 +143,19 @@ export class CustomertypeColumnRendererComponent extends OBaseTableCellRenderer 
 
 {{"**customers-home.component.html**" | markdownify }}
 {% highlight xml %}
-<o-form-layout-manager attr="customersHome" title="{% raw %}{{'CUSTOMERS' | oTranslate }}{% endraw %}" separator=" " mode="tab"
-label-columns="NAME;SURNAME">
-<o-table attr="customersTable" service="customers" entity="customer" keys="CUSTOMERID"
-columns="CUSTOMERID;ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL;CUSTOMERTYPEID"
-visible-columns="ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL;CUSTOMERTYPEID" query-rows="20">
-<o-table-column attr="PHOTO" title="PHOTO" orderable="no" searchable="no" type="image" avatar="yes"
-empty-image="assets/images/no-image.png" image-type="base64"></o-table-column>
-<o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
-<o-table-column attr="ID" title="ID" width="100px"></o-table-column>
-<o-table-column attr="CUSTOMERTYPEID" title="CUSTOMERTYPEID">
-<app-customertype-column-renderer></app-customertype-column-renderer>
-</o-table-column>
-</o-table>
+<o-form-layout-manager attr="customersHome" title="{% raw %}{{'CUSTOMERS' | oTranslate }}{% endraw %}" separator=" "
+    mode="tab" label-columns="NAME;SURNAME">
+    <o-table attr="customersTable" service="customers" entity="customer" keys="CUSTOMERID"
+        columns="CUSTOMERID;ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL;CUSTOMERTYPEID"
+        visible-columns="ID;PHOTO;NAME;SURNAME;STARTDATE;EMAIL;CUSTOMERTYPEID" query-rows="20">
+        <o-table-column attr="PHOTO" title="PHOTO" orderable="no" searchable="no" type="image" avatar="yes"
+            empty-image="assets/images/no-image.png" image-type="base64"></o-table-column>
+        <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
+        <o-table-column attr="ID" title="ID" width="100px"></o-table-column>
+        <o-table-column attr="CUSTOMERTYPEID" title="CUSTOMERTYPEID">
+            <app-customertype-column-renderer></app-customertype-column-renderer>
+        </o-table-column>
+    </o-table>
 </o-form-layout-manager>
 {% endhighlight %}
 

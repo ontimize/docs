@@ -40,9 +40,9 @@ de tabla a formato de cuadrícula, y modificar su formulario detalle para que se
         <div (click)="openDetail(data)" fxLayout="column" fxLayoutAlign="space-evenly center"
             class="mat-elevation-z1 employeeCard">
             <img [src]="getImageSrc(data.EMPLOYEEPHOTO)" width="144px" height="200px">
-            <span><strong>{{ data.EMPLOYEENAME }} {{data.EMPLOYEESURNAME}}</strong></span>
-            <span><em>{{ data.EMPLOYEETYPENAME }}</em></span>
-            <span class="office">{{ data.NAME }}</span>
+            <span><strong>{% raw %}{{ data.EMPLOYEENAME }}{% endraw %} {% raw %}{{data.EMPLOYEESURNAME}}{% endraw %}</strong></span>
+            <span><em>{% raw %}{{ data.EMPLOYEETYPENAME }}{% endraw %}</em></span>
+            <span class="office">{% raw %}{{ data.NAME }}{% endraw %}</span>
         </div>
     </o-grid-item>
 </o-grid>
