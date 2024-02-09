@@ -1,8 +1,8 @@
 ---
-title: "Create new account and insert a customer"
+title: "Maps"
 layout: default
-permalink: /tutorial-web/exercise18/
-nav_order: 18
+permalink: /tutorial-web/exercise20/
+nav_order: 20
 # has_children: false
 # has_toc: false
 # nav_exclude: true
@@ -13,129 +13,111 @@ parent: Tutorial OWeb
 {% include base_path %}
 {% include toc %}
 
-# Crear una nueva cuenta e insertar un cliente
+# Mapas
 ## Introducción
-En este tutorial, permitiremos que se pueda crear una nueva cuenta asociada al cliente actual.
+En este tutorial, veremos como incluir mapas dentro de un formulario que muestren la ubicación que tiene un elemento en
+el mapa siguiendo las coordenadas de latitud y longitud.
 
-## Modificar el formulario para la nueva opción
-En este caso, modificaremos el formulario existente para incluir un botón que permita añadir una nueva cuenta e insertar
-ese cliente. Será necesario tanto modificar el html para el botón, como el ts para pasarle los datos a un nuevo 
-componente
+## Instalación del módulo de mapas
 
 <div class="multicolumn">
     <div class="multicolumnleft">
         <button class="unstyle toggle-tree-btn">
             <span class="material-symbols-outlined">right_panel_open</span>
         </button>
-        
-{{"**customers-detail.component.html**" | markdownify }}
-{% highlight xml %}
-<o-form #form attr="customerDetail" service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D"
-    show-header-navigation="no" class="fill-form">
-    <o-text-input attr="CUSTOMERID" sql-type="INTEGER" enabled="no"></o-text-input>
-    <div fxFlex fxLayout="row" fxLayoutGap="8px">
-        <div>
-            <o-image id="CUSTOMER_PHOTO" attr="PHOTO" empty-image="assets/images/no-image.png"
-                sql-type="OTHER"></o-image>
-        </div>
-        <mat-tab-group fxFlex>
-            <mat-tab label="{% raw %}{{ 'CUSTOMER_PERSONAL_INFORMATION' | oTranslate }{% endraw %}}">
-                <div fxLayout="row" fxLayoutGap="8px">
-                    <o-text-input fxFlex="40" attr="NAME" required="yes"></o-text-input>
-                    <o-text-input fxFlex="40" attr="SURNAME" required="yes"></o-text-input>
-                    <o-date-input fxFlex="20" attr="STARTDATE"></o-date-input>
-                </div>
-                <div fxLayout="row" fxLayoutGap="8px">
-                    <o-nif-input fxFlex="40" attr="ID" required="yes"></o-nif-input>
-                    <o-integer-input fxFlex="40" attr="PHONE" step="0" thousand-separator=" "></o-integer-input>
-                    <o-combo fxFlex="20" attr="CUSTOMERTYPEID" service="customers" entity="customerType"
-                        keys="CUSTOMERTYPEID" columns="CUSTOMERTYPEID;DESCRIPTION" visible-columns="DESCRIPTION"
-                        value-column="CUSTOMERTYPEID"></o-combo>
-                </div>
-                <o-email-input attr="EMAIL"></o-email-input>
-                <o-text-input attr="ADDRESS"></o-text-input>
-                <div fxLayout="row" fxLayoutGap="8px">
-                    <o-real-input fxFlex="50" attr="LONGITUDE" decimal-separator="," max-decimal-digits="10"
-                        min-decimal-digits="0"></o-real-input>
-                    <o-real-input fxFlex="50" attr="LATITUDE" decimal-separator="," max-decimal-digits="10"
-                        min-decimal-digits="0"></o-real-input>
-                </div>
-                <o-textarea-input attr="COMMENTS"></o-textarea-input>
-            </mat-tab>
-            <mat-tab label="{% raw %}{{ 'ACCOUNTS' | oTranslate }}{% endraw %}">
-                <o-table #accountCustomerTable attr="accountsTable" service="customers" entity="vCustomerAccount"
-                    keys="ACCOUNTID" parent-keys="CUSTOMERID" insert-button="no" refresh-button="yes"
-                    detail-mode="dblclick" delete-button="no" query-rows="20"
-                    columns="CUSTOMERID;ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
-                    visible-columns="ACCOUNTNUMBER;STARTDATE;ENDDATE;INTERESRATE;INTERESRATE_MONTHLY;ACCOUNTTYP">
-                    <o-table-button attr="openAccount" (onClick)="openAccountDetailSelected()"
-                        label="{% raw %}{{ 'OPEN_ACCOUNT_SELECTED' | oTranslate }}{% endraw %}" icon="credit_card"></o-table-button>
-                    <o-table-button attr="createAccount" (onClick)="createNewAccount()"
-                        label="{% raw %}{{ 'CREATE_ACCOUNT' | oTranslate }}{% endraw %}" icon="add_card"></o-table-button>
-                    <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
-                    <o-table-column attr="ENDDATE" title="ENDDATE" type="date" format="LL"></o-table-column>
-                    <o-table-column attr="INTERESRATE" title="INTERESRATE" type="percentage" width="150px"
-                        decimal-separator="," content-align="center"></o-table-column>
-                    <o-table-column attr="ACCOUNTNUMBER" title="ACCOUNTNUMBER" content-align="center">
-                        <app-account-number-render></app-account-number-render>
-                    </o-table-column>
-                    <o-table-column-calculated attr="INTERESRATE_MONTHLY" title="INTERESRATE_MONTHLY"
-                        [operation-function]="intRateMonthly" type="percentage" decimal-separator=","
-                        content-align="center">
-                    </o-table-column-calculated>
-                </o-table>
-            </mat-tab>
-        </mat-tab-group>
-    </div>
-</o-form>
+        <p>Ejecutamos el siguiente comando</p>
+
+{% highlight console %}
+npm install ontimize-web-ngx-map --save
 {% endhighlight %}
 
-{{"**customers-detail.component.ts**" | markdownify }}
-{% highlight typescript %}
-import { Component, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { OFormComponent, OTableComponent } from 'ontimize-web-ngx';
-import { intRateMonthlyFunction } from 'src/app/shared/shared.module';
-import { AddAccountComponent } from './add-account/add-account.component';
+<p>Añadimos al fichero <strong>angular.json</strong> los estilos del mapas y la carpeta de recursos de los mapas 
+<strong>leaflet</strong></p>
 
-@Component({
-  selector: 'app-customers-detail',
-  templateUrl: './customers-detail.component.html',
-  styleUrls: ['./customers-detail.component.css']
-})
-export class CustomersDetailComponent {
-
-  @ViewChild('accountCustomerTable') accountTable: OTableComponent;
-  @ViewChild('form') form: OFormComponent;
-  public intRateMonthly = intRateMonthlyFunction;
-
-  constructor(
-    private router: Router,
-    public dialog: MatDialog
-  ) { }
-
-  public openAccountDetailSelected() {
-    let selected = this.accountTable.getSelectedItems();
-    if (selected.length === 1) {
-      let accountId = selected[0]['ACCOUNTID'];
-      let customerId = selected[0]['CUSTOMERID'];
-      this.router.navigate(['main/customers/' + customerId + '/' + accountId], { queryParams: { isdetail: true } });
-    }
-  }
-
-  public createNewAccount() {
-    let customerId = this.form.getFieldValue('CUSTOMERID');
-    let date = new Date().getTime();
-    this.dialog.open(AddAccountComponent, {
-      data: {
-        CUSTOMERID: customerId,
-        STARTDATE: date
-      }, disableClose: false
-    })
-  }
-
+{{"**angular.json**" | markdownify }}
+{% highlight json %}
+{
+  ...
+  "assets": [
+    "src/favicon.ico",
+    "src/assets",
+    {
+      "glob": "**/*",
+      "input": "node_modules/ontimize-web-ngx/assets",
+      "output": "/assets"
+    },
+    {
+      "glob": "**/*",
+      "input": "node_modules/ngx-extended-pdf-viewer/assets",
+      "output": "/assets"
+    },
+    {
+      "glob": "**/*",
+      "input": "node_modules/ontimize-web-ngx-charts/assets",
+      "output": "/assets"
+    },
+    {
+      "glob": "**/*",
+      "input": "node_modules/leaflet/dist/images",
+      "output": "/assets"
+    },
+    "src/manifest.webmanifest"
+  ],
+  "styles": [
+    "node_modules/ontimize-web-ngx-charts/styles.scss",
+    "node_modules/ontimize-web-ngx-map/styles.scss",
+    "node_modules/ontimize-web-ngx/ontimize.scss",
+    "src/assets/css/app.scss",
+    "src/styles.scss"
+  ],
+  ...
 }
+{% endhighlight %}
+
+<p>Añadimos la declaración del módulo de mapas al módulo <strong>shared</strong></p>
+
+{{"**shared.module.ts**" | markdownify }}
+{% highlight typescript %}
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { OntimizeWebModule } from 'ontimize-web-ngx';
+import { AccountNumberRenderComponent } from '../main/accounts/accounts-home/account-number-render/account-number-render.component';
+import { CustomertypeColumnRendererComponent } from '../main/customers/customers-home/customertype-column-renderer/customertype-column-renderer.component';
+import { MovementColumnRendererComponent } from '../main/accounts/accounts-detail/movement-column-renderer/movement-column-renderer.component';
+import { MENU_COMPONENTS } from './app.menu.config';
+import { OChartModule } from 'ontimize-web-ngx-charts';
+import { AccountsDetailComponent } from '../main/accounts/accounts-detail/accounts-detail.component';
+import { OMapModule } from "ontimize-web-ngx-map";
+
+export function intRateMonthlyFunction(rowData: Array<any>): number {
+  return rowData["INTERESRATE"] / 12;
+}
+
+@NgModule({
+  imports: [
+    OntimizeWebModule,
+    OChartModule,
+    OMapModule
+  ],
+  declarations: [
+    AccountNumberRenderComponent,
+    CustomertypeColumnRendererComponent,
+    MovementColumnRendererComponent,
+    ...MENU_COMPONENTS,
+    AccountsDetailComponent
+  ],
+  exports: [
+    CommonModule,
+    AccountNumberRenderComponent,
+    CustomertypeColumnRendererComponent,
+    MovementColumnRendererComponent,
+    ...MENU_COMPONENTS,
+    OChartModule,
+    AccountsDetailComponent,
+    OMapModule
+  ]
+})
+export class SharedModule { }
 {% endhighlight %}
     </div>
     <div class="multicolumnright jstreeloader collapsed">
@@ -277,9 +259,17 @@ export class CustomersDetailComponent {
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             customers-detail
             <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              add-account
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-account.component.css</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-account.component.html</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-account.component.ts</li>
+              </ul>
+              </li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.css</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.html</li>
-              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.ts</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.ts</li>
             </ul>
             </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -343,7 +333,7 @@ export class CustomersDetailComponent {
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>home.module.ts</li>
           </ul>
           </li>
-          <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
           service-ex
           <ul>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -418,7 +408,7 @@ export class CustomersDetailComponent {
           </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.menu.config.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.services.config.ts</li>
-          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>shared.module.ts</li>
+          <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>shared.module.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>star-wars-response-adapter.ts</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>star-wars.service.ts</li>
         </ul>
@@ -439,6 +429,7 @@ export class CustomersDetailComponent {
         css
         <ul>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.scss</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>custom-theme.scss</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>loader.css</li>
         </ul>
         </li>
@@ -507,7 +498,7 @@ export class CustomersDetailComponent {
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.editorconfig</li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.eslintrc.json</li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.gitignore</li>
-    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>angular.json</li>
+    <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>angular.json</li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>karma.conf.js</li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ngsw-config.json</li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>package-lock.json</li>
@@ -522,114 +513,154 @@ export class CustomersDetailComponent {
     </div>
 </div>
 
-## Creación del nuevo componente
-Crearemos el nuevo componente para crear una nueva cuenta. Para ello ejecutamos el siguiente comando dentro de la
-carpeta **customers-detail**
-
-```
-npx ng g c --skip-tests add-account
-```
+## Añadir el mapa a un formulario
 
 <div class="multicolumn">
     <div class="multicolumnleft">
         <button class="unstyle toggle-tree-btn">
             <span class="material-symbols-outlined">right_panel_open</span>
         </button>
-        
-{{"**add-account.component.html**" | markdownify }}
+        <p>Envolveremos el mapa con un contenedor que sólo se mostrará si hemos cargado la latitud y longitud en el 
+formulario. Para ello, utilizaremos el evento del formulario <strong>onDataLoaded</strong>. Tanto el mapa como la capa 
+de marcadores obtendrán las coordenadas de una función llamada <strong>getPositionGPS()</strong>, que devolverá la 
+latitud y longitud, separadas por comas, que se hayan guardado en la carga del formulario</p>
+
+{{"**customers-detail.component.html**" | markdownify }}
 {% highlight xml %}
-<div mat-dialog-content>
-    <o-form #form (onFormModeChange)="forceInsertMode($event)" (onInsert)="closeDialog($event)" service="branches"
-        entity="account" show-header="yes" after-insert-mode="new" undo-button="no" ignore-default-navigation="yes">
-        <o-combo attr="OFFICEID" label="OFFICEID" service="branches" entity="branch" value-column="OFFICEID"
-            columns="OFFICEID;NAME" visible-columns="NAME" read-only="no" required="yes"></o-combo>
-        <o-integer-input oHidden attr="CUSTOMERID"></o-integer-input>
-        <o-date-input attr="STARTDATE"></o-date-input>
-    </o-form>
-</div>
+<o-form #form attr="customerDetail" service="customers" entity="customer" keys="CUSTOMERID" header-actions="R;I;U;D"
+    show-header-navigation="no" class="fill-form" (onDataLoaded)="onFormDataLoaded($event)">
+    <o-text-input attr="CUSTOMERID" sql-type="INTEGER" enabled="no"></o-text-input>
+    <div fxFlex fxLayout="row" fxLayoutGap="8px">
+        <div>
+            <o-image id="CUSTOMER_PHOTO" attr="PHOTO" empty-image="assets/images/no-image.png"
+                sql-type="OTHER"></o-image>
+        </div>
+        <mat-tab-group fxFlex="60">
+            <mat-tab label="{% raw %}{{ 'CUSTOMER_PERSONAL_INFORMATION' | oTranslate }}{% endraw %}">
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-text-input fxFlex="40" attr="NAME" required="yes"></o-text-input>
+                    <o-text-input fxFlex="40" attr="SURNAME" required="yes"></o-text-input>
+                    <o-date-input fxFlex="20" attr="STARTDATE"></o-date-input>
+                </div>
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-nif-input fxFlex="40" attr="ID" required="yes"></o-nif-input>
+                    <o-integer-input fxFlex="40" attr="PHONE" step="0" thousand-separator=" "></o-integer-input>
+                    <o-combo fxFlex="20" attr="CUSTOMERTYPEID" service="customers" entity="customerType"
+                        keys="CUSTOMERTYPEID" columns="CUSTOMERTYPEID;DESCRIPTION" visible-columns="DESCRIPTION"
+                        value-column="CUSTOMERTYPEID"></o-combo>
+                </div>
+                <o-email-input attr="EMAIL"></o-email-input>
+                <o-text-input attr="ADDRESS"></o-text-input>
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <o-real-input fxFlex="50" attr="LONGITUDE" decimal-separator="," max-decimal-digits="10"
+                        min-decimal-digits="0"></o-real-input>
+                    <o-real-input fxFlex="50" attr="LATITUDE" decimal-separator="," max-decimal-digits="10"
+                        min-decimal-digits="0"></o-real-input>
+                </div>
+                <o-textarea-input attr="COMMENTS"></o-textarea-input>
+            </mat-tab>
+            <mat-tab label="{% raw %}{{ 'ACCOUNTS' | oTranslate }}{% endraw %}">
+                <o-table #accountCustomerTable attr="accountsTable" service="customers" entity="vCustomerAccount"
+                    keys="ACCOUNTID" parent-keys="CUSTOMERID" insert-button="no" refresh-button="yes"
+                    detail-mode="dblclick" delete-button="no" query-rows="20"
+                    columns="CUSTOMERID;ACCOUNTID;ENTITYID;OFFICEID;CDID;ANID;STARTDATE;ENDDATE;INTERESRATE;ACCOUNTTYP"
+                    visible-columns="ACCOUNTNUMBER;STARTDATE;ENDDATE;INTERESRATE;INTERESRATE_MONTHLY;ACCOUNTTYP">
+                    <o-table-button attr="openAccount" (onClick)="openAccountDetailSelected()"
+                        label="{% raw %}{{ 'OPEN_ACCOUNT_SELECTED' | oTranslate }}{% endraw %}" icon="credit_card"></o-table-button>
+                    <o-table-button attr="createAccount" (onClick)="createNewAccount()"
+                        label="{% raw %}{{ 'CREATE_ACCOUNT' | oTranslate }}{% endraw %}" icon="add_card"></o-table-button>
+                    <o-table-column attr="STARTDATE" title="STARTDATE" type="date" format="LL"></o-table-column>
+                    <o-table-column attr="ENDDATE" title="ENDDATE" type="date" format="LL"></o-table-column>
+                    <o-table-column attr="INTERESRATE" title="INTERESRATE" type="percentage" width="150px"
+                        decimal-separator="," content-align="center"></o-table-column>
+                    <o-table-column attr="ACCOUNTNUMBER" title="ACCOUNTNUMBER" content-align="center">
+                        <app-account-number-render></app-account-number-render>
+                    </o-table-column>
+                    <o-table-column-calculated attr="INTERESRATE_MONTHLY" title="INTERESRATE_MONTHLY"
+                        [operation-function]="intRateMonthly" type="percentage" decimal-separator=","
+                        content-align="center">
+                    </o-table-column-calculated>
+                </o-table>
+            </mat-tab>
+        </mat-tab-group>
+        <div fxFlex="40" fxFlex.md="100" *ngIf="hasGPSPositition()">
+            <o-map class="o-map" [center]="getPositionGPS()" zoom="10" min-zoom="3" max-zoom="20" zoom-control="yes"
+                search-control="no" layer-panel-visible="no">
+                <o-map-layer layer-type="marker" layer-id="location_marker"
+                    [layer-center]="getPositionGPS()"></o-map-layer>
+            </o-map>
+        </div>
+    </div>
+</o-form>
 {% endhighlight %}
 
-{{"**add-account.component.ts**" | markdownify }}
+{{"**customers-detail.component.ts**" | markdownify }}
 {% highlight typescript %}
-import { Component, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { OFormComponent } from 'ontimize-web-ngx';
+import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { OFormComponent, OTableComponent } from 'ontimize-web-ngx';
+import { intRateMonthlyFunction } from 'src/app/shared/shared.module';
+import { AddAccountComponent } from './add-account/add-account.component';
 
 @Component({
-  selector: 'app-add-account',
-  templateUrl: './add-account.component.html',
-  styleUrls: ['./add-account.component.css']
+  selector: 'app-customers-detail',
+  templateUrl: './customers-detail.component.html',
+  styleUrls: ['./customers-detail.component.css']
 })
-export class AddAccountComponent {
+export class CustomersDetailComponent {
 
+  @ViewChild('accountCustomerTable') accountTable: OTableComponent;
   @ViewChild('form') form: OFormComponent;
-  public dialog: MatDialogModule;
+  public intRateMonthly = intRateMonthlyFunction;
+  public longitude;
+  public latitude;
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<AddAccountComponent>
+    private router: Router,
+    public dialog: MatDialog
   ) { }
 
-  public forceInsertMode(event: any) {
-    if (event != OFormComponent.Mode().INSERT) {
-      this.form.setInsertMode();
-      this.form.setFieldValues(this.data)
+  public openAccountDetailSelected() {
+    let selected = this.accountTable.getSelectedItems();
+    if (selected.length === 1) {
+      let accountId = selected[0]['ACCOUNTID'];
+      let customerId = selected[0]['CUSTOMERID'];
+      this.router.navigate(['main/customers/' + customerId + '/' + accountId], { queryParams: { isdetail: true } });
     }
   }
 
-  public closeDialog(event: any) {
-    this.dialogRef.close();
+  public createNewAccount() {
+    let customerId = this.form.getFieldValue('CUSTOMERID');
+    let date = new Date().getTime();
+    this.dialog.open(AddAccountComponent, {
+      data: {
+        CUSTOMERID: customerId,
+        STARTDATE: date
+      }, disableClose: false
+    })
   }
 
-}
-{% endhighlight %}
+  onFormDataLoaded(data: any) {
+    if (data.LATITUDE) {
+      this.latitude = data.LATITUDE;
+    }
+    if (data.LONGITUDE) {
+      this.longitude = data.LONGITUDE;
+    }
+  }
 
-<p>Añadimos este nuevo componente al array de declaraciones del módulo de cliente.</p>
+  hasGPSPositition() {
+    if (this.latitude && this.longitude) {
+      return true;
+    }
+    return false;
+  }
 
-{{"**customers.module.ts**" | markdownify }}
-{% highlight typescript %}
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { OntimizeWebModule } from 'ontimize-web-ngx';
-import { CustomersRoutingModule } from './customers-routing.module';
-import { CustomersHomeComponent } from './customers-home/customers-home.component';
-import { CustomersDetailComponent } from './customers-detail/customers-detail.component';
-import { CustomersNewComponent } from './customers-new/customers-new.component';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { AddAccountComponent } from './customers-detail/add-account/add-account.component';
+  getPositionGPS() {
+    return this.latitude + ',' + this.longitude;
+  }
 
-
-@NgModule({
-  declarations: [
-    CustomersHomeComponent,
-    CustomersDetailComponent,
-    CustomersNewComponent,
-    AddAccountComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    OntimizeWebModule,
-    CustomersRoutingModule
-  ]
-})
-export class CustomersModule { }
-{% endhighlight %}
-
-<p>Por último añadimos las nuevas traducciones</p>
-
-{{"**en.json**" | markdownify }}
-{% highlight json %}
-{
-  ...
-  "CREATE_ACCOUNT": "Create account"
-}
-{% endhighlight %}
-
-{{"**es.json**" | markdownify }}
-{% highlight json %}
-{
-  ...
-  "CREATE_ACCOUNT": "Crear cuenta"
 }
 {% endhighlight %}
     </div>
@@ -776,13 +807,13 @@ export class CustomersModule { }
               add-account
               <ul>
                 <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-account.component.css</li>
-                <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-account.component.html</li>
-                <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-account.component.ts</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-account.component.html</li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>add-account.component.ts</li>
               </ul>
               </li>
               <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.css</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.html</li>
-              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.ts</li>
+              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.html</li>
+              <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-detail.component.ts</li>
             </ul>
             </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -810,7 +841,7 @@ export class CustomersModule { }
             </ul>
             </li>
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers-routing.module.ts</li>
-            <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers.module.ts</li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>customers.module.ts</li>
           </ul>
           </li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -942,14 +973,15 @@ export class CustomersModule { }
         css
         <ul>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>app.scss</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>custom-theme.scss</li>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>loader.css</li>
         </ul>
         </li>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
         i18n
         <ul>
-          <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>en.json</li>
-          <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>es.json</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>en.json</li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>es.json</li>
         </ul>
         </li>
         <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -1024,8 +1056,4 @@ export class CustomersModule { }
 </ul>
     </div>
 </div>
-
-
-
-[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial-web/exercise17){: .btn }
-[<span style="display: flex; align-items: center;">Próximo tutorial <span class="material-symbols-outlined">arrow_forward</span></span>]({{ base_path }}/tutorial-web/exercise19){: .btn }
+[<span style="display: flex; align-items: center;"><span class="material-symbols-outlined">arrow_back</span> Tutorial anterior</span>]({{ base_path }}/tutorial-web/exercise19){: .btn }
