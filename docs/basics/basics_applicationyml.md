@@ -129,60 +129,76 @@ Mechanism that allows restricted resources to be requested between domains.
 
 ### Security
 
-- **ontimize:security**
+- **ontimize:security:**
 
-   | Attribute | Values | Meaning |
-   |--|--|--|
-   | mode | default | Default security mode |
+   | Attribute     | Values  | Meaning                                                |
+   |---------------|---------|--------------------------------------------------------|
+   | mode          | default | Default security mode                                  |
+   | ignore-paths  | /app/** | Routes where authenticated user control will not apply |
 
-   - **ontimize:security:role-information-service:**
+   - **ontimize:security:jwt:**
+   
+        Configure password for JWT token.
+   
+      | Attribute | Values      | Meaning                |
+      |-----------|-------------|------------------------|
+      | password  | cH4nG3_M3** | Password for JWT token |
+  
+       {: .note}
+       > This JWT token **MUST BE CHANGED** in any application. It's a secret inormation.
+       
 
-      Configure columns for user roles
+  - **ontimize:security:role-information-service:**
 
-      | Attribute | Values | Meaning |
-      |--|--|--|
-      | role-repository | String | Repository which store the user role |
-      | role-name-column | String | Name of the column which store the role name |
-      | server-permission-query-id | String | Query ID to identify the query of server permissions |
-      | server-permission-name-column | String | Name of the columns which contains the name of the server permission |
-      | client-permission-query-id | String | Query ID for  client permissions |
-      | client-permission-column | String | Name of the columns which contains the name of the client permission |
+     Configure columns for user roles
 
-   - **ontimize:security:user-information-service:**
+     | Attribute | Values | Meaning |
+     |--|--|--|
+     | role-repository | String | Repository which store the user role |
+     | role-name-column | String | Name of the column which store the role name |
+     | server-permission-query-id | String | Query ID to identify the query of server permissions |
+     | server-permission-name-column | String | Name of the columns which contains the name of the server permission |
+     | client-permission-query-id | String | Query ID for  client permissions |
+     | client-permission-column | String | Name of the columns which contains the name of the client permission |
 
-      Information about the user
+  - **ontimize:security:user-information-service:**
 
-      | Attribute | Values | Meaning |
-      |--|--|--|
-      | user-repository | String | Repository which stores the users of the application |
-      | user-login-column | String | Name of the column with the username |
-      | user-password-column | String | Name of the column with the password |
-      | query-id | String | Query identififer for login |
-      | other-data | List | Other query columns |
+     Information about the user
 
-   - **ontimize:security:user-role-information-service:**
+     | Attribute | Values | Meaning |
+     |--|--|--|
+     | user-repository | String | Repository which stores the users of the application |
+     | user-login-column | String | Name of the column with the username |
+     | user-password-column | String | Name of the column with the password |
+     | query-id | String | Query identififer for login |
+     | other-data | List | Other query columns |
 
-      Repository information about linking users and roles
+  - **ontimize:security:user-role-information-service:**
 
-      | Attribute | Values | Meaning |
-      |--|--|--|
-      | user-role-repository | String | Repository name |
-      | query-id | String | Query identifier |
-      | role-login-column | String | Column which stores the user |
-      | role-name-column | String | Column which stores the role name |
+     Repository information about linking users and roles
+
+     | Attribute | Values | Meaning |
+     |--|--|--|
+     | user-role-repository | String | Repository name |
+     | query-id | String | Query identifier |
+     | role-login-column | String | Column which stores the user |
+     | role-name-column | String | Column which stores the role name |
 
 
    **Example**
    ```yaml
    security:
          mode: default
+         jwt:
+            password: cH4nG3_M3** # ← CHANGE THIS VALUE
+         ignore-paths: /app/**
          role-information-iervice:
             role-repository: UserRoleDao
             role-name-column: ROLENAME
             server-permission-query-id: serverPermissions
             server-permission-name-column: PERMISSION_NAME
             client-permission-query-id: clientPermissions
-            client-ermission-column: XMLCLIENTPERMISSION
+            client-permission-column: XMLCLIENTPERMISSION
          user-information-service:
             user-repository: UserDao
             user-login-column: USER_
@@ -335,6 +351,8 @@ ontimize:
          upper-like: true
    security:
       mode: default
+      jwt:
+         password: cH4nG3_M3** # ← CHANGE THIS VALUE
       role-information-service:
          role-repository: UserRoleDao
          role-name-column: ROLENAME
