@@ -335,7 +335,7 @@ ontimize:
 | ignore-paths | *String* | Paths in server thant will not be securized |
 | service-path | *String* | Establish the service path. By default, */\*\** |
 
-- **ontimize:security:jwt:** *Not required, enabled by default*
+- **ontimize:security:jwt:** _**Required**_
 
 | Attribute | Values | Meaning |
 |--|--|--|
@@ -381,6 +381,8 @@ The configuration of the rest of the Security System is done by setting up the n
 ontimize:
   security:
     mode: default
+    jwt:
+      password: cH4nG3_M3** # ← CHANGE THIS VALUE
     ignore-paths: /news/**, /products/**
     user-information-service:
       user-repository: OCLoginProfilesDao

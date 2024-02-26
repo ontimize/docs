@@ -66,21 +66,24 @@ ontimize:
    security:
       # Modo de seguridad por defecto
       mode: default
+      # Configuración de la contraseña del token de JWT. DEBE Cambiarse.
+      jwt:
+         password: cH4nG3_M3** # ← CHANGE THIS VALUE
       # Rutas a ignorar la seguridad
       ignore-paths: /app/**
       # Configurar las columnas del rol de usuario
       role-information-service:
          # Repositorio que almacenan los roles
          role-repository: UserRoleDao
-         #Nombre de la columnas que tiene el nombre del rol
+         # Nombre de la columna que tiene el nombre del rol
          role-name-column: ROLENAME
-         #Identificador de la query para la consulta de permisos en el servidor
+         # Identificador de la query para la consulta de permisos en el servidor
          server-permission-query-id: serverPermissions
-         #Nombre de la columna que contiene el nombre del permiso
+         # Nombre de la columna que contiene el nombre del permiso
          server-permission-name-column: PERMISSION_NAME
-         #Identificador de la query para la consulta de permisos en el cliente
+         # Identificador de la query para la consulta de permisos en el cliente
          client-permission-query-id: clientPermissions
-         #Nombre de la columna que contiene los permisos del cliente
+         # Nombre de la columna que contiene los permisos del cliente
          client-permission-column: XMLCLIENTPERMISSION
       # Información sobre el usuario
       user-information-service:
