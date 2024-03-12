@@ -211,6 +211,39 @@ ontimize:
          domain: yourdomain.com
 ```
 
+## Keycloak
+
+- **ontimize:security:**
+
+| Attribute | Value | Meaning |
+|--|--|--|
+| mode | *keycloak* | Change the system security from *default* to *keycloak* |
+
+- **ontimize:security:keycloak:**
+
+| Attribute                  | Values        | Meaning                                                                                                                                                                   |
+|----------------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| auth-server-url            | _URL_         | URL of the host for keycloak security                                                                                                                                     |
+| realm                      | _String_      | The realm name                                                                                                                                                            |
+| resource                   | _String_      | The resource/client name                                                                                                                                                  |
+| public-client              | _true, false_ | If set to true, the adapter will not send credentials for the client to Keycloak                                                                                          |
+| use-resource-role-mappings | _true, false_ | If set to true, the adapter will look inside the token for application level role mappings for the user. If false, it will look at the realm level for user role mappings |
+
+The keycloak security configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/keycloak).
+
+**Example**
+```yaml
+ontimize:
+   security:
+      mode: keycloak
+      keycloak:
+         auth-server-url: http://yourkeycloakdomain.com
+         realm: yourrealm
+         resource: yourclientname
+         public-client: true
+         use-resource-role-mappings: true
+```
+
 ## Mail
 
 - **ontimize:mail:**

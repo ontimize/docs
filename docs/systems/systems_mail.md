@@ -3,7 +3,7 @@ title: "Mail System"
 layout: default
 permalink: /systems/mail/
 parent: Systems
-nav_order: 6
+nav_order: 7
 ---
 
 {% include base_path %}

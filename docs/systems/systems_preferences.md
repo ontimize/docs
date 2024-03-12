@@ -3,7 +3,7 @@ title: "Preferences System"
 layout: default
 permalink: /systems/preferences/
 parent: Systems
-nav_order: 7
+nav_order: 8
 ---
 
 {% include base_path %}
