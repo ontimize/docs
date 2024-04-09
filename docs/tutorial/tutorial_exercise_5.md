@@ -1,5 +1,5 @@
 ---
-title: "Service master"
+title: "Master Data Management"
 layout: default
 permalink: /tutorial/exercise5
 nav_order: 5
@@ -1007,6 +1007,7 @@ public class MasterService implements IMasterService {
 
 }
 {% endhighlight %}
+
         </div>
         <div class="multicolumnright jstreeloader collapsed">
             <ul>
@@ -1268,7 +1269,7 @@ public class MasterService implements IMasterService {
               </li>
             </ul>
         </div>
-</div>
+    </div>
 
 ## Creación del controlador de maestros
 Ahora crearemos el controlador REST para el servicio de maestros. Tenemos que crear una clase nueva que extienda de 
@@ -1277,11 +1278,13 @@ las anotaciones ```@RestController```, que indicará que esta clase servirá de 
 ```@RequestMapping("/master")``` que establecerá la url del controlador.
 
 <div class="multicolumn">
-        <div class="multicolumnleft">
-            <button class="unstyle toggle-tree-btn">
-                <span class="material-symbols-outlined">right_panel_open</span>
-            </button>
+    <div class="multicolumnleft">
+        <button class="unstyle toggle-tree-btn">
+            <span class="material-symbols-outlined">right_panel_open</span>
+        </button>
+
 {{"**MasterRestController**" | markdownify }}
+
 {% highlight java %}
 package com.ontimize.hr.ws.core.rest;
 
@@ -1306,6 +1309,7 @@ public class MasterRestController extends ORestController<IMasterService> {
 
 }
 {% endhighlight %}
+
         </div>
         <div class="multicolumnright jstreeloader collapsed">
             <ul>
@@ -1568,7 +1572,7 @@ public class MasterRestController extends ORestController<IMasterService> {
               </li>
             </ul>
         </div>
-</div>
+    </div>
 
 Arrancamos la aplicación y ya podemos hacer nuevas peticiones desde [Postman](https://www.postman.com/){:target="_blank"}.
 

@@ -453,3 +453,102 @@ a:not([class]) {
     transition-timing-function: ease;
   }
 }
+
+
+// Link sections menu cards
+
+.menu-card-container {
+  display: grid;
+  grid-gap: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(auto, 368px));
+  grid-auto-rows: minmax(200px, auto);
+  justify-content: center;
+
+  a {
+    text-decoration: none;
+    color: $dark-74;
+
+    .menu-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      border: 1px solid #eeebee;
+      border-radius: 4px;
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 140px;
+        background-color: #F6F6F6;
+        border-bottom: 1px solid #eeebee;
+      }
+
+      .bottom-image {
+        text-align: end;
+        padding: 20px 18px;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: $primary-500-24;
+      }
+
+      .text-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 140px;
+
+        >p {
+          display: flex;
+          align-items: center;
+          text-align: start;
+          padding: 10px 18px 0 18px;
+          height: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          color: $primary-500;
+          font-weight: 500;
+        }
+
+        >p~p {
+          color: inherit;
+          font-weight: inherit;
+          padding: 10px 18px 10px 18px;
+        }
+      }
+
+      .bottom-title {
+        text-align: end;
+        border-top: 1px solid #eeebee;
+        background-color: $primary-500-24;
+        margin: 0;
+        padding: 20px 18px;
+        border-radius: 0 0 4px 4px;
+      }
+    }
+
+    &:hover {
+      .menu-card {
+        background-color: rgba(20, 100, 165, 0.2);
+        border-color: rgba(20, 100, 165, 0.6);
+
+        .image-container {
+          background-color: transparent;
+          border-bottom: none;
+        }
+
+        .bottom-title {
+          background-color: rgba(20, 100, 165, 0.2);
+          border-top: none;
+        }
+
+        .bottom-image {
+          background-color: rgba(20, 100, 165, 0.2);
+        }
+      }
+    }
+  }
+}
