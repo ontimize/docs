@@ -1,35 +1,43 @@
 sections:
   "tutorial":
-    - url: "/tutorial/exercise1/"
+    - url: "{{ base_path }}/tutorial/exercise1/"
       title: "Preparing base project"
       description: "Exercise 1"
-    - url: "/tutorial/exercise2/"
+    - url: "{{ base_path }}/tutorial/exercise2/"
       title: "Structure of an Ontimize Boot application"
       description: "Exercise 2"
-    - url: "/tutorial/exercise3/"
+    - url: "{{ base_path }}/tutorial/exercise3/"
       title: "	Understanding the application.yml file"
       description: "Exercise 3"
-    - url: "/tutorial/exercise4/"
+    - url: "{{ base_path }}/tutorial/exercise4/"
       title: "Creating DAO, Service and Controller"
       description: "Exercise 4"
-    - url: "/tutorial/exercise5/"
+    - url: "{{ base_path }}/tutorial/exercise5/"
       title: "Master Data Management"
       description: "Exercise 5"
-    - url: "/tutorial/exercise6/"
+    - url: "{{ base_path }}/tutorial/exercise6/"
       title: "Understanding the EntityResult"
       description: "Exercise 6"
-    - url: "/tutorial/exercise7/"
+    - url: "{{ base_path }}/tutorial/exercise7/"
       title: "CRUD operations, transactions"
       description: "Exercise 7"
-    - url: "/tutorial/exercise8/"
+    - url: "{{ base_path }}/tutorial/exercise8/"
       title: "Adding new services"
       description: "Exercise 8"
-    - url: "/tutorial/exercise9/"
+    - url: "{{ base_path }}/tutorial/exercise9/"
       title: "Use of Basic Expression and new methods"
       description: "Exercise 9"
-    - url: "/tutorial/exercise10/"
+    - url: "{{ base_path }}/tutorial/exercise10/"
       title: "Use of complex queries"
       description: "Exercise 10"
-    - url: "/tutorial/exercise11/"
+    - url: "{{ base_path }}/tutorial/exercise11/"
       title: "	Use server permission"
       description: "Exercise 11"
+#  [comment]: # - [Autoconfigurators]({{ base_path }}/basics/autoconfigurators)
+#  [comment]: # - [Charts on-demand]({{ base_path }}/basics/charts-on-demand)
+#  [comment]: # - [Complex Queries]({{ base_path }}/basics/complexqueries)
+#  [comment]: # - [Export data]({{ base_path }}/basics/exportdata)
+#  [comment]: # - [Migration from Ontimize 1.x.x to 3.x.x]({{ base_path }}/basics/migration)
+#  [comment]: # - [Multiple Datasources]({{ base_path }}/basics/multipledatasources)
+#  [comment]: # - [Understanding application.yml file]({{ base_path }}/basics/applicationyml)
+#  [comment]: # ([Controllers requests and responses]({{ base_path }}/basics/controllers_request_responses))
