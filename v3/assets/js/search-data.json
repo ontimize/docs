@@ -1,7 +1,7 @@
 {"0": {
     "doc": "Basics",
     "title": "Basics",
-    "content": "This section pretends to show the basic elements for the development of an application using Ontimize Boot . | Autoconfigurators | Charts on-demand | Complex Queries | Export data | Migration from Ontimize 1.x.x to 3.x.x | Multiple Datasources | Understanding application.yml file | . ",
+    "content": "This section pretends to show the basic elements for the development of an application using Ontimize Boot . Autoconfigurators . Charts on-demand . Complex Queries . Export data . Migration from Ontimize 1.x.x to 3.x.x . Multiple Datasources . Understanding application.yml file . ",
     "url": "/docs/v3/basics/",
     
     "relUrl": "/basics/"
@@ -344,7 +344,7 @@
   },"49": {
     "doc": "Export data",
     "title": "Export data",
-    "content": "This module works only for Ontimize Boot version 3.9.0 or above. Actual release version: . Ontimize provides a system to export the DAO data of a service and dump it directly to a file. This system uses a JSON template where all the necessary parameters are indicated to use in the body of the request to obtain the file. The export options are: . | Export data to csv | Export data to xlsx | Export data to pdf | . ",
+    "content": "This module works only for Ontimize Boot version 3.9.0 or above. Actual release version: . Ontimize provides a system to export the DAO data of a service and dump it directly to a file. This system uses a JSON template where all the necessary parameters are indicated to use in the body of the request to obtain the file. The export options are: . CSV . Export data to CSV . XLSX . Export data to XLSX . PDF . Export data to PDF . ",
     "url": "/docs/v3/basics/exportdata/#export-data",
     
     "relUrl": "/basics/exportdata/#export-data"
@@ -666,7 +666,7 @@
   },"95": {
     "doc": "Systems",
     "title": "Systems",
-    "content": " ",
+    "content": "Async tasks . Async tasks system . DMS . DMS system . SDMS . SDMS system . I18n . I18n system . LDAP . LDAP system . Keycloak . Keycloak system . Reports . Reports system . Mail . Mail system . Preferences . Preferences system . Security . Security system . ",
     "url": "/docs/v3/systems/",
     
     "relUrl": "/systems/"
