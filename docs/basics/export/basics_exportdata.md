@@ -19,6 +19,5 @@ has_toc: false
 Ontimize provides a system to export the DAO data of a service and dump it directly to a file. This system uses a JSON template where all the necessary parameters are indicated to use in the body of the request to obtain the file.
 
 The export options are:
-* [Export data to csv]({{ base_path }}/basics/exportdata/export-data-to-csv)
-* [Export data to xlsx]({{ base_path }}/basics/exportdata/export-data-to-xlsx)
-* [Export data to pdf]({{ base_path }}/basics/exportdata/export-data-to-pdf)
+
+{% include nav_cards.html folder="export" yml="true" %}
