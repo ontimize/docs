@@ -433,7 +433,7 @@ In the *application.yml* we need to change the ontimize security mode to **keycl
 
 {% highlight yaml %}
 ontimize:
-...
+   ...
    security:
       mode: keycloak
       keycloak:
@@ -767,11 +767,11 @@ ontimize:
 </div>
 </div>
 
-## Testing 
+## Testing
 
 In order to call the REST API of the application, we must first log in using the Keycloak authentication user interface, capture the returned token, and then provide it in the authentication header of the http request.
 
-To test this functionality we will use the Swagger tool deployed with the application, but we need to change the authentication settings on the OpenAPI declaration file.
+To test this functionality we will use the [Swagger](https://swagger.io) tool deployed with the application, but we need to change the authentication settings on the OpenAPI declaration file.
 
 ### Modify openapi-rest.yml
 
@@ -788,7 +788,7 @@ In the *openapi-rest.yml* we need to change the security settings to use **OAuth
 
 {% highlight yaml %}
 components:
-...
+  ...
   securitySchemes:
     OAuth2:
       type: oauth2
@@ -1127,19 +1127,19 @@ Once we have built and launched the project, we can access to the application op
 
 ![keycloak_swagger_1.png]({{ base_path }}/assets/images/keycloak_swagger_1.png)
 
-We can access to the authorization dialog by clicking on the **Authorize** button, then we must provide the **client** and click on the **Authorize** button.   
+We must open the authorization dialog by clicking on the **Authorize** button, provide the **client** and click on the **Authorize** button.
 
 ![keycloak_swagger_2.png]({{ base_path }}/assets/images/keycloak_swagger_2.png)
 
-If there is not exists a previous Keycloak session, a new tab will be opened requesting then credentials to login.   
+If there is not exists a previous Keycloak session, a new tab will be opened requesting then credentials to login.
 
 ![keycloak_swagger_3.png]({{ base_path }}/assets/images/keycloak_swagger_3.png)
 
-Once the login process has been completed, it will return to the authorization dialog, showing the result of the authorization process. 
+Once the login process has been completed, it will return to the authorization dialog, showing the result of the authorization process.
 
 ![keycloak_swagger_4.png]({{ base_path }}/assets/images/keycloak_swagger_4.png)
 
-We can close the authorization dialog and test the API.
+Now, we can close the authorization dialog and test the API.
 
 ![keycloak_swagger_5.png]({{ base_path }}/assets/images/keycloak_swagger_5.png)
 
@@ -1163,7 +1163,7 @@ The **user-information-service** and **user-role-information-service** configura
 ontimize:
 ...
    security:
-...
+      ...
       user-information-service:
          user-repository: UserDao
          user-login-column: USER_
@@ -1884,7 +1884,7 @@ public class UserRestController /* extends ORestController<IUserService> */ {
 
 ### Services and data access objects for user information
 
-The user services and DAOs are no longer needed and we can remove them.  
+The user services and DAOs are no longer needed and we can remove them.
 
 <div class="multicolumnright jstreeloader collapsed">
 <ul>
