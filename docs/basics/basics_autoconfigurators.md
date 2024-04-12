@@ -137,14 +137,14 @@ The configuration of the I18N system is done by setting up the necessary DAOs fo
 ```yaml
 ontimize:
    i18n:
-      ref-bundle-repository: OCDatabaseBundleDao 
+      ref-bundle-repository: OCDatabaseBundleDao
       bundle-key-column: ID_I18N
       bundle-class-name-column: CLASS_NAME
       bundle-description-column: I18N_DESCRIPTION
       ref-bundle-value-repository: OCDatabaseBundleValueDao
       bundle-value-text-key-column: KEY
       bundle-value-key-column: ID_I18N_VALUE
-      engine: default    
+      engine: default
 ```
 
 ## JDBC
@@ -172,43 +172,6 @@ ontimize:
       sql-condition-processor:
          upper-string: true
          upper-like: true
-```
-
-## LDAP
-
-- **ontimize:security:**
-
-| Attribute | Value | Meaning |
-|--|--|--|
-| mode | *ldap* | Change the system security from *default* to *ldap* |
-
-- **ontimize:security:ldap:**
-
-| Attribute   | Values         | Meaning                                                                                                                                            |
-|-------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| active      | _true, false_  | Enable or disable ldap security                                                                                                                    |
-| host        | _IP_           | Ip host for ldap security                                                                                                                          |
-| port        | _Number_       | Port of the host for ldap security                                                                                                                 |
-| login-type  | _DN, simple_   | The login type indicates whether a full LDAP string with *DN* value or will be used or if the username will simply be provided with *simple* value |
-| binddn      | _String_       | credential you are using to authenticate against an LDAP with DN (_Distinguished Name_)                                                                                      |
-| basedn      | _String_       | Search starting point for LDAP with DN (_Distinguished Name_)                                                                                      |
-| domain      | _String_       | The domain name                                                                                                                                    |
-
-The LDAP security configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/ldap).
-
-**Example**
-```yaml
-ontimize:
-   security:
-      mode: ldap
-      ldap: 
-         active: true 
-         host: 10.0.0.1
-         port: 389
-         login-type: simple
-         binddn: ou=XXXX,dc=YYY,dc=ZZZ
-         basedn: dc=MMMM,dc,NNN
-         domain: yourdomain.com
 ```
 
 ## Keycloak
@@ -242,6 +205,43 @@ ontimize:
          resource: yourclientname
          public-client: true
          use-resource-role-mappings: true
+```
+
+## LDAP
+
+- **ontimize:security:**
+
+| Attribute | Value | Meaning |
+|--|--|--|
+| mode | *ldap* | Change the system security from *default* to *ldap* |
+
+- **ontimize:security:ldap:**
+
+| Attribute   | Values         | Meaning                                                                                                                                            |
+|-------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| active      | _true, false_  | Enable or disable ldap security                                                                                                                    |
+| host        | _IP_           | Ip host for ldap security                                                                                                                          |
+| port        | _Number_       | Port of the host for ldap security                                                                                                                 |
+| login-type  | _DN, simple_   | The login type indicates whether a full LDAP string with *DN* value or will be used or if the username will simply be provided with *simple* value |
+| binddn      | _String_       | credential you are using to authenticate against an LDAP with DN (_Distinguished Name_)                                                                                      |
+| basedn      | _String_       | Search starting point for LDAP with DN (_Distinguished Name_)                                                                                      |
+| domain      | _String_       | The domain name                                                                                                                                    |
+
+The LDAP security configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/ldap).
+
+**Example**
+```yaml
+ontimize:
+   security:
+      mode: ldap
+      ldap:
+         active: true
+         host: 10.0.0.1
+         port: 389
+         login-type: simple
+         binddn: ou=XXXX,dc=YYY,dc=ZZZ
+         basedn: dc=MMMM,dc,NNN
+         domain: yourdomain.com
 ```
 
 ## Mail
@@ -281,6 +281,72 @@ ontimize:
       filter-column-value-password: mail_password
       filter-column-value-java-mail-properties: mail_properties
       engine: default
+```
+
+## Multitenant
+
+- **ontimize:multitenant:**
+
+| Attribute | Value | Meaning |
+|--|--|--|
+| enabled | *true*, *false* | Enable or disable multitenant |
+
+- **ontimize:multitenant:configuration:tenants:**
+Indicates the tenants to be configured, with the properties for each one.
+
+| Attribute    | Values   | Meaning          |
+|--------------|----------|------------------|
+| driver-class | _String_ | The driver class |
+| jdbc-url     | _String_ | The JDBC url     |
+| Username     | _String_ | The username     |
+| Password     | _String_ | Password         |
+
+- **ontimize:multitenant:configuration:tenant-repository:**
+  Indicates the table containing the information about the tenants to be configured.
+
+| Attribute           | Values   | Meaning                                              |
+|---------------------|----------|------------------------------------------------------|
+| tenant-repository   | _String_ | Name of the DAO containing information about tenants |
+| query-id            | _String_ | Name of the DAO query identifier for tenants         |
+| tenant-id-column    | _String_ | Database column that stores the tenant id            |
+| driver-class-column | _String_ | Database column that stores the driver class         |
+| jdbc-url-column     | _String_ | Database column that stores the JDBC url             |
+| username-column     | _String_ | Database column that stores the username             |
+| password-column     | _String_ | Database column that stores the password             |
+
+The multitenant configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/multitenant).
+
+**Example**
+```yaml
+ontimize:
+   multitenant:
+      enabled: true
+      configuration:
+         tenants:
+            tenant1:
+               driver-class: org.hsqldb.jdbcDriver
+               jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB
+               username: SA
+               password:
+            tenant2:
+               driver-class: org.hsqldb.jdbcDriver
+               jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB2
+               username: SA
+               password:
+```
+
+```yaml
+ontimize:
+   multitenant:
+      enabled: true
+      configuration:
+         tenant-repository: TenantDao
+         query-id: default
+         tenant-id-column: TENANT_ID
+         driver-class-column: DRIVER_CLASS
+         jdbc-url-column: JDBC_URL
+         username-column: USERNAME
+         password-column: PASSWORD
 ```
 
 ## Report
@@ -327,7 +393,7 @@ ontimize:
 |--|--|--|
 | enabled | *true*, *false* | Enable or disable CORS filter |
 
-- **ontimize:globalcors:cors-configurations**  
+- **ontimize:globalcors:cors-configurations**
 Indicates the entrypoint to be configured, with the properties for each one. In general, the entrypoint [/**] is configured entirely.
 
 | Attribute | Values | Meaning |
@@ -349,7 +415,7 @@ ontimize:
          '[/**]':
             allowed-origins: "*"
             allowed-headers: "*"
-            exposed-headers: ["X-Auth-Token","Content-disposition","X-Requested-With"]           
+            exposed-headers: ["X-Auth-Token","Content-disposition","X-Requested-With"]
             allowed-hethods:
             - GET
             - POST
@@ -488,4 +554,4 @@ The configuration of the rest of the Preferences System is done by setting up th
 ontimize:
    save-config: true
    save-config-dao: ConfigsDao
-``` 
+```
