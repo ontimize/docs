@@ -3,7 +3,7 @@ title: "LDAP Security"
 layout: default
 permalink: /systems/ldap
 parent: Systems
-nav_order: 5
+nav_order: 6
 ---
 
 {% include base_path %}

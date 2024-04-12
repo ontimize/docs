@@ -283,6 +283,72 @@ ontimize:
       engine: default
 ```
 
+## Multitenant
+
+- **ontimize:multitenant:**
+
+| Attribute | Value | Meaning |
+|--|--|--|
+| enabled | *true*, *false* | Enable or disable multitenant |
+
+- **ontimize:multitenant:configuration:tenants:**
+Indicates the tenants to be configured, with the properties for each one.
+
+| Attribute    | Values   | Meaning          |
+|--------------|----------|------------------|
+| driver-class | _String_ | The driver class |
+| jdbc-url     | _String_ | The JDBC url     |
+| Username     | _String_ | The username     |
+| Password     | _String_ | Password         |
+
+- **ontimize:multitenant:configuration:tenant-repository:**
+  Indicates the table containing the information about the tenants to be configured.
+
+| Attribute           | Values   | Meaning                                              |
+|---------------------|----------|------------------------------------------------------|
+| tenant-repository   | _String_ | Name of the DAO containing information about tenants |
+| query-id            | _String_ | Name of the DAO query identifier for tenants         |
+| tenant-id-column    | _String_ | Database column that stores the tenant id            |
+| driver-class-column | _String_ | Database column that stores the driver class         |
+| jdbc-url-column     | _String_ | Database column that stores the JDBC url             |
+| username-column     | _String_ | Database column that stores the username             |
+| password-column     | _String_ | Database column that stores the password             |
+
+The multitenant configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/multitenant).
+
+**Example**
+```yaml
+ontimize:
+   multitenant:
+      enabled: true
+      configuration:
+         tenants:
+            tenant1:
+               driver-class: org.hsqldb.jdbcDriver
+               jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB
+               username: SA
+               password:
+            tenant2:
+               driver-class: org.hsqldb.jdbcDriver
+               jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB2
+               username: SA
+               password:
+```
+
+```yaml
+ontimize:
+   multitenant:
+      enabled: true
+      configuration:
+         tenant-repository: TenantDao
+         query-id: default
+         tenant-id-column: TENANT_ID
+         driver-class-column: DRIVER_CLASS
+         jdbc-url-column: JDBC_URL
+         username-column: USERNAME
+         password-column: PASSWORD
+```
+
 ## Report
 
 {: .important}
