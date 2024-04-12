@@ -1129,6 +1129,17 @@ a:not([class]) {
   content: "";
 }
 
+a.jstree-anchor.jstree-hovered{
+        @if $color_scheme=='dark' {
+              color: #515151;
+            }
+    }
+a.jstree-anchor.jstree-clicked{
+        @if $color_scheme=='dark' {
+              color: #494949;
+            }
+    }
+
 @media (min-width: 50rem) and ((max-width: 66.5rem)) {
   #top.main {
     max-width: none;
