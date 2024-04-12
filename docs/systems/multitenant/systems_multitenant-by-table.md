@@ -1254,6 +1254,16 @@ ontimize:
          username-column: USERNAME
          password-column: PASSWORD
 ...
+spring:
+  ...
+  datasource:
+    driver-class-name: org.hsqldb.jdbcDriver
+    jdbc-url: jdbc:hsqldb:hsql://localhost:9013/templateDB_Main
+    username: SA
+    password:
+    initial-size: 10
+    test-on-borrow: true
+...
 {% endhighlight %}
 
 </div>
