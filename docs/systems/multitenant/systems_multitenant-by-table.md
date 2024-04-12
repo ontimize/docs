@@ -26,7 +26,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
     /$ git clone https://github.com/ontimize/ontimize-examples
     /ontimize-examples$ cd ontimize-examples
-    /ontimize-examples$ git checkout boot-multitenant-initial"
+    /ontimize-examples$ git checkout boot-multitenant-by-table-initial"
     | markdownify }}
 
 </div>
