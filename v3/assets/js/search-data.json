@@ -1,7 +1,7 @@
 {"0": {
     "doc": "Basics",
     "title": "Basics",
-    "content": "This section pretends to show the basic elements for the development of an application using Ontimize Boot . Autoconfigurators . Charts on-demand . Complex Queries . Export data . Migration from Ontimize 1.x.x to 3.x.x . Multiple Datasources . Understanding application.yml file . ",
+    "content": "This section pretends to show the basic elements for the development of an application using Ontimize Boot . Autoconfigurators . Page about autoconfigurators in application.yml . Charts on-demand . Page about charts-on-demand requests . Complex Queries . Page about creating complex queries in a DAO xml file . Export data . Page about exporting data through a request in CSV, XLSX or PDF format. Migration from Ontimize 1.x.x to 3.x.x . Page about migration from previous versions to Ontimize Boot 3.x.x . Multiple Datasources . Page about obtaining data for data from different sources. Understanding application.yml file . Page for explanation of the contents of the application.yml file . ",
     "url": "/docs/v3/basics/",
     
     "relUrl": "/basics/"
