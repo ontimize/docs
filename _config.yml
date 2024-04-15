@@ -15,11 +15,11 @@ page_excerpts: true
 github:
   - name: "Ontimize"
     url: https://github.com/Ontimize
-    icon: assets/icons/github-front.svg
+#    icon: assets/icons/github-front.svg
   # - name: "Ontimize Web"
   #   url: https://github.com/OntimizeWeb
   #   icon: assets/icons/github-front.svg
-color_scheme: ontimize-light
+#color_scheme: ontimize-light
 callouts_level: quiet # or loud
 callouts:
   highlight:
@@ -30,7 +30,7 @@ callouts:
   note:
     title: Note
     color: blue
-    opacity: 1
+#    opacity: 1
   warning:
     title: Warning
     color: red
