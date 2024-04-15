@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
   toggleButton[0].addEventListener('click', function () {
     if (jtd.getTheme() == 'dark') {
       localStorage.setItem("theme", "light");
-      jtd.setTheme('ontimize');
+      jtd.setTheme('ontimize-light');
       toggleButton[0].src = base_path + '/assets/icons/light_mode.svg';
       githubIcon[0].src = base_path + '/assets/icons/github-front.svg';
       for (let i = 0; i < dark_cards.length; i++) {
