@@ -26,7 +26,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
     /$ git clone https://github.com/ontimize/ontimize-examples
     /ontimize-examples$ cd ontimize-examples
-    /ontimize-examples$ git checkout boot-openapi-initial"
+    /ontimize-examples$ git checkout boot-openapi-standard-controllers-initial"
     | markdownify }}
 
 </div>
@@ -37,7 +37,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
     /$ git clone https://github.com/ontimize/ontimize-examples
     /ontimize-examples$ cd ontimize-examples
-    /ontimize-examples$ git checkout boot-openapi"
+    /ontimize-examples$ git checkout boot-openapi-standard-controllers"
     | markdownify }}
 
   </div>
@@ -1268,12 +1268,25 @@ We can configure these functionalities adding the following properties it in the
         <ul>
           <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
           resources
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            public
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              restapi
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>openapi-rest.yml</li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
           </li>
         </ul>
         </li>
       </ul>
       </li>
-      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+      <li data-jstree='{"selected" : true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
     </ul>
     </li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -1327,7 +1340,7 @@ We can configure these functionalities adding the following properties it in the
         </li>
       </ul>
       </li>
-      <li data-jstree='{"selected" : true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
     </ul>
     </li>
     <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.gitignore</li>
@@ -2864,10 +2877,10 @@ spring:
             <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
             public
             <ul>
-              <li data-jstree='{"selected" : true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>index.html</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>index.html</li>
             </ul>
             </li>
-            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>application.yml</li>
+            <li data-jstree='{"selected" : true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>application.yml</li>
           </ul>
           </li>
         </ul>
