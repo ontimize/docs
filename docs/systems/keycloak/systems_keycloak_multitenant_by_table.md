@@ -1,24 +1,23 @@
 ---
-title: "Keycloak Security"
+title: "Using a table on a database"
 layout: default
-permalink: /systems/keycloak
-parent: Systems
-nav_order: 5
+permalink: /systems/keycloak/multitenant/by-table
+grand_parent: Systems
+parent: Keycloak Security
+nav_order: 2
 ---
 
 {% include base_path %}
 {% include toc %}
 
-# Keycloak Security
+# Keycloak Security using a table on a database
+
+{: .important}
+> This functionality works only for Ontimize Boot version 3.15.0 or above. Actual release version: [![Ontimize Boot](https://img.shields.io/maven-central/v/com.ontimize.boot/ontimize-boot?label=Ontimize%20boot&style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ontimize.boot/ontimize-boot)
 
 ## Introduction
 
-**Keycloak** is a solution that adds authentication and authorization to applications and services with minimum effort. It supports single-sign on, identity brokering, user federation, and standard protocols such as OpenID Connect, OAuth 2.0, and SAML 2.0 (More information in [this link](https://www.keycloak.org/)).
-
-
-## Previous concepts
-- **Realm**: A realm manages a set of users, credentials, roles, and groups. A user belongs to and logs into a realm. Realms are isolated from one another and can only manage and authenticate the users that they control.
-- **Client** (or **resource**): Clients are applications or services that want to use Keycloak to secure themselves, requesting Keycloak to authenticate a user and provide a single sign-on solution.
+**Ontimize** allows you to provide a list of tenants in the application properties. This is useful when the application will manage a fixed list of tenants.
 
 ## Prerequisites
 
@@ -30,7 +29,7 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
     /$ git clone https://github.com/ontimize/ontimize-examples
     /ontimize-examples$ cd ontimize-examples
-    /ontimize-examples$ git checkout boot-keycloak-login-initial"
+    /ontimize-examples$ git checkout boot-keycloak-login-multitenant-by-table-initial"
     | markdownify }}
 
 </div>
@@ -41,28 +40,393 @@ There are 2 options to follow this tutorial, clone the repository with the initi
 
     /$ git clone https://github.com/ontimize/ontimize-examples
     /ontimize-examples$ cd ontimize-examples
-    /ontimize-examples$ git checkout boot-keycloak-login"
+    /ontimize-examples$ git checkout boot-keycloak-login-multitenant-by-table"
     | markdownify }}
 
   </div>
   </div>
 ### Keycloak
 
-We need a [Keycloak](https://www.keycloak.org/) instance, then we must configure a realm with a client for backend, a client for frontend, a role and a user. For the examples we will use the next settings:
+We need a [Keycloak](https://www.keycloak.org/) instance, then we must configure two realms with their own clients, roles and users. For the examples we will use the next settings:
+
+#### Tenant 1:
 
 | Element         | Value                 | Meaning                                                                               |
 |-----------------|-----------------------|---------------------------------------------------------------------------------------|
 | Url             | http://localhost:8082 | The URL of the host for keycloak security                                             |
-| Realm           | demo                  | The realm name                                                                        |
-| Client          | projectwiki           | The client name (Enable the **implicit flow** check to allow testing with Swagger UI) |
+| Realm           | demo1                 | The realm name                                                                        |
+| Client          | projectwiki1          | The client name (Enable the **implicit flow** check to allow testing with Swagger UI) |
 | Role            | admin                 | The role name                                                                         |
-| User            | demo                  | The username                                                                          |
+| User            | demo1                 | The username                                                                          |
+| Password        | demouser              | The user password                                                                     |
+
+#### Tenant 2:
+
+| Element         | Value                 | Meaning                                                                               |
+|-----------------|-----------------------|---------------------------------------------------------------------------------------|
+| Url             | http://localhost:8082 | The URL of the host for keycloak security                                             |
+| Realm           | demo2                 | The realm name                                                                        |
+| Client          | projectwiki2          | The client name (Enable the **implicit flow** check to allow testing with Swagger UI) |
+| Role            | admin                 | The role name (For the examples we will use client roles)                             |
+| User            | demo2                 | The username                                                                          |
 | Password        | demouser              | The user password                                                                     |
 
 {: .note}
 > To simplify the code being written, three dots (...) may appear in some parts of the code. This indicates that there may be previous code before and after those dots.
 
 ## Steps
+### Create the tenants table
+
+We need a table containing the tenants. This table must provide a column for each tenant property (More information in [this link]({{ base_path }}/basics/autoconfigurators/#keycloak)):
+
+<div class="multicolumn">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
+  {{ "**templateDB.txt**"| markdownify }}
+
+{% highlight sql %}
+...
+SET SCHEMA PUBLIC
+...
+CREATE MEMORY TABLE PUBLIC.TENANTS(TENANT_ID VARCHAR(50) NOT NULL PRIMARY KEY,TENANT_NAME VARCHAR(100) NOT NULL,URL VARCHAR(250) NOT NULL,REALM VARCHAR(50),CLIENT VARCHAR(50))
+...
+ALTER SEQUENCE SYSTEM_LOBS.LOB_ID RESTART WITH 1
+...
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
+<ul>
+  <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+  ontimize-examples
+  <ul>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-api
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  api
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                    core
+                    <ul>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      service
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
+                      </ul>
+                      </li>
+                    </ul>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-boot
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerApplication.java</li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          resources
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            public
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>index.html</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>application.yml</li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-model
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          db
+          <ul>
+            <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  model
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                    core
+                    <ul>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      dao
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.java</li>
+                      </ul>
+                      </li>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      service
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserService.java</li>
+                      </ul>
+                      </li>
+                    </ul>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          resources
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            dao
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>placeholders.properties</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.xml</li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-openapi
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          ontimize
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>marker-ws-ontimize-openapi-generator</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          resources
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            public
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              restapi
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                api
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Test.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>User.yml</li>
+                </ul>
+                </li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                base
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>AdvancedEntityResult.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>AdvancedQueryParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ColumnsParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>DeleteParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>DocumentIdentifier.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>EntityResult.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ExportParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>FileListParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>FilterParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>InsertParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MultipartFile.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MultipartFiles.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Number.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Object.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OFile.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OFiles.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Operator.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>QueryParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Responses.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>SQLOrder.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>String.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UpdateFileParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UpdateParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Void.yml</li>
+                </ul>
+                </li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>openapi-rest.yml</li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-ws
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  ws
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                    core
+                    <ul>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      rest
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MainRestController.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>TestRestController.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRestController.java</li>
+                      </ul>
+                      </li>
+                    </ul>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.gitignore</li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>README.md</li>
+  </ul>
+  </li>
+</ul>
+</div>
+</div>
+
+### Configure the tenants
+
+We need to add the tenants to the new table, we can create it with the following command:
+
+{% highlight sql %}
+INSERT INTO TENANTS(TENANT_ID,TENANT_NAME,URL,REALM,CLIENT) VALUES('tenant1','Tenant 1','http://localhost:8082/','demo1','projectwiki1')
+INSERT INTO TENANTS(TENANT_ID,TENANT_NAME,URL,REALM,CLIENT) VALUES('tenant2','Tenant 2','http://localhost:8082/','demo2','projectwiki2')
+{% endhighlight %}
+
 ### Configure the role
 
 If the role does not exist in the database, we can create it with the following command:
@@ -71,7 +435,7 @@ If the role does not exist in the database, we can create it with the following 
 INSERT INTO TROLE(ID_ROLENAME,ROLENAME,XMLCLIENTPERMISSION) VALUES(0,'admin','<?xml version="1.0" encoding="UTF-8"?><security></security>')
 {% endhighlight %}
 
-### Add the Keycloak dependency
+### Add the Keycloak dependency to the Boot module
 
 {: .note}
 > The Keycloak system is integrated in the **Ontimize Core** module, so we need to declare it as a project dependency.
@@ -437,11 +801,16 @@ ontimize:
    security:
       mode: keycloak
       keycloak:
-         auth-server-url: http://localhost:8082
-         realm: demo
-         resource: projectwiki
+         tenants-provider: list
+         tenant-repository: TenantDao
+         query-id: default
+         tenant-id-column: TENANT_ID
+         tenant-name-column: TENANT_NAME
+         url-column: URL
+         realm-column: REALM
+         client-column: CLIENT
          public-client: true
-         use-resource-role-mappings: true
+         use-client-role-mappings: true
 ...
 {% endhighlight %}
 
@@ -767,15 +1136,13 @@ ontimize:
 </div>
 </div>
 
-## Testing
+## Removing the configurations and classes that are no longer needed
 
-In order to call the REST API of the application, we must first log in using the Keycloak authentication user interface, capture the returned token, and then provide it in the authentication header of the http request.
+Once the **Keycloak** authentication had been implemented, the configurations and the data access objects for Ontimize authentication can be removed.
 
-To test this functionality we will use the [Swagger](https://swagger.io) tool deployed with the application, but we need to change the authentication settings on the OpenAPI declaration file.
+### OpenAPI declaration files
 
-### Modify openapi-rest.yml
-
-In the *openapi-rest.yml* we need to change the security settings to use **OAuth2**, replacing the previous **BasicAuth** properties (More information in [this link](https://spec.openapis.org/oas/latest.html#security-scheme-object) and in [this link](https://www.keycloak.org/docs/latest/securing_apps/#_oidc)):
+The CRUD endpoints for the users management are no longer used, then we can remove tem or comment out in the **openapi-rest.yml** and **user.yml** files.
 
 <div class="multicolumn">
         <div class="multicolumnleft">
@@ -787,18 +1154,252 @@ In the *openapi-rest.yml* we need to change the security settings to use **OAuth
 
 
 {% highlight yaml %}
-components:
-  ...
-  securitySchemes:
-    OAuth2:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: http://localhost:8082/realms/demo/protocol/openid-connect/auth
-          scopes: {}
-security:
-  - OAuth2: []
 ...
+paths:
+  ...
+#  /users/user:
+#    $ref: 'api/User.yml#/default'
+#  /users/user/search:
+#    $ref: 'api/User.yml#/search'
+  /users/login:
+    $ref: 'api/User.yml#/login'
+...
+{% endhighlight %}
+
+
+{{ "**User.yml**"| markdownify }}
+
+{% highlight yaml %}
+#default:
+#  post:
+#    tags:
+#      - Users
+#    summary: Inserts a User.
+#    description: >
+#      This resource represents a user in the system.
+#    x-restcontroller: orestcontroller
+#    requestBody:
+#      required: true
+#      content:
+#        application/json:
+#          schema:
+#            $ref: '../base/InsertParameter.yml#/components/schemas/InsertParameter'
+#          examples:
+#            Laura Bugle:
+#              value:
+#                data:
+#                  USER_: 'laura'
+#                  PASSWORD: '1432'
+#                  NAME: 'Laura'
+#                  SURNAME: 'Bugle'
+#                  EMAIL: 'laurabugle@gmail.com'
+#                  NIF: '11111111H'
+#                  USERBLOCKED: '2016-09-19T12:00:00Z'
+#                  LASTPASSWORDUPDATE: '2021-06-01T12:00:00'
+#                  FIRSTLOGIN: true
+#                sqltypes:
+#                  USER_: 12
+#                  PASSWORD: 12
+#                  NAME: 12
+#                  SURNAME: 12
+#                  EMAIL: 12
+#                  NIF: 12
+#                  USERBLOCKED: 93
+#                  LASTPASSWORDUPDATE: 93
+#                  FIRSTLOGIN: 16
+#    responses:
+#      '200':
+#        $ref: '../base/Responses.yml#/components/responses/EntityResult'
+#      '400':
+#        $ref: '../base/Responses.yml#/components/responses/BadRequest'
+#      '401':
+#        $ref: '../base/Responses.yml#/components/responses/Unauthorized'
+#      '404':
+#        $ref: '../base/Responses.yml#/components/responses/NotFound'
+#      default:
+#        $ref: '../base/Responses.yml#/components/responses/Unexpected'
+#
+#  get:
+#    tags:
+#      - Users
+#    summary: Returns a list of Users.
+#    description: >
+#      This resource represents a list of users in the system.
+#    x-restcontroller: orestcontroller
+#    parameters:
+#      - in: query
+#        name: filter
+#        description: Filter
+#        schema:
+#          type: string
+#        required: false
+#        examples:
+#          user_:
+#            value: 'USER_=laura'
+#          password:
+#            value: 'PASSWORD=1432'
+#          name:
+#            value: 'NAME=Laura'
+#          surname:
+#            value: 'SURNAME=Bugle'
+#          email:
+#            value: 'EMAIL=laurabugle@gmail.com'
+#          nif:
+#            value: 'NIF=11111111H'
+#      - in: query
+#        name: columns
+#        description: Columns
+#        required: false
+#        schema:
+#          type: string
+#          example: USER_,PASSWORD,NAME,SURNAME,EMAIL,NIF,USERBLOCKED,LASTPASSWORDUPDATE,FIRSTLOGIN
+#    responses:
+#      '200':
+#        $ref: '../base/Responses.yml#/components/responses/EntityResult'
+#      '400':
+#        $ref: '../base/Responses.yml#/components/responses/BadRequest'
+#      '401':
+#        $ref: '../base/Responses.yml#/components/responses/Unauthorized'
+#      '404':
+#        $ref: '../base/Responses.yml#/components/responses/NotFound'
+#      default:
+#        $ref: '../base/Responses.yml#/components/responses/Unexpected'
+#
+#  put:
+#    tags:
+#      - Users
+#    summary: Updates a User.
+#    description: >
+#      This resource represents a user in the system.
+#    x-restcontroller: orestcontroller
+#    requestBody:
+#      required: true
+#      content:
+#        application/json:
+#          schema:
+#            $ref: '../base/UpdateParameter.yml#/components/schemas/UpdateParameter'
+#          examples:
+#            pasword:
+#              value:
+#                data:
+#                  PASSWORD: 'mT765HkqjY_34:76l'
+#                filter:
+#                  USER_: 'laura'
+#                sqltypes:
+#                  USER_: 12
+#            email:
+#              value:
+#                data:
+#                  EMAIL: 'laura.bugle@gmail.com'
+#                filter:
+#                  USER_: 'laura'
+#                sqltypes:
+#                  USER_: 12
+#    responses:
+#      '200':
+#        $ref: '../base/Responses.yml#/components/responses/EntityResult'
+#      '400':
+#        $ref: '../base/Responses.yml#/components/responses/BadRequest'
+#      '401':
+#        $ref: '../base/Responses.yml#/components/responses/Unauthorized'
+#      '404':
+#        $ref: '../base/Responses.yml#/components/responses/NotFound'
+#      default:
+#        $ref: '../base/Responses.yml#/components/responses/Unexpected'
+#
+#  delete:
+#    tags:
+#      - Users
+#    summary: Deletes a User.
+#    description: >
+#      This resource represents a user in the system.
+#    x-restcontroller: orestcontroller
+#    requestBody:
+#      required: true
+#      content:
+#        application/json:
+#          schema:
+#            $ref: '../base/DeleteParameter.yml#/components/schemas/DeleteParameter'
+#          examples:
+#            userid:
+#              value:
+#                filter:
+#                  USER_: 'laura'
+#                sqltypes:
+#                  USER_: 12
+#    responses:
+#      '200':
+#        $ref: '../base/Responses.yml#/components/responses/EntityResult'
+#      '400':
+#        $ref: '../base/Responses.yml#/components/responses/BadRequest'
+#      '401':
+#        $ref: '../base/Responses.yml#/components/responses/Unauthorized'
+#      '404':
+#        $ref: '../base/Responses.yml#/components/responses/NotFound'
+#      default:
+#        $ref: '../base/Responses.yml#/components/responses/Unexpected'
+#
+#search:
+#  post:
+#    tags:
+#      - Users
+#    summary: Searches and returns a list of Users.
+#    description: >
+#      This resource represents a list of users in the system.
+#    x-restcontroller: orestcontroller
+#    requestBody:
+#      content:
+#        application/json:
+#          schema:
+#            $ref: '../base/QueryParameter.yml#/components/schemas/QueryParameter'
+#          examples:
+#            surname:
+#              value:
+#                filter:
+#                  SURNAME: 'Bugle'
+#                columns:
+#                  - USER_
+#                  - PASSWORD
+#                  - NAME
+#                  - SURNAME
+#                  - EMAIL
+#                  - NIF
+#                  - USERBLOCKED
+#                  - LASTPASSWORDUPDATE
+#                  - FIRSTLOGIN
+#                sqltypes:
+#                  SURNAME: 12
+#    responses:
+#      '200':
+#        $ref: '../base/Responses.yml#/components/responses/EntityResult'
+#      '400':
+#        $ref: '../base/Responses.yml#/components/responses/BadRequest'
+#      '401':
+#        $ref: '../base/Responses.yml#/components/responses/Unauthorized'
+#      '404':
+#        $ref: '../base/Responses.yml#/components/responses/NotFound'
+#      default:
+#        $ref: '../base/Responses.yml#/components/responses/Unexpected'
+login:
+  post:
+    operationId: login
+    tags:
+      - Users
+    summary: Validates the current session.
+    description: >
+      This resource represents a session in the system.
+    x-hasparentpath: true
+    responses:
+      '200':
+        $ref: '../base/Responses.yml#/components/responses/EntityResult'
+      '400':
+        $ref: '../base/Responses.yml#/components/responses/BadRequest'
+      '401':
+        $ref: '../base/Responses.yml#/components/responses/Unauthorized'
+      '404':
+        $ref: '../base/Responses.yml#/components/responses/NotFound'
+      default:
+        $ref: '../base/Responses.yml#/components/responses/Unexpected'
 {% endhighlight %}
 
 </div>
@@ -1014,7 +1615,7 @@ security:
                 api
                 <ul>
                   <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Test.yml</li>
-                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>User.yml</li>
+                  <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>User.yml</li>
                 </ul>
                 </li>
                 <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
@@ -1123,30 +1724,6 @@ security:
 </div>
 </div>
 
-Once we have built and launched the project, we can access to the application opening a web browser and going to [http://localhost:33333](http://localhost:33333)):
-
-![keycloak_swagger_1.png]({{ base_path }}/assets/images/keycloak_swagger_1.png)
-
-We must open the authorization dialog by clicking on the **Authorize** button, provide the **client** and click on the **Authorize** button.
-
-![keycloak_swagger_2.png]({{ base_path }}/assets/images/keycloak_swagger_2.png)
-
-If there is not exists a previous Keycloak session, a new tab will be opened requesting then credentials to login.
-
-![keycloak_swagger_3.png]({{ base_path }}/assets/images/keycloak_swagger_3.png)
-
-Once the login process has been completed, it will return to the authorization dialog, showing the result of the authorization process.
-
-![keycloak_swagger_4.png]({{ base_path }}/assets/images/keycloak_swagger_4.png)
-
-Now, we can close the authorization dialog and test the API.
-
-![keycloak_swagger_5.png]({{ base_path }}/assets/images/keycloak_swagger_5.png)
-
-## Removing the configurations and classes that are no longer needed
-
-Once the **Keycloak** authentication had been implemented, the configurations and the data access objects for Ontimize authentication can be removed.
-
 ### Configurations for user information in application.yml
 
 The **user-information-service** and **user-role-information-service** configurations under ontimize.security are no longer used and we can remove them.
@@ -1164,24 +1741,24 @@ ontimize:
 ...
    security:
       ...
-      user-information-service:
-         user-repository: UserDao
-         user-login-column: USER_
-         user-password-column: PASSWORD
-         query-id: login
-         other-data:
-            - NAME
-            - SURNAME
-            - EMAIL
-            - NIF
-            - USERBLOCKED
-            - LASTPASSWORDUPDATE
-            - FIRSTLOGIN
-      user-role-information-service:
-         user-role-repository: UserRoleDao
-         query-id: userRole
-         role-login-column: USER_
-         role-name-column: ROLENAME
+#      user-information-service:
+#         user-repository: UserDao
+#         user-login-column: USER_
+#         user-password-column: PASSWORD
+#         query-id: login
+#         other-data:
+#            - NAME
+#            - SURNAME
+#            - EMAIL
+#            - NIF
+#            - USERBLOCKED
+#            - LASTPASSWORDUPDATE
+#            - FIRSTLOGIN
+#      user-role-information-service:
+#         user-role-repository: UserRoleDao
+#         query-id: userRole
+#         role-login-column: USER_
+#         role-name-column: ROLENAME
 ...
 {% endhighlight %}
 
@@ -1509,7 +2086,7 @@ ontimize:
 
 ### User CRUD API
 
-The CRUD endpoints for the users management are no longer used, then we can remove or comment the inheritance of the ORestController class from the UserRestController.
+The CRUD endpoints for the users management are no longer used, then we can remove them or comment out the inheritance of the **ORestController** class in the **UserRestController**.
 
 <div class="multicolumn">
         <div class="multicolumnleft">
@@ -2571,3 +3148,437 @@ INSERT INTO TROLE_SERVER_PERMISSION VALUES(0,0,0)
 </ul>
 </div>
 </div>
+
+## Testing
+
+In order to call the REST API of the application, we must first log in using the Keycloak authentication user interface, capture the returned token, and then provide it in the authentication header of the http request.
+
+To test this functionality we will use the [Swagger](https://swagger.io) tool deployed with the application, but we need to change the authentication settings on the OpenAPI declaration file.
+
+### Modify openapi-rest.yml
+
+In the *openapi-rest.yml* we need to change the security settings to use **OAuth2**, replacing the previous **BasicAuth** properties (More information in [this link](https://spec.openapis.org/oas/latest.html#security-scheme-object) and in [this link](https://www.keycloak.org/docs/latest/securing_apps/#_oidc)).
+
+Also we need to add a new parameter to provide the tenant and in the User.yml file we need to add a reference to this parameter on each method:
+
+<div class="multicolumn">
+        <div class="multicolumnleft">
+            <button class="unstyle toggle-tree-btn">
+                <span class="material-symbols-outlined">right_panel_open</span>
+            </button>
+
+{{ "**openapi-rest.yml**"| markdownify }}
+
+
+{% highlight yaml %}
+components:
+  ...
+  parameters:
+    TenantId:
+      in: header
+      name: X-Tenant
+      required: true
+      schema:
+        type: string
+      x-ignore: true
+      examples:
+        Tenant1:
+          value: 'tenant1'
+        Tenant2:
+          value: 'tenant2'
+  securitySchemes:
+    OAuth2Demo1:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://localhost:8082/realms/demo1/protocol/openid-connect/auth
+          scopes: {}
+    OAuth2Demo2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://localhost:8082/realms/demo2/protocol/openid-connect/auth
+          scopes: {}
+security:
+  - OAuth2Demo1: []
+  - OAuth2Demo2: []
+...
+{% endhighlight %}
+
+{{ "**User.yml**"| markdownify }}
+
+{% highlight yaml %}
+...
+login:
+  post:
+    ...
+    parameters:
+      - $ref: '../openapi-rest.yml#/components/parameters/TenantId'
+...
+{% endhighlight %}
+
+</div>
+<div class="multicolumnright jstreeloader collapsed">
+<ul>
+  <li data-jstree='{"opened":true, "icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+  ontimize-examples
+  <ul>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-api
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  api
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                    core
+                    <ul>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      service
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>IUserService.java</li>
+                      </ul>
+                      </li>
+                    </ul>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-boot
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ServerApplication.java</li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          resources
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            public
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>index.html</li>
+            </ul>
+            </li>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>application.yml</li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-model
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          db
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>templateDB.txt</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  model
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                    core
+                    <ul>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      dao
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.java</li>
+                      </ul>
+                      </li>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      service
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserService.java</li>
+                      </ul>
+                      </li>
+                    </ul>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          resources
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            dao
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>placeholders.properties</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserDao.xml</li>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRoleDao.xml</li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-openapi
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          ontimize
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>marker-ws-ontimize-openapi-generator</li>
+          </ul>
+          </li>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          resources
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            public
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              restapi
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                api
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Test.yml</li>
+                  <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>User.yml</li>
+                </ul>
+                </li>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                base
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>AdvancedEntityResult.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>AdvancedQueryParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ColumnsParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>DeleteParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>DocumentIdentifier.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>EntityResult.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>ExportParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>FileListParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>FilterParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>InsertParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MultipartFile.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MultipartFiles.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Number.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Object.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OFile.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>OFiles.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Operator.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>QueryParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Responses.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>SQLOrder.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>String.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UpdateFileParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UpdateParameter.yml</li>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>Void.yml</li>
+                </ul>
+                </li>
+                <li data-jstree='{"selected": true, "icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>openapi-rest.yml</li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+    projectwiki-ws
+    <ul>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+      src
+      <ul>
+        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+        main
+        <ul>
+          <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+          java
+          <ul>
+            <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+            com
+            <ul>
+              <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+              ontimize
+              <ul>
+                <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                projectwiki
+                <ul>
+                  <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                  ws
+                  <ul>
+                    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                    core
+                    <ul>
+                      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-folder-open.svg"}'>
+                      rest
+                      <ul>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>MainRestController.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>TestRestController.java</li>
+                        <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>UserRestController.java</li>
+                      </ul>
+                      </li>
+                    </ul>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+                </li>
+              </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+      </ul>
+      </li>
+      <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    </ul>
+    </li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>.gitignore</li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>pom.xml</li>
+    <li data-jstree='{"icon":"{{ base_path }}/assets/jstree/fa-file.svg"}'>README.md</li>
+  </ul>
+  </li>
+</ul>
+</div>
+</div>
+
+### Testing using Tenant 1
+
+Once we have built and launched the project, we can access to the application opening a web browser and going to [http://localhost:33333](http://localhost:33333)):
+
+![keycloak_multitenant_swagger_1.png]({{ base_path }}/assets/images/keycloak_multitenant_swagger_1.png)
+
+We must open the authorization dialog by clicking on the **Authorize** button, provide the **client** and click on the **Authorize** button.
+
+![keycloak_multitenant_swagger_2.png]({{ base_path }}/assets/images/keycloak_multitenant_swagger_2.png)
+
+If there is not exists a previous Keycloak session, a new tab will be opened requesting then credentials to login.
+
+![keycloak_multitenant_swagger_3.png]({{ base_path }}/assets/images/keycloak_multitenant_swagger_3.png)
+
+Once the login process has been completed, it will return to the authorization dialog, showing the result of the authorization process.
+
+![keycloak_multitenant_swagger_4.png]({{ base_path }}/assets/images/keycloak_multitenant_swagger_4.png)
+
+Now, we can close the authorization dialog and test the API selecting the tenant 1.
+
+![keycloak_multitenant_swagger_5.png]({{ base_path }}/assets/images/keycloak_multitenant_swagger_5.png)
+
+![keycloak_multitenant_swagger_6.png]({{ base_path }}/assets/images/keycloak_multitenant_swagger_6.png)
+
+### Testing using Tenant 2
+
+To test using the second tenant, we must open the authorization dialog again, provide the **client** and click on the **Authorize** button.
+
+![keycloak_multitenant_swagger_7.png]({{ base_path }}/assets/images/keycloak_multitenant_swagger_7.png)
+
+If there is not exists a previous Keycloak session, a new tab will be opened requesting then credentials to login.
+
+![keycloak_multitenant_swagger_8.png]({{ base_path }}/assets/images/keycloak_multitenant_swagger_8.png)
+
+Once the login process has been completed, it will return to the authorization dialog, showing the result of the authorization process.
+
+![keycloak_multitenant_swagger_9.png]({{ base_path }}/assets/images/keycloak_multitenant_swagger_9.png)
+
+Now, we can close the authorization dialog and test the API selecting the tenant 2.
+
+![keycloak_multitenant_swagger_10.png]({{ base_path }}/assets/images/keycloak_multitenant_swagger_10.png)
+
+![keycloak_multitenant_swagger_11.png]({{ base_path }}/assets/images/keycloak_multitenant_swagger_11.png)
