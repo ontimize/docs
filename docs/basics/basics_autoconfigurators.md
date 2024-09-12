@@ -217,15 +217,16 @@ ontimize:
 
 - **ontimize:security:ldap:**
 
-| Attribute   | Values         | Meaning                                                                                                                                            |
-|-------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| active      | _true, false_  | Enable or disable ldap security                                                                                                                    |
-| host        | _IP_           | Ip host for ldap security                                                                                                                          |
-| port        | _Number_       | Port of the host for ldap security                                                                                                                 |
-| login-type  | _DN, simple_   | The login type indicates whether a full LDAP string with *DN* value or will be used or if the username will simply be provided with *simple* value |
-| binddn      | _String_       | credential you are using to authenticate against an LDAP with DN (_Distinguished Name_)                                                                                      |
-| basedn      | _String_       | Search starting point for LDAP with DN (_Distinguished Name_)                                                                                      |
-| domain      | _String_       | The domain name                                                                                                                                    |
+| Attribute  | Values                  | Meaning                                                                                                                                            |
+|------------|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| active     | _true, false_           | Enable or disable ldap security                                                                                                                    |
+| host       | _IP_                    | Ip host for ldap security                                                                                                                          |
+| port       | _Number_                | Port of the host for ldap security                                                                                                                 |
+| login-type | _DN, simple_            | The login type indicates whether a full LDAP string with *DN* value or will be used or if the username will simply be provided with *simple* value |
+| binddn     | _String_                | credential you are using to authenticate against an LDAP with DN (_Distinguished Name_)                                                            |
+| basedn     | _String_                | Search starting point for LDAP with DN (_Distinguished Name_)                                                                                      |
+| domain     | _String_                | The domain name                                                                                                                                    |
+| ssl        | _false (default), true_ | Indicates whether to use the SSL protocol for the LDAP connection.                                                                                 |
 
 The LDAP security configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/ldap).
 
@@ -242,6 +243,7 @@ ontimize:
          binddn: ou=XXXX,dc=YYY,dc=ZZZ
          basedn: dc=MMMM,dc,NNN
          domain: yourdomain.com
+         ssl: false
 ```
 
 ## Mail
