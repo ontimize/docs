@@ -55,6 +55,7 @@ ontimize:
          binddn: ou=XXXX,dc=YYY,dc=ZZZ
          basedn: dc=MMMM,dc,NNN
          domain: yourdomain.com
+         ssl: false
 {% endhighlight %}
 
 </div>
