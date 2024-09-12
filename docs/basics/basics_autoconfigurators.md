@@ -156,6 +156,12 @@ ontimize:
 |name-convention|*upper*, *lower*, *database*| Indicate the nomenclature of the columns in the DB, in lower case, upper case or as it appears in the database |
 |sqlhandler|*postgres*, *mysql*, *oracle*, *oracle12*, *sqlserver*, *hsqldb*| Indicates which SQL statement handler will be used to communicate with the database |
 
+- **ontimize:jdbc:datasource:**
+
+| Attribute | Values | Meaning |
+|--|--|------------------------------|
+|enabled|*true*, *false*| Enable or disable datasource |
+
 - **ontimize:jdbc:sql-condition-processor:**
 
 | Attribute | Values | Meaning |
@@ -180,19 +186,31 @@ ontimize:
 
 | Attribute | Value | Meaning |
 |--|--|--|
-| mode | *keycloak* | Change the system security from *default* to *keycloak* |
+| mode | *keycloak* | Change the system security from *default* to *Keycloak* |
 
 - **ontimize:security:keycloak:**
 
-| Attribute                  | Values        | Meaning                                                                                                                                                                   |
-|----------------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| auth-server-url            | _URL_         | URL of the host for keycloak security                                                                                                                                     |
-| realm                      | _String_      | The realm name                                                                                                                                                            |
-| resource                   | _String_      | The resource/client name                                                                                                                                                  |
-| public-client              | _true, false_ | If set to true, the adapter will not send credentials for the client to Keycloak                                                                                          |
-| use-resource-role-mappings | _true, false_ | If set to true, the adapter will look inside the token for application level role mappings for the user. If false, it will look at the realm level for user role mappings |
+| Attribute                  | Values                  | Meaning                                                                                                                                                                                                                                               |
+|----------------------------|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| tenants-provider           | _default, list, custom_ | How the tenants will be configured. _Default_ uses only one tenant, _list_ allows to configure a list of tenants and _custom_ allows to provide the tenants programmatically.                                                                         |
+| public-client              | _true, false_           | If set to true, the adapter will not send credentials for the client to Keycloak                                                                                                                                                                      |
+| use-client-role-mappings   | _true, false_           | If set to true, the adapter will look inside the token for client level role mappings for the user. If false, it will look at the realm level for user role mappings.                                                                                 |
+| realms-provider            | _default, custom_       | How the realms settings will be configured. **Deprecated since Ontimize Boot 3.15** use _tenants-provider_ instead.                                                                                                                                   |
+| use-resource-role-mappings | _true, false_           | If set to true, the adapter will look inside the token for client level role mappings for the user. If false, it will look at the realm level for user role mappings. **Deprecated since Ontimize Boot 3.15** use _use-client-role-mappings_ instead. |
 
-The keycloak security configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/keycloak).
+### One tenant
+
+- **ontimize:security:keycloak:**
+
+| Attribute       | Values   | Meaning                                                                                           |
+|-----------------|----------|---------------------------------------------------------------------------------------------------|
+| url             | _URL_    | URL of the host for Keycloak security                                                             |
+| realm           | _String_ | The realm name                                                                                    |
+| client          | _String_ | The resource/client name                                                                          |
+| auth-server-url | _URL_    | URL of the host for Keycloak security. **Deprecated since Ontimize Boot 3.15** use _url_ instead. |
+| resource        | _URL_    | The resource/client name. **Deprecated since Ontimize Boot 3.15** use _client_ instead.           |
+
+The keycloak security configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/keycloak/one-tenant).
 
 **Example**
 ```yaml
@@ -200,13 +218,114 @@ ontimize:
    security:
       mode: keycloak
       keycloak:
-         auth-server-url: http://yourkeycloakdomain.com
+         url: http://yourkeycloakdomain.com
          realm: yourrealm
-         resource: yourclientname
+         client: yourclientname
          public-client: true
-         use-resource-role-mappings: true
+         use-client-role-mappings: true
 ```
 
+### Multiple tenants using the application properties
+
+- **ontimize:security:keycloak:tenants:**
+
+Indicates the tenants to be configured, with the properties for each one.
+
+| Attribute  | Values   | Meaning                               |
+|------------|----------|---------------------------------------|
+| tenantName | _String_ | Name of the tenant                    |
+| url        | _URL_    | URL of the host for keycloak security |
+| realm      | _String_ | The realm name                        |
+| client     | _String_ | The resource/client name              |
+
+The keycloak security configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/keycloak/multitenant/by-properties).
+
+**Example**
+```yaml
+ontimize:
+   security:
+      mode: keycloak
+      keycloak:
+         tenant-provider: list
+         tenants:
+            tenant1:
+               tenant-name: Tenant 1
+               url: http://yourkeycloakdomain1.com
+               realm: yourrealm1
+               client: yourclientname1
+            tenant2:
+               tenant-name: Tenant 2
+               url: http://yourkeycloakdomain2.com
+               realm: yourrealm2
+               client: yourclientname2
+         public-client: true
+         use-client-role-mappings: true
+```
+
+### Multiple tenants using a table on a database
+
+- **ontimize:security:keycloak:tenant-repository:**
+
+Indicates the table containing the information about the tenants to be configured.
+
+| Attribute           | Values   | Meaning                                                               |
+|---------------------|----------|-----------------------------------------------------------------------|
+| tenant-repository   | _String_ | Name of the DAO containing information about tenants                  |
+| query-id            | _String_ | Name of the DAO query identifier for tenants                          |
+| tenant-id-column    | _String_ | Database column that stores the tenant id                             |
+| tenant-name-column  | _String_ | Database column that stores the tenant name                           |
+| url-column          | _String_ | Database column that stores the URL of the host for keycloak security |
+| realm-column        | _String_ | Database column that stores the realm name                            |
+| client-column       | _String_ | Database column that stores the resource/client name                  |
+
+The keycloak security configuration is done through autoconfigurators. To see the settings, check [this link]({{ base_path }}/systems/keycloak/multitenant/by-table).
+
+**Example**
+```yaml
+ontimize:
+   security:
+      mode: keycloak
+      keycloak:
+         tenant-provider: list
+         tenant-repository: TenantDao
+         query-id: default
+         tenant-id-column: TENANT_ID
+         tenant-name-column: TENANT_NAME
+         url-column: URL
+         realm-column: REALM
+         client-column: CLIENT
+         public-client: true
+         use-client-role-mappings: true
+```
+### Roles
+
+Allows to configure the roles using the application properties.
+
+- **ontimize:security:keycloak:roles**
+
+| Attribute          | Values   | Meaning                      |
+|--------------------|----------|------------------------------|
+| name               | _String_ | Name of the role             |
+| server-permissions | _List_   | A list of server permissions |
+| client-permissions | _String_ | Client permissions           |
+
+**Example**
+```yaml
+ontimize:
+   security:
+      mode: keycloak
+      keycloak:
+         ...
+         public-client: true
+         use-client-role-mappings: true
+         roles:
+            - name: admin
+              server-permissions:
+                 - 'com.ontimize.projectwiki.model.core.service.ITestService/testQuery'
+                 - 'com.ontimize.projectwiki.model.core.service.ITestService/testPaginationQuery'
+                 - 'com.ontimize.projectwiki.model.core.service.ITestService/testInsert'
+              client-permissions: '<?xml version="1.0" encoding="UTF-8"?><security><MENU></MENU></security>'
+```
 ## LDAP
 
 - **ontimize:security:**
@@ -294,6 +413,7 @@ ontimize:
 | enabled | *true*, *false* | Enable or disable multitenant |
 
 - **ontimize:multitenant:configuration:tenants:**
+
 Indicates the tenants to be configured, with the properties for each one.
 
 | Attribute    | Values   | Meaning          |
@@ -304,7 +424,8 @@ Indicates the tenants to be configured, with the properties for each one.
 | Password     | _String_ | Password         |
 
 - **ontimize:multitenant:configuration:tenant-repository:**
-  Indicates the table containing the information about the tenants to be configured.
+
+Indicates the table containing the information about the tenants to be configured.
 
 | Attribute           | Values   | Meaning                                              |
 |---------------------|----------|------------------------------------------------------|
