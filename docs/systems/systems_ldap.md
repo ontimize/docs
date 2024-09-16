@@ -312,3 +312,8 @@ ontimize:
 </ul>
 </div>
 </div>
+
+{: .note}
+> If you activate SSL with ```ssl: true```, you must have the SSL certificate added in a certificate store, such as _**cacerts**_, the store that
+> has the virtual machine of the java version that is running the application. You can use applications to import SSL 
+> certificates, such as _KeyStore Explorer_.
