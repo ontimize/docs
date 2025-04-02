@@ -38,13 +38,19 @@ The purpose of this page is to indicate the latest versions of Ontimize Boot pro
     </thead>
     <tbody>
         <tr>
+            <td>3.15.0</td>
+            <td>3.15.0</td>
+            <td>5.12.0</td>
+            <td>3.2.0</td>
+            <td rowspan="4">1.3.1</td>
+            <td rowspan="2">3.4.0</td>
+            <td rowspan="3">1.0.4</td>
+        </tr>
+        <tr>
             <td>3.14.0</td>
             <td>3.14.0</td>
             <td>5.11.0</td>
             <td rowspan="16">3.1.0</td>
-            <td rowspan="3">1.3.1</td>
-            <td>3.4.0</td>
-            <td rowspan="2">1.0.4</td>
         </tr>
         <tr>
             <td>3.13.0</td>
