@@ -1118,7 +1118,7 @@ ontimize:
 </div>
 </div>
 
-### Provide the tenants programatically
+### Provide the tenants programmatically
 
 The **OntimizeKeycloakConfigResolver** bean is responsible for managing tenants, so we need to provide it with the tenants we want to use. For this we will add the new TenantsService class.
 
@@ -1487,6 +1487,9 @@ public class TenantsService {
 </ul>
 </div>
 </div>
+
+{: .note}
+> Since Ontimize version 3.15.0, **IOntimizeMultitenantKeycloakConfigResolver** interface has been replaced by **OntimizeKeycloakConfigResolve** class.
 
 ## Removing the configurations and classes that are no longer needed
 
