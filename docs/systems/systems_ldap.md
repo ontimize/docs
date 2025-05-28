@@ -51,7 +51,7 @@ ontimize:
          active: true 
          host: 10.0.0.1
          port: 389
-         login-type: simple
+         loginType: simple
          binddn: ou=XXXX,dc=YYY,dc=ZZZ
          basedn: dc=MMMM,dc,NNN
          domain: yourdomain.com
