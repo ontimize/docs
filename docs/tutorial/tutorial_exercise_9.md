@@ -67,7 +67,10 @@ BasicExpression.
         "ACRONYM",
         "CREATION_DATE",
         "START_DATE"
-    ]
+    ],
+    "sqltypes":{
+        "START_DATE": 91
+    }
 }
 {% endhighlight %}
       </td>
@@ -102,7 +105,10 @@ BasicExpression.
         "ACRONYM",
         "CREATION_DATE",
         "START_DATE"
-    ]
+    ],
+    "sqltypes":{
+        "START_DATE": 91
+    }
 }
 {% endhighlight %}
 </td>
