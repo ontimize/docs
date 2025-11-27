@@ -15,7 +15,10 @@
         </span><span class="s2">"ACRONYM"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"CREATION_DATE"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"START_DATE"</span><span class="w">
-    </span><span class="p">]</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"sqltypes"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"START_DATE"</span><span class="p">:</span><span class="w"> </span><span class="mi">91</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span></code></pre></figure> </td> </tr> <tr> <td>POST</td> <td>localhost:33333/offers/offer/search</td> <td> <figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="nl">"@basic_expression"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -41,7 +44,10 @@
         </span><span class="s2">"ACRONYM"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"CREATION_DATE"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"START_DATE"</span><span class="w">
-    </span><span class="p">]</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"sqltypes"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"START_DATE"</span><span class="p">:</span><span class="w"> </span><span class="mi">91</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span></code></pre></figure> </td> </tr> </tbody> </table></div> <h2 id="basicexpression-en-el-método-de-una-petición-rest"> <a href="#basicexpression-en-el-método-de-una-petición-rest" class="anchor-heading" aria-labelledby="basicexpression-en-el-método-de-una-petición-rest"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> BasicExpression en el método de una petición REST </h2> <p>En caso de que queramos crear un método nuevo que podamos invocar desde una URL específica, sin tener que añadir nosotros una BasicExpression en el cuerpo de una petición REST. En este caso, crearemos dos nuevos métodos dentro del controlador REST de las ofertas. Uno que envíe todas las ofertas del presente año y otro que, pasado en la URL un parámetro, nos devuelva las ofertas de ese año en concreto.</p> <div class="multicolumn"> <div class="multicolumnleft"> <button class="unstyle toggle-tree-btn"> <span class="material-symbols-outlined">right_panel_open</span> </button> <p>La anotacion <code class="language-plaintext highlighter-rouge">@RequestMapping</code> permite indicar la ruta para la que responderá este método, junto con el tipo de petición que se haga e indicar el tipo de respuesta a devolver.</p> <p>En las condiciones de la consulta, para indicar que el valor es una BasicExpression, tenemos que añadir, como clave <strong>EXPRESSION_KEY_UNIQUE_IDENTIFIER</strong>, o lo que es lo mismo, <code class="language-plaintext highlighter-rouge">SQLStatementBuilder.ExtendedSQLConditionValuesProcessor.EXPRESSION_KEY</code>, una constante que contiene la cadena anterior.</p> <p><strong>OfferRestController.java</strong></p> <figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nc">OfferRestController</span><span class="o">.</span><span class="na">java</span>
 <span class="kn">package</span> <span class="nn">com.ontimize.hr.ws.core.rest</span><span class="o">;</span>
 
